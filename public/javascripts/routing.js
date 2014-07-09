@@ -4,46 +4,18 @@
 	}]);
 	
 	wildstar.config(["$routeProvider", function($routeProvider) {
-		$routeProvider.when("/home", {
-			templateUrl : "partials/home.html"
+		$routeProvider.when("/tradeskills", {
+			templateUrl : "partials/tradeskills.html"
 		}).otherwise({
-			redirectTo : "/home"
+			redirectTo : "/tradeskills"
 		});
 	}]);	
 
-	wildstar.controller("home", ["$scope", function($scope) {
+	wildstar.controller("tradeskills", ["$scope", "$http", function($scope, $http) {
 		$scope.global.title = "Home";
-		$scope.tradeskills = [{
-			name : "Crafting / Production",
-			professions : [
-				"Weaponsmith",
-				"Armorer",
-				"Outfitter",
-				"Tailor",
-				"Technologist",
-				"Architect"
-			]
-		}, {
-			name : "Gathering",
-			professions : [
-				"Mining",
-				"Survivalist",
-				"Relic Hunter"
-			]
-		}, {
-			name : "Hobbies",
-			professions : [
-				"Cooking",
-				"Farming",
-				"Fishing"
-			]
-		}, {
-			name : "Other",
-			professions : [
-				"Runecrafting",
-				"Salvaging"
-			]
-		}];
+		$http.post("tradeskills/list").success(function(tradeskills) {
+			$scope.tradeskills = tradeskills;
+		});
 	}]);
 	
 	wildstar.filter("sort", function() {

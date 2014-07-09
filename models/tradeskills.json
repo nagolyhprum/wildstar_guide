@@ -1,0 +1,36 @@
+[
+    {
+        "name": "Crafting / Production",
+        "professions": [
+            "Weaponsmith",
+            "Armorer",
+            "Outfitter",
+            "Tailor",
+            "Technologist",
+            "Architect"
+        ]
+    },
+    {
+        "name": "Gathering",
+        "professions": [
+            "Mining",
+            "Survivalist",
+            "Relic Hunter"
+        ]
+    },
+    {
+        "name": "Hobbies",
+        "professions": [
+            "Cooking",
+            "Farming",
+            "Fishing"
+        ]
+    },
+    {
+        "name": "Other",
+        "professions": [
+            "Runecrafting",
+            "Salvaging"
+        ]
+    }
+]
