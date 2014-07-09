@@ -1,0 +1,10 @@
+<div ng-controller="home">
+	<div ng-repeat="tradeskill in tradeskills | filter : sort : name">
+		<h4>
+			{{tradeskill.name}}
+		</h4>
+		<ul ng-repeat="profession in tradeskill.professions | sort">
+			<li>{{profession}}</li>
+		</ul>
+	</div>
+</div>
