@@ -20,6 +20,7 @@
 	
 	wildstar.filter("sort", function() {
 		return function(r, name) {
+			r = r || [];
 			if(name) {
 				r.sort(function(a, b) {
 					return a[name] > b[name] ? 1 : -1;

@@ -1,5 +1,5 @@
 <div ng-controller="tradeskills">
-	<div ng-repeat="tradeskill in tradeskills | filter : sort : name">
+	<div ng-repeat="tradeskill in tradeskills | sort:'name'">
 		<h4>
 			{{tradeskill.name}}
 		</h4>
