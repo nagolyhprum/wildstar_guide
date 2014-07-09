@@ -12,7 +12,7 @@
 	}]);	
 
 	wildstar.controller("tradeskills", ["$scope", "$http", function($scope, $http) {
-		$scope.global.title = "Home";
+		$scope.global.title = "Tradeskills";
 		$http.post("tradeskills/list").success(function(tradeskills) {
 			$scope.tradeskills = tradeskills;
 		});

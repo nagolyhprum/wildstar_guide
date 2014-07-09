@@ -9,9 +9,9 @@ function ws_collection(name, callback) {
 	});
 }
 
-var tradeskills = require("./routes/tradeskills.js")(ws_collection);
-
 app.use(express.static(__dirname + "/public"));
+
+var tradeskills = require("./routes/tradeskills.js")(ws_collection);
 
 app.post("/tradeskills/list", tradeskills.list);
 
