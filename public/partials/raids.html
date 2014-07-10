@@ -1,0 +1,10 @@
+<div ng-controller="raids">
+	<div ng-repeat="raid in raids | sort:'name'">
+		<h4>
+			{{raid.name}}
+		</h4>
+		<ul ng-repeat="size in raid.size | sort">
+			<li>{{size}}</li>
+		</ul>
+	</div>
+</div>

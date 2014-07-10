@@ -1,0 +1,11 @@
+<div ng-controller="battlegrounds">
+	<div ng-repeat="battleground in battlegrounds | sort:'name'">
+		<h4>
+			{{battleground.name}}
+		</h4>
+		<ul ng-repeat="bracket in battleground.brackets | sort">
+			<li>{{bracket}}</li>
+		</ul>
+	</div>
+</div>
+<img class="image" src="http://www.wildstar-online.com/img/articles/full/battleground2.jpg"/>
