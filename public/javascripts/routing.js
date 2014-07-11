@@ -1,6 +1,48 @@
 (function() {
 	var wildstar = angular.module("wildstar", ["ngRoute"]).run(["$rootScope", function($rootScope) {
-		$rootScope.global = {};
+		$rootScope.global = {
+			navbar : [{
+				title : "Tradeskills",
+				url : "tradeskills",
+				active : true,
+				visible : true
+			}, {
+				title : "Battlegrounds",
+				url : "battlegrounds",
+				active : false,
+				visible : true
+			}, {
+				title : "Classes",
+				url : "classes",
+				active : false,
+				visible : true
+			}, {
+				title : "Raids",
+				url : "raids",
+				active : false,
+				visible : true
+			}, {
+				title : "Races",				
+				url : "races",
+				active : false,
+				visible : true
+			}]
+		};
+		$rootScope.global.navbar.activate = function(title) {
+			for(var i = 0; i < this.length; i++) {
+				this[i].active = this[i].title == title;
+			}
+		};
+		$rootScope.$on("$locationChangeStart", function (event) {
+			$("#loader").show();
+		});
+		$rootScope.$on("$locationChangeSuccess", function (event) {
+			//TODO : REMOVE TIMEOUT
+			setTimeout(function() {
+				$("#loader").hide();
+			}, 1000);
+		});
+		//HIDE / SHOW NAVBAR ITEMS
 	}]);
 	
 	wildstar.config(["$routeProvider", function($routeProvider) {
@@ -12,36 +54,45 @@
 			templateUrl : "partials/classes.html"
 		}).when("/raids",{
 			templateUrl : "partials/raids.html"
+		}).when("/races",{
+			templateUrl : "partials/races.html"
 		}).otherwise({
 			redirectTo : "/tradeskills"
 		});
 	}]);	
 
 	wildstar.controller("tradeskills", ["$scope", "$http", function($scope, $http) {
-		$scope.global.title = "Tradeskills";
+		$scope.global.navbar.activate($scope.global.title = "Tradeskills");
 		$http.post("tradeskills/list").success(function(tradeskills) {
 			$scope.tradeskills = tradeskills;
 		});
 	}]);	
 	
 	wildstar.controller("battlegrounds", ["$scope", "$http", function($scope, $http) {
-		$scope.global.title = "Battlegrounds";
+		$scope.global.navbar.activate($scope.global.title = "Battlegrounds");
 		$http.post("battlegrounds/list").success(function(battlegrounds) {
 			$scope.battlegrounds = battlegrounds;
 		});
 	}]);
 	
 	wildstar.controller("classes", ["$scope", "$http", function($scope, $http) {
-		$scope.global.title = "Classes";
+		$scope.global.navbar.activate($scope.global.title = "Classes");
 		$http.post("classes/list").success(function(classes) {
 			$scope.classes = classes;
 		});
 	}]);
 	
 	wildstar.controller("raids", ["$scope", "$http", function($scope, $http) {
-		$scope.global.title = "Raids";
+		$scope.global.navbar.activate($scope.global.title = "Raids");
 		$http.post("raids/list").success(function(raids) {
 			$scope.raids = raids;
+		});
+	}]);
+	
+	wildstar.controller("races", ["$scope", "$http", function($scope, $http) {
+		$scope.global.navbar.activate($scope.global.title = "Races");
+		$http.post("races/list").success(function(races) {
+			$scope.races = races;
 		});
 	}]);
 	
