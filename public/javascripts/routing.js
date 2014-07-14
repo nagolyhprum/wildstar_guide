@@ -22,8 +22,8 @@
 				active : false,
 				visible : true
 			}, {
-				title : "Races",				
-				url : "races",
+				title : "Dungeons",				
+				url : "dungeons",
 				active : false,
 				visible : true
 			}]
@@ -54,8 +54,8 @@
 			templateUrl : "partials/classes.html"
 		}).when("/raids",{
 			templateUrl : "partials/raids.html"
-		}).when("/races",{
-			templateUrl : "partials/races.html"
+		}).when("/dungeons",{
+			templateUrl : "partials/dungeons.html"
 		}).otherwise({
 			redirectTo : "/tradeskills"
 		});
@@ -89,10 +89,10 @@
 		});
 	}]);
 	
-	wildstar.controller("races", ["$scope", "$http", function($scope, $http) {
-		$scope.global.navbar.activate($scope.global.title = "Races");
-		$http.post("races/list").success(function(races) {
-			$scope.races = races;
+	wildstar.controller("dungeons", ["$scope", "$http", function($scope, $http) {
+		$scope.global.navbar.activate($scope.global.title = "Dungeons");
+		$http.post("dungeons/list").success(function(dungeons) {
+			$scope.dungeons = dungeons;
 		});
 	}]);
 	
