@@ -10,8 +10,6 @@ module.exports = function(ws_collection) {
 		});
 	};
 	
-	
-
 	return routes;
 };
 

@@ -12,9 +12,6 @@ function ws_collection(name, callback) {
 	});
 }
 
-
-app.use(cookieParser());
-app.use(expressSession({secret:'somesecrettokenhere'})); 
 app.use(bodyParser());
 
 app.use(express.static(__dirname + "/public"));
@@ -34,7 +31,6 @@ app.post("/dungeons/list", dungeons.list);
 
 app.post("/users/signup", account.signup);
 app.post("/users/login", account.login);
-app.post("/users/isloggedin", account.isLoggedIn);
 
 app.listen(3000, function() {
 	console.log("Server listening on port 3000.");

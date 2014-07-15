@@ -27,13 +27,10 @@
 				active : false,
 				visible : true
 			}]
-		};
-		$http.post("/users/isLoggedIn").success(function(data) {
-			$rootScope.global.isLoggedIn = data;
-		});
+		};		
+		$rootScope.global.isLoggedIn = false; //TODO : cookies - auth
 		$rootScope.logout = function() {
-			$http.post("/users/logout");
-			$rootScope.global.isLoggedIn = false;
+			$rootScope.global.isLoggedIn = false; //TODO : cookies - auth
 		};
 		$rootScope.global.navbar.activate = function(title) {
 			for(var i = 0; i < this.length; i++) {
@@ -111,6 +108,8 @@
 			}).success(function(data) {
 				if(!data.error) {
 					$scope.global.isLoggedIn = true;
+				} else {
+					console.log(data.error);
 				}
 			});
 		};
@@ -124,8 +123,16 @@
 			}).success(function(data) {				
 				if(!data.error) {
 					$scope.global.isLoggedIn = true;
+				} else {
+					console.log(data.error);
 				}
 			});
+		};
+	}]);
+	
+	wildstar.controller("createcharacter", ["$scope", "$http", function($scope, $http) {
+		$scope.createcharacter = function() {
+			console.log("TODO");
 		};
 	}]);
 	
