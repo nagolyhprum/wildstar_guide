@@ -25,9 +25,101 @@
 					<ul class="nav navbar-nav">
 						<li ng-repeat="navbar in global.navbar" class="{{navbar.active ? 'active' : ''}}"><a href="#/{{navbar.url}}">{{navbar.title}}</a></li>
 					</ul>
-				</div>
-				<!--/.nav-collapse -->
+					
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown">Account <span class="caret"></span></a>
+							<ul class="dropdown-menu" role="menu">
+								<li ng-if="global.isLoggedIn"><a href="#">Character 1</a></li>
+								<li ng-if="global.isLoggedIn" class="divider"></li>								
+								<li ng-if="global.isLoggedIn"><a data-toggle="modal" data-target="#createcharacter">Create Character</a></li>				
+								<li ng-if="global.isLoggedIn"><a ng-click="logout()">Log out</a></li>
+								
+								<li ng-if="!global.isLoggedIn"><a data-toggle="modal" data-target="#signup">Sign Up</a></li>
+								<li ng-if="!global.isLoggedIn"><a data-toggle="modal" data-target="#login">Log In</a></li>
+							</ul>
+						</li>
+					</ul>		
+				</div>		
 			</div>
+		</div>
+		<div ng-controller="createcharacter">
+			<!-- Modal -->
+			<div class="modal fade" id="createcharacter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title">Create Character</h4>
+						</div>
+						<div class="modal-body">		
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" ng-click="saveCharacter()">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>		
+		<div ng-controller="signup">
+			<!-- Modal -->
+			<div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title">Sign Up</h4>
+						</div>
+						<div class="modal-body">						
+							<div class="container-fluid">
+								<div class="row form-group">
+									<div class="col-xs-12">
+										<input placeholder="Username" class="form-control" type="text" ng-model="username"/>
+									</div>
+								</div>
+								<div class="row form-group">
+									<div class="col-xs-12">
+										<input placeholder="Password" class="form-control" type="password" ng-model="password"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" ng-click="signup()">Sign Up</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div ng-controller="login">
+			<!-- Modal -->
+			<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title">Log In</h4>
+						</div>
+						<div class="modal-body">
+							<div class="container-fluid">
+								<div class="row form-group">
+									<div class="col-xs-12">
+										<input placeholder="Username" class="form-control" type="text" ng-model="username"/>
+									</div>
+								</div>
+								<div class="row form-group">
+									<div class="col-xs-12">
+										<input placeholder="Password" class="form-control" type="password" ng-model="password"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" ng-click="login()">Log In</button>
+						</div>
+					</div>
+				</div>
+			</div>		
 		</div>
 		
 		<div class="container" ng-view></div>

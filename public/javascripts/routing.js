@@ -1,5 +1,5 @@
 (function() {
-	var wildstar = angular.module("wildstar", ["ngRoute"]).run(["$rootScope", function($rootScope) {
+	var wildstar = angular.module("wildstar", ["ngRoute"]).run(["$rootScope", "$http", function($rootScope, $http) {
 		$rootScope.global = {
 			navbar : [{
 				title : "Tradeskills",
@@ -27,6 +27,13 @@
 				active : false,
 				visible : true
 			}]
+		};
+		$http.post("/users/isLoggedIn").success(function(data) {
+			$rootScope.global.isLoggedIn = data;
+		});
+		$rootScope.logout = function() {
+			$http.post("/users/logout");
+			$rootScope.global.isLoggedIn = false;
 		};
 		$rootScope.global.navbar.activate = function(title) {
 			for(var i = 0; i < this.length; i++) {
@@ -94,6 +101,32 @@
 		$http.post("dungeons/list").success(function(dungeons) {
 			$scope.dungeons = dungeons;
 		});
+	}]);
+	
+	wildstar.controller("signup", ["$scope", "$http", function($scope, $http) {
+		$scope.signup = function() {
+			$http.post("users/signup", {
+				username : $scope.username,
+				password : $scope.password
+			}).success(function(data) {
+				if(!data.error) {
+					$scope.global.isLoggedIn = true;
+				}
+			});
+		};
+	}]);
+	
+	wildstar.controller("login", ["$scope", "$http", function($scope, $http) {
+		$scope.login = function() {
+			$http.post("users/login", {
+				username : $scope.username,
+				password : $scope.password
+			}).success(function(data) {				
+				if(!data.error) {
+					$scope.global.isLoggedIn = true;
+				}
+			});
+		};
 	}]);
 	
 	wildstar.filter("sort", function() {
