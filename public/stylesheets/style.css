@@ -24,3 +24,14 @@
 a {
 	cursor : pointer;
 }
+
+.expand {
+    transition: height 1s;
+    -moz-transition: height 1s;
+    /* Firefox 4 */
+    -webkit-transition: height 1s;
+    /* Safari and Chrome */
+    -o-transition: height 1s;
+    /* Opera */
+    overflow : hidden;
+}

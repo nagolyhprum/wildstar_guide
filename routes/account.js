@@ -14,7 +14,8 @@ module.exports = function(ws_collection) {
 							if(!result.length) {
 								users.save({
 									username : username,
-									password : password //TODO : hash the password here
+									password : password //TODO : hash the password here,
+									characters : []
 								}, function(err, user) {
 									if(err) throw err;
 									res.send({error:""}); //TODO : return the permission level
@@ -44,10 +45,11 @@ module.exports = function(ws_collection) {
 				username : username,
 				password : password
 			}).toArray(function(err, result) {
-				if(!result.length) {
+				if(err) throw err;
+				if(result.length) {
 					res.send({error:""}); //TODO : permission level
 				} else { 
-					res.send({error:"that username is in use already."});					
+					res.send({error:"invalid username or password."});					
 				}
 			});
 		});

@@ -43,7 +43,7 @@
 				</div>		
 			</div>
 		</div>
-		<div ng-controller="createcharacter">
+		<div ng-controller="character">
 			<!-- Modal -->
 			<div class="modal fade" id="createcharacter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
@@ -51,8 +51,51 @@
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 							<h4 class="modal-title">Create Character</h4>
+							<span>
+								<!--
+									faction.name
+									race.name
+									character.classes[class.toLowerCase()].name
+									path.name
+								-->
+								<image src="images/logos/{{faction.name}}.png"/>
+								<image />
+								<image />
+								<image />
+							</span>
 						</div>
 						<div class="modal-body">		
+							<h2>Faction</h2>
+							<div ng-repeat="faction in character.factions">
+								<input type="radio" ng-model="$parent.faction" ng-click="($parent.race = '') || (($parent.faction == faction) && ($parent.faction = ''))" ng-value="faction" />{{faction.name}}
+								<div>{{faction.description}}</div>
+							</div>
+							<h2 ng-if="faction">Race</h2>
+
+							<div ng-repeat="race in faction.races">
+								<input type="radio" ng-model="$parent.race" ng-click="($parent.class = '') || (($parent.race == race) && ($parent.race = ''))" ng-value="race" />{{race.name}}
+								<div>{{race.description}}</div>
+							</div>
+							<h2 ng-if="race">Class</h2>
+							<div ng-repeat="class in race.classes">
+								<input type="radio" ng-model="$parent.class" ng-value="class" ng-click="($parent.class == class) && ($parent.class = '')" />{{class}}
+								<div>{{character.classes[class.toLowerCase()].description}}</div>
+							</div>
+							<h2>Path</h2>
+							<div ng-repeat="path in character.paths">
+								<input type="radio" ng-model="$parent.path" ng-value="path" />{{path.name}}
+								<div>{{path.description}}</div>
+							</div>
+							<h2>Tradeskills</h2>
+							<div id="professions"> 
+								<span ng-repeat="tradeskill in character.tradeskills">
+									<div ng-repeat="profession in tradeskill.professions">
+									<input type="checkbox"  ng-model="profession.selected" ng-disabled="tradeskillsSelected() >= 2 && !profession.selected"/>
+										{{profession.name}} 
+										<div>{{profession.description}}</div>
+									</div>
+								</span>
+							</div>						
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-primary" ng-click="saveCharacter()">Save</button>
