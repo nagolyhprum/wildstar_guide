@@ -7,7 +7,7 @@
 				active : true,
 				visible : true
 			}, {
-				title : "Battlegrounds",
+				title : "Arenas & Battlegrounds",
 				url : "battlegrounds",
 				active : false,
 				visible : true
