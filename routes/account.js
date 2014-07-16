@@ -14,7 +14,7 @@ module.exports = function(ws_collection) {
 							if(!result.length) {
 								users.save({
 									username : username,
-									password : password //TODO : hash the password here,
+									password : password, //TODO : hash the password here,
 									characters : []
 								}, function(err, user) {
 									if(err) throw err;

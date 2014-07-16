@@ -78,12 +78,12 @@
 							</div>
 							<h2 ng-if="race">Class</h2>
 							<div ng-repeat="class in race.classes">
-								<input type="radio" ng-model="$parent.class" ng-value="class" ng-click="($parent.class == class) && ($parent.class = '')" />{{class}}
+								<input type="radio" ng-model="$parent.class" ng-value="class" ng-click="($parent.class == class) && ($parent.class = '')"/>{{class}}
 								<div>{{character.classes[class.toLowerCase()].description}}</div>
 							</div>
 							<h2>Path</h2>
 							<div ng-repeat="path in character.paths">
-								<input type="radio" ng-model="$parent.path" ng-value="path" />{{path.name}}
+								<input type="radio" ng-model="$parent.path" ng-value="path" ng-click="($parent.path == path) && ($parent.path = '')"/>{{path.name}}
 								<div>{{path.description}}</div>
 							</div>
 							<h2>Tradeskills</h2>
