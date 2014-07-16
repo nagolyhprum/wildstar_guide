@@ -51,18 +51,19 @@
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 							<h4 class="modal-title">Create Character</h4>
-							<span>
+							<div class="character-icon" id="characterpreview">
 								<!--
 									faction.name
 									race.name
 									character.classes[class.toLowerCase()].name
 									path.name
 								-->
-								<image src="images/logos/{{faction.name}}.png"/>
-								<image />
-								<image />
-								<image />
-							</span>
+								<image class="faction" ng-if="faction.name" ng-src="images/icons/factions/{{faction.name}}.png"/>
+								<image class="faction" ng-if="!faction" ng-src="images/icons/factions/unknown.png"/>
+								<image class="race" ng-if="race.name" ng-src="images/icons/races/{{race.name}}.png"/>
+								<image class="class" ng-if="character.classes[class.toLowerCase()].name" ng-src="images/icons/classes/{{character.classes[class.toLowerCase()].name}}.png"/>
+								<image class="path" ng-if="path.name" ng-src="images/icons/paths/{{path.name}}.png"/>			
+							</div>
 						</div>
 						<div class="modal-body">		
 							<h2>Faction</h2>
