@@ -28,7 +28,7 @@
 				visible : true
 			}]
 		};		
-		$rootScope.global.isLoggedIn = true; //TODO : cookies - auth
+		$rootScope.global.isLoggedIn = false; //TODO : cookies - auth
 		$rootScope.logout = function() {
 			$rootScope.global.isLoggedIn = false; //TODO : cookies - auth
 		};
@@ -41,10 +41,7 @@
 			$("#loader").show();
 		});
 		$rootScope.$on("$locationChangeSuccess", function (event) {
-			//TODO : REMOVE TIMEOUT
-			setTimeout(function() {
-				$("#loader").hide();
-			}, 1000);
+			$("#loader").hide();
 		});
 		//HIDE / SHOW NAVBAR ITEMS
 	}]);
@@ -100,31 +97,17 @@
 		});
 	}]);
 	
-	wildstar.controller("signup", ["$scope", "$http", function($scope, $http) {
-		$scope.signup = function() {
-			$http.post("users/signup", {
-				username : $scope.username,
-				password : $scope.password
-			}).success(function(data) {
-				if(!data.error) {
-					$scope.global.isLoggedIn = true;
-				} else {
-					console.log(data.error);
-				}
-			});
-		};
-	}]);
-	
-	wildstar.controller("login", ["$scope", "$http", function($scope, $http) {
+	wildstar.controller("account", ["$scope", "$http", function($scope, $http) {
 		$scope.login = function() {
 			$http.post("users/login", {
 				username : $scope.username,
 				password : $scope.password
-			}).success(function(data) {				
-				if(!data.error) {
-					$scope.global.isLoggedIn = true;
+			}).success(function(data) {						
+				if(!data.errors) {
+					$scope.global.isLoggedIn = true; //TODO : cookies
+					$("#account").modal("hide");
 				} else {
-					console.log(data.error);
+					console.log(data.errors);
 				}
 			});
 		};

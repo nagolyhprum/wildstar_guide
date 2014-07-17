@@ -29,7 +29,6 @@ app.post("/classes/list", classes.list);
 app.post("/raids/list", raids.list);
 app.post("/dungeons/list", dungeons.list);
 
-app.post("/users/signup", account.signup);
 app.post("/users/login", account.login);
 
 app.listen(3000, function() {
