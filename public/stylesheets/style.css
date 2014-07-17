@@ -1,5 +1,5 @@
 [ng-view] {
-	margin-top : 50px;
+	margin-top : 70px;
 }
 
 #loader {
@@ -25,16 +25,6 @@ a {
 	cursor : pointer;
 }
 
-.expand {
-    transition: height 1s;
-    -moz-transition: height 1s;
-    /* Firefox 4 */
-    -webkit-transition: height 1s;
-    /* Safari and Chrome */
-    -o-transition: height 1s;
-    /* Opera */
-    overflow : hidden;
-}
 .character-icon{
 position: relative;
 }
@@ -68,5 +58,10 @@ bottom:0;
 #characterpreview{
 width:100px;
 height: 100px;
+}
+
+#mapimage img{
+width: 850px;
+height: 461px;
 }
 

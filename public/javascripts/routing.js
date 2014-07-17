@@ -58,7 +58,7 @@
 		}).when("/dungeons",{
 			templateUrl : "partials/dungeons.html"
 		}).when("/guidetemplate",{
-			templateURL : "partials/guidetemplate.html"
+			templateUrl : "partials/guidetemplate.html"
 		}).otherwise({
 			redirectTo : "/tradeskills"
 		});
