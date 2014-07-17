@@ -57,6 +57,8 @@
 			templateUrl : "partials/raids.html"
 		}).when("/dungeons",{
 			templateUrl : "partials/dungeons.html"
+		}).when("/guidetemplate",{
+			templateURL : "partials/guidetemplate.html"
 		}).otherwise({
 			redirectTo : "/tradeskills"
 		});
@@ -94,6 +96,13 @@
 		$scope.global.navbar.activate($scope.global.title = "Dungeons");
 		$http.post("dungeons/list").success(function(dungeons) {
 			$scope.dungeons = dungeons;
+		});
+	}]);
+	
+	wildstar.controller("guidetemplate", ["$scope", "$http", function($scope, $http) {
+		$scope.global.navbar.activate($scope.global.title = "Guidetemplate");
+		$http.post("guidetemplate/list").success(function(guidetemplate) {
+			$scope.guidetemplate = guidetemplate;
 		});
 	}]);
 	
