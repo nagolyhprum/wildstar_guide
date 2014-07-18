@@ -25,43 +25,12 @@ a {
 	cursor : pointer;
 }
 
-.character-icon{
-position: relative;
-}
-.character-icon .faction{
-position: absolute;
-width: 100%;
-height: 100%;
-}
-.character-icon .race{
-position: absolute;
-width: 30%;
-height: 30%;
-left:0;
-top:0;
-}
-.character-icon .class{
-position: absolute;
-width: 30%;
-height: 30%;
-right:0;
-top:0;
-}
-.character-icon .path{
-position: absolute;
-width: 30%;
-height: 30%;
-left:0;
-bottom:0;
+.character-icon {
+	width : 20px;
+	height : 20px;
 }
 
-#characterpreview{
-width:100px;
-height: 100px;
+#mapimage img {
+	width: 850px;
+	height: 461px;
 }
-
-#mapimage img{
-width: 850px;
-height: 461px;
-}
-

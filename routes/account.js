@@ -7,7 +7,24 @@ module.exports = function(ws_collection) {
 	};
 	
 	var SHA256 = require("crypto-js/sha256");
-	var GUID = require("guid");
+	var GUID = require("guid");	
+	
+	function authorizedUser(accessToken, callback) {
+		if(accessTokenChecker.test(accessToken)) {
+			ws_collection("users", function(users) {
+				users.find({
+					accessToken : accessToken
+				}).toArray(function(err, user) {	
+					if(err) throw err;
+					if(user = user[0] && user.expires > (new Date().getTime() + (1000 * 60 * 20))) {
+						callback(err, user);
+					} else {
+						callback("Invalid access token.", user[0]);
+					}
+				});
+			});
+		}
+	}
 	
 	function checkUsername(username) {
 		var errors = [];
@@ -39,6 +56,23 @@ module.exports = function(ws_collection) {
 		}
 		return errors;
 	}
+	
+	var accessTokenChecker = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{8}-[a-f0-9]{12}$/g;
+	
+	routes.characters = function(req, res) {
+		var accessToken = req.body.accessToken;		
+		authorizedUser(accessToken, function(err, user) {
+			var character = req.character,
+				index = req.index; //editing
+			if(character) {
+				if(index) { //editing
+				} else { //creating
+				}
+			} else {
+				res.send(user.characters);
+			}
+		});
+	};
 	
 	routes.login = function(req, res) {
 		var username = req.body.username || "", password = req.body.password || "", errors = {

@@ -70,7 +70,7 @@ var Cookies = {
 				visible : true
 			}]
 		};		
-		$rootScope.global.isLoggedIn = hasItem("accessToken");
+		$rootScope.global.isLoggedIn = Cookies.hasItem("accessToken");
 		$rootScope.logout = function() {
 			$rootScope.global.isLoggedIn = false;
 			Cookies.removeItem("accessToken");
@@ -81,6 +81,7 @@ var Cookies = {
 			}
 		};
 		$rootScope.$on("$locationChangeStart", function (event) {
+			//TODO : REFRESH TOKEN
 			$("#loader").show();
 		});
 		$rootScope.$on("$locationChangeSuccess", function (event) {
@@ -159,19 +160,13 @@ var Cookies = {
 				if(!data.errors) {
 					//TODO : CONFIRM
 					$scope.global.isLoggedIn = true;
-					Cookies.setItem("accessToken", data.accessToken, new Date().getTime() + (1000 * 60 * 20), sPath, sDomain, bSecure);
-					Cookies.setItem("permission", data.permission, new Date().getTime() + (1000 * 60 * 20), sPath, sDomain, bSecure);
+					Cookies.setItem("accessToken", data.accessToken, new Date().getTime() + (1000 * 60 * 20));
+					Cookies.setItem("permission", data.permission, new Date().getTime() + (1000 * 60 * 20));
 					$("#account").modal("hide");
 				} else {
 					//TODO : SHOW ERRORS
 				}
 			});
-		};
-	}]);
-	
-	wildstar.controller("createcharacter", ["$scope", "$http", function($scope, $http) {
-		$scope.createcharacter = function() {
-			console.log("TODO");
 		};
 	}]);
 	
@@ -320,19 +315,32 @@ var Cookies = {
         }]
     };
 
-    wildstar.controller("character", ["$scope", "$document", function ($scope, $document) {
-        $scope.character = character;
-        $scope.tradeskillsSelected = function () {
-            var k = 0;
+    wildstar.controller("character", ["$scope", "$http", function ($scope, $http) {
+        $scope.character = character;		
+		
+        $scope.selectedProfessions = function () {            
+			var professions = [];
             for (var i = 0; i < character.tradeskills.length; i++) {
                 for (var j = 0; j < character.tradeskills[i].professions.length; j++) {
                     if (character.tradeskills[i].professions[j].selected) {
-                        k++;
+                        professions.push(character.tradeskills[i].professions[j].name);
                     }
                 }
             }
-            return k;
+            return professions;
         };
+		
+		$scope.saveCharacter = function() {
+			//TODO : detect editing vs creating vs removing
+			$http.post("users/characters", {
+				index : $scope.characterindex,
+				faction : $scope.faction.name,
+				"class" : $scope["class"],
+				race : $scope.race.name,
+				professions : $scope.selectedProfessions()
+			}).success(function() {
+			});
+		};
     }]);
 	
 	wildstar.filter("sort", function() {
