@@ -69,7 +69,8 @@ module.exports = function(ws_collection) {
 			ws_collection("users", function(users) {
 				users.find({
 					username : username
-				}).toArray(function(err, user) {					
+				}).toArray(function(err, user) {	
+					if(err) throw err;			
 					if(user = user[0]) {
 						if(user.password == SHA256(password)) {
 							var guid = GUID.create();
@@ -77,8 +78,10 @@ module.exports = function(ws_collection) {
 								_id : user._id,
 								accessToken : guid,
 								expires : new Date().getTime() + (1000 * 60 * 30)
-							},function(){});
-							res.send({permission:user.permission,accessToken:guid});
+							},function(err){
+								if(err) throw err;
+								res.send({permission:user.permission,accessToken:guid});
+							});
 						} else {
 							errors.password.push("Wrong password.");
 							res.send({errors:errors});												
@@ -87,13 +90,15 @@ module.exports = function(ws_collection) {
 						var guid = GUID.create();
 						users.save({
 							username : username,
-							password : SHA256(password),
+							password : SHA256(password).toString(),
 							characters : [],
 							permission : permissions.user,
-							accessToken : guid,
+							accessToken : guid.value,
 							expires : new Date().getTime() + (1000 * 60 * 30)
-						},function(){});
-						res.send({permission:permissions.user,accessToken:guid});
+						}, function(err){				
+							if(err) throw err;
+							res.send({permission:permissions.user,accessToken:guid});	
+						});
 					}
 				});
 			});
