@@ -38,7 +38,7 @@ module.exports = function(ws_collection) {
 	
 	function checkPassword(password) {		
 		var errors = [];
-		if(password.length > 8) {
+		if(password.length < 8) {
 			errors.push("Password must be at least 8 characters.");
 		} else {
 			if(!(/[a-z]/g).test(password)) {

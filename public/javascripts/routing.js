@@ -103,11 +103,20 @@ var Cookies = {
 			templateUrl : "partials/dungeons.html"
 		}).when("/guidetemplate",{
 			templateUrl : "partials/guidetemplate.html"
+		}).when("/home",{
+			templateUrl : "partials/home.html"
 		}).otherwise({
-			redirectTo : "/tradeskills"
+			redirectTo : "/home"
 		});
 	}]);	
 
+	wildstar.controller("home", ["$scope", "$http", function($scope, $http) {
+		$scope.global.navbar.activate($scope.global.title = "Home");
+		$http.post("home/list").success(function(home) {
+			$scope.home = home;
+		});
+	}]);	
+	
 	wildstar.controller("tradeskills", ["$scope", "$http", function($scope, $http) {
 		$scope.global.navbar.activate($scope.global.title = "Tradeskills");
 		$http.post("tradeskills/list").success(function(tradeskills) {
