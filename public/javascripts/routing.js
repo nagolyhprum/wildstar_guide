@@ -70,12 +70,20 @@ var Cookies = {
 		};
 		$rootScope.global.characterindex = -1;
 		$rootScope.global.characters = [];		
-		if($rootScope.global.isLoggedIn = Cookies.hasItem("accessToken")) {
+		$rootScope.loadCharacters = function() {
 			$http.post("users/characters", {
 				accessToken : Cookies.getItem("accessToken")
 			}).success(function(characters) {
-				$rootScope.global.characters = characters;
+				if(characters.error) {
+					$rootScope.global.isLoggedIn = false;
+					console.log(characters.error);
+				} else {
+					$rootScope.global.characters = characters;
+				}
 			});
+		};
+		if($rootScope.global.isLoggedIn = Cookies.hasItem("accessToken")) {
+			$rootScope.loadCharacters();
 		}
 		$rootScope.logout = function() {
 			$rootScope.global.isLoggedIn = false;
@@ -171,12 +179,14 @@ var Cookies = {
 				username : $scope.username,
 				password : $scope.password
 			}).success(function(data) {		
-				console.log(data);				
+				console.log(data);		
+				//TODO : ADD TIMEOUTS
 				if(!data.errors) {
 					//TODO : CONFIRM
-					$scope.global.isLoggedIn = true;
-					Cookies.setItem("accessToken", data.accessToken, new Date().getTime() + (1000 * 60 * 30));
-					Cookies.setItem("permission", data.permission, new Date().getTime() + (1000 * 60 * 30));
+					$scope.global.isLoggedIn = true;	
+					Cookies.setItem("accessToken", data.accessToken, (1000 * 60 * 30));
+					Cookies.setItem("permission", data.permission, (1000 * 60 * 30));				
+					$scope.loadCharacters();
 					$("#account").modal("hide");
 				} else {
 					//TODO : SHOW ERRORS
@@ -255,16 +265,16 @@ var Cookies = {
 	};
     var paths = {
 		explorer : {
-			name: "EXPLORER",
+			name: "Explorer",
 			description: "DO YOU CRAVE MORTAL DANGER AND DIVING HEADFIRST INTO THE UNKNOWN? BE AN EXPLORER! USING ENHANCED AGILITY AND TECHNOLOGY, EXPLORERS ACCESS SECRET TRAILS, UNCOVER HIDDEN RELICS, AND DISCOVER MAJESTIC VISTAS ACROSS PLANET NEXUS! MAPS?! WHO NEEDS ‘EM?"
 		}, solder : {
-			name: "SOLDIER",
+			name: "Soldier",
 			description: "READY TO LOCK, LOAD, AND KICK SOME ASS? AS A SOLDIER, YOU’LL MAKE WEAPON LOCKERS, FORGE SUPER-ARMOR, AND TEST ADVANCED HARDWARE PROTOTYPES ON YOUR RETREATING FOES. THAT ENOUGH ACTION FOR YOU, SPANKY? HOO-AH!"
 		}, settler : {
-			name: "SETTLER",
+			name: "Settler",
 			description: "THIS WILDERNESS AIN’T GONNA IMPROVE ITSELF, CUPCAKE! STEP UP, STRAP ON A TOOLBELT, AND SPRUCE UP NEXUS BY BUILDING BATTLE ARENAS, HOSPITALS, TAVERNS, AND SPACEPORTS FOR YOUR BUDDIES. PIONEERING’S NEVER BEEN SO COOL OR DISEASE-FREE!"
 		}, scientist : {
-			name: "SCIENTIST",
+			name: "Scientist",
 			description: "KNOWLEDGE IS POWER, SO PUT THAT BIG BRAIN OF YOURS TO WORK! WHETHER IT’S RELICS, ROBOTS, OR RADICAL MACHINES, AS A SCIENTIST YOU AND YOUR TRUSTY SCANBOT WILL UNLOCK ALL THE SECRETS OF NEXUS. WHO KNOWS WHAT EVIL LURKS IN THE HEARTS OF HOSTILE ALIEN LIFEFORMS? YOU WILL!"
 		}
 	};
@@ -332,34 +342,95 @@ var Cookies = {
         $scope.factions = factions;		
 		$scope.classes = classes;		
 		$scope.tradeskills = tradeskills;		
-		$scope.paths = paths;		
+		$scope.paths = paths;
+		$scope.character = {};
+		$('#character').on('show.bs.modal', function (e) {
+			$scope.character.name = "";
+			$scope.character.faction = "";
+			$scope.character.race = "";
+			$scope.character.class = "";
+			$scope.character.path = "";
+			for(var i in $scope.tradeskills) {
+				for(var j in $scope.tradeskills[i].professions) {
+					var profession = $scope.tradeskills[i].professions[j];
+					profession.selected = false;
+				}
+			}
+			if($scope.global.characterindex != -1) {		
+				var character = $scope.global.characters[$scope.global.characterindex];
+				var faction = $scope.factions[character.faction && character.faction.toLowerCase()] || 0;
+				$scope.character.name = character.name;
+				$scope.character.faction  = faction;
+				$scope.character.race = faction ? faction.races[character.race && character.race.toLowerCase()] : 0;
+				$scope.character.class = $scope.classes[character.class && character.class.toLowerCase()];
+				$scope.character.path = $scope.paths[character.path && character.path.toLowerCase()];
+				for(var i in $scope.tradeskills) {
+					for(var j in $scope.tradeskills[i].professions) {
+						var profession = $scope.tradeskills[i].professions[j];
+						profession.selected = character.professions.indexOf(profession.name) != -1;
+					}
+				}
+			}
+			$scope.$apply();
+		});
 		
         $scope.selectedProfessions = function () {            
 			var professions = [];
             for (var i = 0; i < tradeskills.length; i++) {
                 for (var j = 0; j < tradeskills[i].professions.length; j++) {
-                    if (tradeskills[i].professions[j].selected) {
-                        professions.push(tradeskills[i].professions[j].name);
+					var profession = tradeskills[i].professions[j];
+                    if (profession.selected) {
+                        professions.push(profession.name);
                     }
                 }
             }
             return professions;
         };
 		
-		$scope.saveCharacter = function() {
-			//TODO : detect editing vs creating vs removing
+		$scope.removeCharacter = function() {
 			$http.post("users/characters", {
 				character : {
-					name : $scope.charactername,
 					index : $scope.global.characterindex,
-					faction : $scope.faction.name,
-					class : $scope.class.name,
-					race : $scope.race.name,
-					professions : $scope.selectedProfessions()
+					remove : true
 				},
 				accessToken : Cookies.getItem("accessToken")
-			}).success(function() {
-				$("#character").modal("hide");
+			}).success(function(data) {
+				if(data.error) {
+					console.log(data.error);
+				} else {
+					$scope.global.characters.splice($scope.global.characterindex, 1);
+					$scope.global.characterindex = -1;
+				}
+			});
+		};
+		
+		$scope.saveCharacter = function() {
+			//TODO : detect editing vs creating vs removing
+			console.log($scope);
+			var character = {
+				name : $scope.character.name,
+				index : $scope.global.characterindex,
+				faction : $scope.character.faction.name,
+				class : $scope.character.class.name,
+				race : $scope.character.race.name,
+				professions : $scope.selectedProfessions(),
+				path : $scope.character.path.name
+			};
+			//SHOW LOADING INDICATOR
+			$http.post("users/characters", {
+				character : character,
+				accessToken : Cookies.getItem("accessToken")
+			}).success(function(data) {
+				if(data.error) {
+					console.log(data.error);
+				} else {
+					$("#character").modal("hide");
+					if($scope.global.characterindex == -1) {
+						$scope.global.characters.push(character);
+					} else {
+						$scope.global.characters[$scope.global.characterindex] = character;
+					}
+				}
 			});
 		};
     }]);

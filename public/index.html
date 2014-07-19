@@ -30,9 +30,10 @@
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown">Account <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
-								<li ng-if="global.isLoggedIn"><a data-toggle="modal" ng-click="global.characterindex=0" data-target="#character">Character 0</a></li>
-								<li ng-if="global.isLoggedIn" class="divider"></li>								
-								<li ng-if="global.isLoggedIn"><a data-toggle="modal" ng-click="global.characterindex=-1" data-target="#character">Create Character</a></li>				
+								<li ng-if="global.isLoggedIn" ng-class="global.characterindex == $index ? 'active' : ''" ng-repeat="character in global.characters"><a ng-click="(global.characterindex == $index) ? (global.characterindex = -1) : (global.characterindex = $index)">{{character.name}}</a></li>
+								<li ng-if="global.isLoggedIn && global.characters.length" class="divider"></li>								
+								<li ng-if="global.isLoggedIn"><a data-toggle="modal" data-target="#character">{{global.characterindex != -1 ? "Edit" : "Create"}} Character</a></li>				
+								<li ng-if="global.isLoggedIn && global.characterindex != -1"><a data-toggle="modal" data-target="#remove">Remove Character</a></li>				
 								<li ng-if="global.isLoggedIn"><a ng-click="logout()">Log out</a></li>
 								
 								<li ng-if="!global.isLoggedIn"><a data-toggle="modal" data-target="#account">Log In / Sign Up</a></li>
@@ -43,7 +44,7 @@
 			</div>
 		</div>
 		<!-- createcharacter -->
-		<div ng-include="'partials/modals/createcharacter.html'"></div>
+		<div ng-include="'partials/modals/character.html'"></div>
 		<!-- account -->
 		<div ng-include="'partials/modals/account.html'"></div>
 

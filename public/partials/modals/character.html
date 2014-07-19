@@ -14,19 +14,19 @@
 					</h4>							
 				</div>
 				<div class="modal-body">
-					<input class="form-control" type="text" ng-model="charactername" placeholder="Character Name"/>
+					<input class="form-control" type="text" ng-model="character.name" placeholder="Character Name"/>
 					<h3 class="text-center">Faction</h3>
 					<div class="text-center pull-left" style="width:50%;" ng-repeat="faction in factions">
 						<div class="selectable">
-							<image ng-class="$parent.faction == faction ? 'selected' : ''" ng-click="($parent.race = '') || ($parent.class = '') || (($parent.faction == faction) ? ($parent.faction = '') : ($parent.faction = faction))" title="{{faction.name}} - {{faction.description}}" ng-src="images/icons/factions/{{faction.name}}.png"/>									
+							<image ng-class="$parent.character.faction == faction ? 'selected' : ''" ng-click="($parent.character.race = '') || ($parent.character.class = '') || (($parent.character.faction == faction) ? ($parent.character.faction = '') : ($parent.character.faction = faction))" title="{{faction.name}} - {{faction.description}}" ng-src="images/icons/factions/{{faction.name}}.png"/>									
 						</div>
 					</div>
 					<h3 class="text-center">Race</h3>
 					<span ng-repeat="faction in factions">
 						<div class="text-center pull-left" style="width:12.5%;" ng-repeat="race in faction.races">
 							<div class="selectable">
-								<image ng-class="$parent.$parent.race == race ? 'selected' : ''" ng-click="($parent.$parent.class = '') || (($parent.$parent.race == race) ? ($parent.$parent.race = '') : ($parent.$parent.race = race))" title="{{race.name}} - {{race.description}}" ng-src="images/icons/races/{{race.name}}.png"/>
-								<div ng-if="$parent.faction != $parent.$parent.faction" class="disabled"></div>
+								<image ng-class="$parent.$parent.character.race == race ? 'selected' : ''" ng-click="($parent.$parent.character.class = '') || (($parent.$parent.character.race == race) ? ($parent.$parent.character.race = '') : ($parent.$parent.character.race = race))" title="{{race.name}} - {{race.description}}" ng-src="images/icons/races/{{race.name}}.png"/>
+								<div ng-if="$parent.faction != $parent.$parent.character.faction" class="disabled"></div>
 							</div>
 						</div>
 					</span>							
@@ -35,14 +35,14 @@
 					
 					<div class="text-center pull-left" style="width:16.6%;" ng-repeat="class in classes">
 							<div class="selectable">
-								<image ng-class="$parent.class == class ? 'selected' : ''" ng-click="(($parent.class == class) ? ($parent.class = '') : ($parent.class = class))" title="{{class.name}} - {{class.description}}" ng-src="images/icons/classes/{{class.name}}.png"/>
-								<div ng-if="!$parent.race || $parent.race.classes.indexOf(class.name)==-1" class="disabled"></div>
+								<image ng-class="$parent.character.class == class ? 'selected' : ''" ng-click="(($parent.character.class == class) ? ($parent.character.class = '') : ($parent.character.class = class))" title="{{class.name}} - {{class.description}}" ng-src="images/icons/classes/{{class.name}}.png"/>
+								<div ng-if="!$parent.character.race || $parent.character.race.classes.indexOf(class.name)==-1" class="disabled"></div>
 							</div>
 					</div>
 					<h3 class="text-center">Path</h3>
 					<div class="text-center pull-left" style="width:25%;" ng-repeat="path in paths">
 						<div class="selectable">
-							<image ng-class="$parent.path == path ? 'selected' : ''" ng-click="(($parent.path == path) ? ($parent.path = '') : ($parent.path = path))" title="{{path.name}} - {{path.description}}" ng-src="images/icons/paths/{{path.name}}.png"/>
+							<image ng-class="$parent.character.path == path ? 'selected' : ''" ng-click="(($parent.character.path == path) ? ($parent.character.path = '') : ($parent.character.path = path))" title="{{path.name}} - {{path.description}}" ng-src="images/icons/paths/{{path.name}}.png"/>
 						</div>
 					</div>
 					<h3 class="text-center">Tradeskills</h3>
@@ -62,4 +62,24 @@
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="remove">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title">Delete Character</h4>
+				</div>
+				<div class="modal-body">
+					<p>Are you sure you would like to delete that character?</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+					<button type="button" class="btn btn-primary" ng-click="removeCharacter()">Yes</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
 </div>		

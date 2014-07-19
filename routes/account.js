@@ -35,7 +35,7 @@ module.exports = function(ws_collection) {
 	
 	var SHA256 = require("crypto-js/sha256");
 	var GUID = require("guid");		
-	var accessTokenChecker = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/g;
+	var accessTokenChecker = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 	
 	function authorizedUser(accessToken, callback) {
 		if(accessTokenChecker.test(accessToken)) {
@@ -53,6 +53,8 @@ module.exports = function(ws_collection) {
 					}
 				});
 			});
+		} else {
+			callback("Access token format error '" + accessToken + "'.");
 		}
 	}
 	
@@ -95,8 +97,16 @@ module.exports = function(ws_collection) {
 				if(character) {
 					//filter
 					var index = character.index;
+					if(character.remove === true) {
+						user.character.splice(index, 1);					
+						users.save(user, function(err) {
+							if(err) throw err;
+						});
+						res.send("Character removed.");
+					}
 					character = {
 						name : character.name,
+						race : character.race,
 						class : character.class,
 						faction : character.faction,
 						path : character.path,
@@ -104,7 +114,7 @@ module.exports = function(ws_collection) {
 					};							
 					//check types
 					//TODO : DELETE
-					if(isArray([character.professions]) && character.professions.length <= 2 && isString([character.name, character.name, character.class, character.faction, character.path].concat(character.professions)) && isNumber([index])) {
+					if(isArray([character.professions]) && character.professions.length <= 2 && isString([character.name, character.name, character.class, character.faction, character.path, character.race].concat(character.professions)) && isNumber([index])) {
 						if(index != -1) { //editing							
 							if(index < user.characters.length) {
 								user.characters[index] = character;							
@@ -113,7 +123,7 @@ module.exports = function(ws_collection) {
 								});
 								res.send("Character updated.");
 							} else {
-								res.send("Index out of bounds.");
+								res.send({error : "Index out of bounds."});
 							}
 						} else { //creating
 							user.characters.push(character);							
@@ -123,13 +133,13 @@ module.exports = function(ws_collection) {
 							res.send("Character inserted.");
 						}
 					} else {
-						res.send("Bad types.");
+						res.send({error : "Bad types."});
 					}
 				} else {
 					res.send(user.characters);
 				}
 			} else {
-				res.send(err);
+				res.send({error : err});
 			}
 		});
 	};
@@ -170,6 +180,10 @@ module.exports = function(ws_collection) {
 							var guid = GUID.create().value;
 							users.save({
 								_id : user._id,
+								username : user.username,
+								password : user.password,
+								characters : user.characters,
+								permission : user.permission,
 								accessToken : guid,
 								expires : new Date().getTime() + (1000 * 60 * 30)
 							},function(err){
