@@ -34,3 +34,25 @@ a {
 	width: 850px;
 	height: 461px;
 }
+
+.selectable {
+	position : relative;
+}
+
+.selectable img {
+	border : 5px solid white;
+}
+
+.selectable img.selected {
+	border : 5px solid yellow;
+}
+
+.selectable div.disabled {
+	position : absolute;
+	width : 40px;
+	height : 40px;
+	background : rgba(126, 126, 126, 0.5);
+	left : 50%;
+	margin-left : -20px;
+	top : 5px;
+}

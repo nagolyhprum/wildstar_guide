@@ -6,8 +6,36 @@ module.exports = function(ws_collection) {
 		admin : 10
 	};
 	
+	function isString(r) {		
+		for(var i = 0; i < r.length; i++) {
+			if(r[i] && typeof r[i] != "string") {
+				return false;
+			}
+		}
+		return true;
+	}
+		
+	function isNumber(r) {
+		for(var i = 0; i < r.length; i++) {
+			if(r[i] && typeof r[i] != "number") {
+				return false;
+			}
+		}
+		return true;
+	}
+		
+	function isArray(r) {
+		for(var i = 0; i < r.length; i++) {
+			if(r[i] && !(r[i] instanceof Array)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	var SHA256 = require("crypto-js/sha256");
-	var GUID = require("guid");	
+	var GUID = require("guid");		
+	var accessTokenChecker = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/g;
 	
 	function authorizedUser(accessToken, callback) {
 		if(accessTokenChecker.test(accessToken)) {
@@ -16,10 +44,12 @@ module.exports = function(ws_collection) {
 					accessToken : accessToken
 				}).toArray(function(err, user) {	
 					if(err) throw err;
-					if(user = user[0] && user.expires > (new Date().getTime() + (1000 * 60 * 20))) {
-						callback(err, user);
+					if((user = user[0]) && (user.expires > new Date().getTime())) {
+						callback(err, user, users);
+					} else if(!user) {
+						callback("Invalid access token.");
 					} else {
-						callback("Invalid access token.", user[0]);
+						callback("Expired access token.");
 					}
 				});
 			});
@@ -57,19 +87,49 @@ module.exports = function(ws_collection) {
 		return errors;
 	}
 	
-	var accessTokenChecker = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{8}-[a-f0-9]{12}$/g;
-	
 	routes.characters = function(req, res) {
 		var accessToken = req.body.accessToken;		
-		authorizedUser(accessToken, function(err, user) {
-			var character = req.character,
-				index = req.index; //editing
-			if(character) {
-				if(index) { //editing
-				} else { //creating
+		authorizedUser(accessToken, function(err, user, users) {		
+			if(!err) {
+				var character = req.body.character; //editing
+				if(character) {
+					//filter
+					var index = character.index;
+					character = {
+						name : character.name,
+						class : character.class,
+						faction : character.faction,
+						path : character.path,
+						professions : character.professions
+					};							
+					//check types
+					//TODO : DELETE
+					if(isArray([character.professions]) && character.professions.length <= 2 && isString([character.name, character.name, character.class, character.faction, character.path].concat(character.professions)) && isNumber([index])) {
+						if(index != -1) { //editing							
+							if(index < user.characters.length) {
+								user.characters[index] = character;							
+								users.save(user, function(err) {
+									if(err) throw err;
+								});
+								res.send("Character updated.");
+							} else {
+								res.send("Index out of bounds.");
+							}
+						} else { //creating
+							user.characters.push(character);							
+							users.save(user, function(err) {
+								if(err) throw err;
+							});
+							res.send("Character inserted.");
+						}
+					} else {
+						res.send("Bad types.");
+					}
+				} else {
+					res.send(user.characters);
 				}
 			} else {
-				res.send(user.characters);
+				res.send(err);
 			}
 		});
 	};
@@ -82,7 +142,7 @@ module.exports = function(ws_collection) {
 		if(!username) {
 			errors.username.push("Username is required.");
 			hasError = true;
-		} else if(typeof(username) != "string") {			
+		} else if(!isString([username])) {			
 			errors.username.push("Username must be a string.");
 			hasError = true;
 		} else if((error = checkUsername(username)).length) {
@@ -92,7 +152,7 @@ module.exports = function(ws_collection) {
 		if(!password) {
 			errors.password.push("Password is required.");
 			hasError = true;
-		} else if(typeof(password) != "string") {
+		} else if(!isString([password])) {
 			errors.password.push("Password must be a string.");
 			hasError = true;
 		} else if((error = checkPassword(password)).length) {
@@ -107,7 +167,7 @@ module.exports = function(ws_collection) {
 					if(err) throw err;			
 					if(user = user[0]) {
 						if(user.password == SHA256(password)) {
-							var guid = GUID.create();
+							var guid = GUID.create().value;
 							users.save({
 								_id : user._id,
 								accessToken : guid,
@@ -121,13 +181,13 @@ module.exports = function(ws_collection) {
 							res.send({errors:errors});												
 						}
 					} else { 
-						var guid = GUID.create();
+						var guid = GUID.create().value;
 						users.save({
 							username : username,
 							password : SHA256(password).toString(),
 							characters : [],
 							permission : permissions.user,
-							accessToken : guid.value,
+							accessToken : guid,
 							expires : new Date().getTime() + (1000 * 60 * 30)
 						}, function(err){				
 							if(err) throw err;

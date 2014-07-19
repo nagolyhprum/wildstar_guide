@@ -30,9 +30,9 @@
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown">Account <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
-								<li ng-if="global.isLoggedIn"><a href="#">Character 1</a></li>
+								<li ng-if="global.isLoggedIn"><a data-toggle="modal" ng-click="global.characterindex=0" data-target="#character">Character 0</a></li>
 								<li ng-if="global.isLoggedIn" class="divider"></li>								
-								<li ng-if="global.isLoggedIn"><a data-toggle="modal" data-target="#createcharacter">Create Character</a></li>				
+								<li ng-if="global.isLoggedIn"><a data-toggle="modal" ng-click="global.characterindex=-1" data-target="#character">Create Character</a></li>				
 								<li ng-if="global.isLoggedIn"><a ng-click="logout()">Log out</a></li>
 								
 								<li ng-if="!global.isLoggedIn"><a data-toggle="modal" data-target="#account">Log In / Sign Up</a></li>
