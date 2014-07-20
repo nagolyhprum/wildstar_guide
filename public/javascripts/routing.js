@@ -40,7 +40,16 @@ var Cookies = {
 
 (function() {
 	var wildstar = angular.module("wildstar", ["ngRoute"]).run(["$rootScope", "$http", function($rootScope, $http) {		
+		$rootScope.encodeURI = function(uri) {
+			return encodeURIComponent(uri);
+		};
 		$rootScope.global = {
+			raids : raids,
+			factions : factions,		
+			classes : classes,		
+			tradeskills : tradeskills,
+			paths : paths,
+			battlegrounds : battlegrounds,
 			navbar : [{
 				title : "Tradeskills",
 				url : "tradeskills",
@@ -153,30 +162,23 @@ var Cookies = {
 	
 	wildstar.controller("tradeskills", ["$scope", "$http", function($scope, $http) {
 		$scope.global.navbar.activate($scope.global.title = "Tradeskills");
-		$http.post("tradeskills/list").success(function(tradeskills) {
-			$scope.tradeskills = tradeskills;
-		});
+		$scope.hover = function(e) {
+			$(e.target).tooltip({				
+				placement : "right"
+			}).tooltip("show");
+		};
 	}]);	
 	
 	wildstar.controller("battlegrounds", ["$scope", "$http", function($scope, $http) {
 		$scope.global.navbar.activate($scope.global.title = "Battlegrounds");
-		$http.post("battlegrounds/list").success(function(battlegrounds) {
-			$scope.battlegrounds = battlegrounds;
-		});
 	}]);
 	
 	wildstar.controller("classes", ["$scope", "$http", function($scope, $http) {
-		$scope.global.navbar.activate($scope.global.title = "Classes");
-		$http.post("classes/list").success(function(classes) {
-			$scope.classes = classes;
-		});
+		$scope.global.navbar.activate($scope.global.title = "Classes");		
 	}]);
 	
 	wildstar.controller("raids", ["$scope", "$http", function($scope, $http) {
 		$scope.global.navbar.activate($scope.global.title = "Raids");
-		$http.post("raids/list").success(function(raids) {
-			$scope.raids = raids;
-		});
 	}]);
 	
 	wildstar.controller("dungeons", ["$scope", "$http", function($scope, $http) {
@@ -194,7 +196,6 @@ var Cookies = {
 	}]);
 	
 	wildstar.controller("account", ["$scope", "$http", function($scope, $http) {
-		$("[data-toggle='tooltip']").tooltip();
 		$scope.login = function() {
 			$http.post("users/login", {
 				username : $scope.username,
@@ -367,12 +368,24 @@ var Cookies = {
 			description: "TODO : GABE"
 		}]
 	}];
+	
+	var battlegrounds = [{
+		name : "Walatiki Temple",
+		description : "General Description"
+	}, {
+		name : "Bloodsword Halls",
+		description : "General Description"
+	}];
+	
+	var raids = [{
+		name : "Datascape",
+		description : "General Description",		
+	}, {
+		name : "Genetic Archives",
+		description : "General Description"
+	}];
 
     wildstar.controller("character", ["$scope", "$http", function ($scope, $http) {
-        $scope.factions = factions;		
-		$scope.classes = classes;		
-		$scope.tradeskills = tradeskills;		
-		$scope.paths = paths;
 		$scope.character = {};
 		$('#character').on('show.bs.modal', function (e) {
 			$scope.character.name = "";
@@ -388,12 +401,12 @@ var Cookies = {
 			}
 			if($scope.global.characterindex != -1) {		
 				var character = $scope.global.characters[$scope.global.characterindex];
-				var faction = $scope.factions[character.faction && character.faction.toLowerCase()] || 0;
+				var faction = $scope.global.factions[character.faction && character.faction.toLowerCase()] || 0;
 				$scope.character.name = character.name;
 				$scope.character.faction  = faction;
 				$scope.character.race = faction ? faction.races[character.race && character.race.toLowerCase()] : 0;
-				$scope.character.class = $scope.classes[character.class && character.class.toLowerCase()];
-				$scope.character.path = $scope.paths[character.path && character.path.toLowerCase()];
+				$scope.character.class = $scope.global.classes[character.class && character.class.toLowerCase()];
+				$scope.character.path = $scope.global.paths[character.path && character.path.toLowerCase()];
 				for(var i in $scope.tradeskills) {
 					for(var j in $scope.tradeskills[i].professions) {
 						var profession = $scope.tradeskills[i].professions[j];

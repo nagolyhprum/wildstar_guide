@@ -41,19 +41,25 @@ a {
 
 .selectable img {
 	margin : 5px;
+	width : 32px;
+	height : 32px;
+	cursor : pointer;
 }
 
 .selectable img.selected {
 	margin : 0;
 	border : 5px solid yellow;
+	width : 42px;
+	height : 42px;
 }
 
 .selectable div.disabled {
 	position : absolute;
-	width : 40px;
-	height : 40px;
+	width : 32px;
+	height : 32px;
 	background : rgba(100, 100, 100, 0.5);
 	left : 50%;
-	margin-left : -20px;
+	margin-left : -16px;
 	top : 5px;
+	cursor : disabled;
 }

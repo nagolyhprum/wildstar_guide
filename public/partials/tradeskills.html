@@ -1,75 +1,16 @@
 <div ng-controller="tradeskills">
-<!-- 	<div ng-repeat="tradeskill in tradeskills | sort:'name'">
-		<h4>
-			{{tradeskill.name}}
-		</h4>
-		<ul ng-repeat="profession in tradeskill.professions | sort">
-			<li>{{profession}}</li>
+	<div class="jumbotron">
+		<div class="container">
+			<h1>Tradeskills</h1>
+			<p>General Description of Tradeskills</p>
+		</div>
+	</div>
+	<div ng-repeat="tradeskill in global.tradeskills" class="col-xs-3">
+		<h3>{{tradeskill.name}}</h3>
+		<ul>
+			<li ng-repeat="profession in tradeskill.professions">
+				<a href="#/tradeskills/{{encodeURI(tradeskill.name)}}/{{profession.name}}" title="{{profession.description}}" ng-mouseover="hover($event)">{{profession.name}}</a>
+			</li>
 		</ul>
-	</div> -->
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-      <div class="container">
-        <h1>Tradeskills</h1>
-        <p>General Description of tradeskills</p>
-        <!-- <p><a class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p> -->
-      </div>
-    </div>
-
-    <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-6">
-          <h2>Crafting/Production</h2>
-          <ul>
-			<a href="#guidetemplate"><li data-toggle="tooltip" data-placement="right" title="As an architect you can contruct blah blahblahbv areugpwugrfpwer piwefgpawuerfgpawfuy pweiyg">Architect</li></a>
-			<a href="#guidetemplate"><li data-toggle="tooltip" data-placement="right" title="pickle farts">Armorer</li></a>
-			<a href="#guidetemplate"><li data-toggle="tooltip" data-placement="right" title="As an architect you can contruct blah blahblahbv areugpwugrfpwer piwefgpawuerfgpawfuy pweiyg">Outfitter</li></a>
-			<a href="#guidetemplate"><li data-toggle="tooltip" data-placement="right" title="As an architect you can contruct blah blahblahbv areugpwugrfpwer piwefgpawuerfgpawfuy pweiyg">Tailor</li></a>
-			<a href="#guidetemplate"><li data-toggle="tooltip" data-placement="right" title="As an architect you can contruct blah blahblahbv areugpwugrfpwer piwefgpawuerfgpawfuy pweiyg">Technologist</li></a>
-			<a href="#guidetemplate"><li data-toggle="tooltip" data-placement="right" title="As an architect you can contruct blah blahblahbv areugpwugrfpwer piwefgpawuerfgpawfuy pweiyg">Weaponsmith</li></a>
-		  </ul>
-        </div>
-        <div class="col-md-6">
-          <h2>Gathering</h2>
-          <ul>
-		  	<a href="#guidetemplate"><li data-toggle="tooltip" data-placement="right" title="As an architect you can contruct blah blahblahbv areugpwugrfpwer piwefgpawuerfgpawfuy pweiyg">Mining</li></a>
-			<a href="#guidetemplate"><li data-toggle="tooltip" data-placement="right" title="As an architect you can contruct blah blahblahbv areugpwugrfpwer piwefgpawuerfgpawfuy pweiyg">Relic Hunter</li></a>
-			<a href="#guidetemplate"><li data-toggle="tooltip" data-placement="right" title="As an architect you can contruct blah blahblahbv areugpwugrfpwer piwefgpawuerfgpawfuy pweiyg">Survivalist</li></a>
-		  </ul>
-       </div>
-      </div>
-	  <div class="row">
-        <div class="col-md-6">
-          <h2>Hobbies</h2>
-          <ul>
-		  	<a href="#guidetemplate"><li data-toggle="tooltip" data-placement="right" title="As an architect you can contruct blah blahblahbv areugpwugrfpwer piwefgpawuerfgpawfuy pweiyg">Cooking</li></a>
-			<a href="#guidetemplate"><li data-toggle="tooltip" data-placement="right" title="As an architect you can contruct blah blahblahbv areugpwugrfpwer piwefgpawuerfgpawfuy pweiyg">Farming</li></a>
-			<a href="#guidetemplate"><li data-toggle="tooltip" data-placement="right" title="As an architect you can contruct blah blahblahbv areugpwugrfpwer piwefgpawuerfgpawfuy pweiyg">Fishing</li></a>
-		  </ul>
-        </div>
-        <div class="col-md-6">
-          <h2>Other</h2>
-          <ul>
-		  	<a href="#guidetemplate"><li data-toggle="tooltip" data-placement="right" title="As an architect you can contruct blah blahblahbv areugpwugrfpwer piwefgpawuerfgpawfuy pweiyg">Runecrafting</li></a>
-			<a href="#guidetemplate"><li data-toggle="tooltip" data-placement="right" title="As an architect you can contruct blah blahblahbv areugpwugrfpwer piwefgpawuerfgpawfuy pweiyg">Salvaging</li></a>
-		  </ul>
-       </div>
-      </div>
-
-      <hr>
-
-      <footer>
-        <p>&copy; yung_gods 2014</p>
-      </footer>
-    </div> <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-   <!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
-<!--     <script src="../../dist/js/bootstrap.min.js"></script> -->
-
-<!-- <img class="image" src="http://www.wildstar-online.com/img/articles/full/battleground2.jpg"/> -->
+	</div>
 </div>

@@ -1,67 +1,13 @@
 <div ng-controller="classes">
-<!-- 	<div ng-repeat="class in classes | sort:'name'">
-		<h4>
-			{{class.name}}
-		</h4>
-	</div> -->
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-      <div class="container">
-        <h1>Classes</h1>
-        <p>General Description of classes</p>
+	<div class="jumbotron">
+		<h1>Classes</h1>
+		<p>General Description of classes</p>
 		<p><a href="https://www.youtube.com/watch?v=hCaIxmffFWY&list=UUhg9HfiT-DbivZnnMtjPUGw" class="btn btn-primary btn-lg" role="button">Wildstar Flick &raquo;</a></p>
-      </div>
-    </div>
-
-    <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-4">
-          <h2>Engineer</h2>
-          <p>General Description</p>
-          <p><a class="btn btn-default" href="#guidetemplate" role="button">View guide &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-          <h2>Esper</h2>
-          <p>General Description</p>
-          <p><a class="btn btn-default" href="#guidetemplate" role="button">View guide &raquo;</a></p>
-       </div>
-	   <div class="col-md-4">
-          <h2>Medic</h2>
-          <p>General Description</p>
-          <p><a class="btn btn-default" href="#guidetemplate" role="button">View guide &raquo;</a></p>
-       </div>
-      </div>
-	  <div class="row">
-        <div class="col-md-4">
-          <h2>Spellslinger</h2>
-          <p>General Description</p>
-          <p><a class="btn btn-default" href="#guidetemplate" role="button">View guide &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-          <h2>Stalker</h2>
-          <p>General Description</p>
-          <p><a class="btn btn-default" href="#guidetemplate" role="button">View guide &raquo;</a></p>
-       </div>
-	   <div class="col-md-4">
-          <h2>Warrior</h2>
-          <p>General Description</p>
-          <p><a class="btn btn-default" href="#guidetemplate" role="button">View guide &raquo;</a></p>
-       </div>
-      </div>
-
-      <hr>
-
-      <footer>
-        <p>&copy; yung_gods 2014</p>
-      </footer>
-    </div> <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
-<!--     <script src="../../dist/js/bootstrap.min.js"></script> -->
-<!-- <img class="image" src="http://www.wildstar-online.com/img/articles/full/battleground2.jpg"/> -->
+	</div>
+	<div class="clearfix" ng-repeat-start="class in global.classes" ng-if="$index%3==0"></div>
+	<div class="col-xs-4" ng-repeat-end>			
+		<h2>{{class.name}}</h2>
+		<p>{{class.description}}</p>
+		<p><a class="btn btn-default" href="#/classes/{{class.name}}" role="button">View guide &raquo;</a></p>		
+	</div>
 </div>

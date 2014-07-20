@@ -48,7 +48,14 @@
 		<!-- account -->
 		<div ng-include="'partials/modals/account.html'"></div>
 
-		<div class="container" ng-view></div>
+		<div class="container">
+			<div ng-view></div>		
+			<div class="clearfix"></div>
+			<hr/>
+			<footer class="text-right">
+				<p>&copy; yung_gods 2014</p>
+			</footer>
+		</div>
 		
 		<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
