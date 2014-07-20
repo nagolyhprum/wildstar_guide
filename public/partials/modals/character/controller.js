@@ -6,37 +6,30 @@ wildstar.controller("character", ["$scope", "$http", function ($scope, $http) {
 		$scope.character.race = "";
 		$scope.character.class = "";
 		$scope.character.path = "";
-		for(var i in $scope.tradeskills) {
-			for(var j in $scope.tradeskills[i].professions) {
-				var profession = $scope.tradeskills[i].professions[j];
-				profession.selected = false;
-			}
+		for(var i in $scope.professions) {
+			var profession = $scope.professions[i];
+			profession.selected = false;
 		}
 		if($scope.global.characterindex != -1) {		
 			var character = $scope.global.characters[$scope.global.characterindex];
-			var faction = $scope.global.factions[character.faction && character.faction.toLowerCase()] || 0;
 			$scope.character.name = character.name;
-			$scope.character.faction  = faction;
-			$scope.character.race = faction ? faction.races[character.race && character.race.toLowerCase()] : 0;
-			$scope.character.class = $scope.global.classes[character.class && character.class.toLowerCase()];
-			$scope.character.path = $scope.global.paths[character.path && character.path.toLowerCase()];
-			for(var i in $scope.tradeskills) {
-				for(var j in $scope.tradeskills[i].professions) {
-					var profession = $scope.tradeskills[i].professions[j];
-					profession.selected = character.professions.indexOf(profession.name) != -1;
-				}
+			$scope.character.faction  = $scope.global.factions.findByName(character.faction);
+			$scope.character.race = $scope.global.races.findByName(character.race);
+			$scope.character.class = $scope.global.classes.findByName(character.class);
+			$scope.character.path = $scope.global.paths.findByName(character.path);
+			for(var i in $scope.professions) {
+				var profession = $scope.professions[i];
+				profession.selected = character.professions.indexOf(profession.name) != -1;
 			}
 		}
 		$scope.$apply();
 	});
     $scope.selectedProfessions = function () {            
 		var professions = [];
-		for (var i = 0; i < tradeskills.length; i++) {
-			for (var j = 0; j < tradeskills[i].professions.length; j++) {
-				var profession = tradeskills[i].professions[j];
-				if (profession.selected) {
-					professions.push(profession.name);
-				}
+		for (var i = 0; i < $scope.global.professions.length; i++) {
+			var profession = $scope.global.professions[i];
+			if (profession.selected) {
+				professions.push(profession.name);
 			}
 		}
 		return professions;
