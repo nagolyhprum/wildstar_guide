@@ -44,9 +44,9 @@
 			</div>
 		</div>
 		<!-- createcharacter -->
-		<div ng-include="'partials/modals/character.html'"></div>
+		<div ng-include="'partials/modals/character/view.html'"></div>
 		<!-- account -->
-		<div ng-include="'partials/modals/account.html'"></div>
+		<div ng-include="'partials/modals/account/view.html'"></div>
 
 		<div class="container">
 			<div ng-view></div>		
@@ -61,6 +61,15 @@
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-route.min.js"></script>
+		<script src="javascripts/cookies.js"></script>		
 		<script src="javascripts/routing.js"></script>		
+		<script src="partials/battlegrounds/controller.js"></script>		
+		<script src="partials/classes/controller.js"></script>		
+		<script src="partials/dungeons/controller.js"></script>		
+		<script src="partials/home/controller.js"></script>		
+		<script src="partials/raids/controller.js"></script>		
+		<script src="partials/tradeskills/controller.js"></script>		
+		<script src="partials/modals/account/controller.js"></script>		
+		<script src="partials/modals/character/controller.js"></script>		
 	</body>
 </html>
