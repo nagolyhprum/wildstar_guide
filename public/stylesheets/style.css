@@ -40,10 +40,11 @@ a {
 }
 
 .selectable img {
-	border : 5px solid white;
+	margin : 5px;
 }
 
 .selectable img.selected {
+	margin : 0;
 	border : 5px solid yellow;
 }
 
@@ -51,7 +52,7 @@ a {
 	position : absolute;
 	width : 40px;
 	height : 40px;
-	background : rgba(126, 126, 126, 0.5);
+	background : rgba(100, 100, 100, 0.5);
 	left : 50%;
 	margin-left : -20px;
 	top : 5px;

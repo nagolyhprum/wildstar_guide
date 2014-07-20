@@ -8,7 +8,7 @@ module.exports = function(ws_collection) {
 	
 	function isString(r) {		
 		for(var i = 0; i < r.length; i++) {
-			if(r[i] && typeof r[i] != "string") {
+			if(typeof r[i] != "string") {
 				return false;
 			}
 		}
@@ -17,7 +17,7 @@ module.exports = function(ws_collection) {
 		
 	function isNumber(r) {
 		for(var i = 0; i < r.length; i++) {
-			if(r[i] && typeof r[i] != "number") {
+			if(typeof r[i] != "number") {
 				return false;
 			}
 		}
@@ -26,7 +26,7 @@ module.exports = function(ws_collection) {
 		
 	function isArray(r) {
 		for(var i = 0; i < r.length; i++) {
-			if(r[i] && !(r[i] instanceof Array)) {
+			if(!(r[i] instanceof Array)) {
 				return false;
 			}
 		}
@@ -89,6 +89,19 @@ module.exports = function(ws_collection) {
 		return errors;
 	}
 	
+	routes.refresh = function(req, res) {
+		authorizedUser(req.body.accessToken, function(err, user, users) {
+			if(user) {
+				user.expires = new Date().getTime() + (1000 * 60 * 30);
+				users.save(user, function(err) {
+					if(err) throw err;
+				});
+			} else {
+				res.send({error : err});
+			}
+		});
+	};
+	
 	routes.characters = function(req, res) {
 		var accessToken = req.body.accessToken;		
 		authorizedUser(accessToken, function(err, user, users) {		
@@ -97,12 +110,13 @@ module.exports = function(ws_collection) {
 				if(character) {
 					//filter
 					var index = character.index;
-					if(character.remove === true) {
-						user.character.splice(index, 1);					
+					if(character.remove === true) { //deleting
+						user.characters.splice(index, 1);					
 						users.save(user, function(err) {
 							if(err) throw err;
 						});
 						res.send("Character removed.");
+						return;
 					}
 					character = {
 						name : character.name,
@@ -113,9 +127,8 @@ module.exports = function(ws_collection) {
 						professions : character.professions
 					};							
 					//check types
-					//TODO : DELETE
-					if(isArray([character.professions]) && character.professions.length <= 2 && isString([character.name, character.name, character.class, character.faction, character.path, character.race].concat(character.professions)) && isNumber([index])) {
-						if(index != -1) { //editing							
+					if(isArray([character.professions]) && character.professions.length <= 2 && isString([character.name, character.class, character.faction, character.path, character.race].concat(character.professions))) {
+						if(isNumber([index]) && index != -1) { //editing							
 							if(index < user.characters.length) {
 								user.characters[index] = character;							
 								users.save(user, function(err) {

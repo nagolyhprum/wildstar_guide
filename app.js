@@ -32,6 +32,7 @@ app.post("/dungeons/list", dungeons.list);
 app.post("/guidetemplate/list", guidetemplate.list);
 app.post("/users/login", account.login);
 app.post("/users/characters", account.characters);
+app.post("/users/refresh", account.refresh);
 
 app.listen(3000, function() {
 	console.log("Server listening on port 3000.");

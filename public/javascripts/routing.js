@@ -39,7 +39,7 @@ var Cookies = {
 };
 
 (function() {
-	var wildstar = angular.module("wildstar", ["ngRoute"]).run(["$rootScope", "$http", function($rootScope, $http) {
+	var wildstar = angular.module("wildstar", ["ngRoute"]).run(["$rootScope", "$http", function($rootScope, $http) {		
 		$rootScope.global = {
 			navbar : [{
 				title : "Tradeskills",
@@ -70,6 +70,22 @@ var Cookies = {
 		};
 		$rootScope.global.characterindex = -1;
 		$rootScope.global.characters = [];		
+		$rootScope.global.expires = -1;
+		$rootScope.global.setTimeout = (function() {
+			var timeout, interval;
+			return function() {
+				clearTimeout(timeout);
+				clearInterval(interval);
+				timeout = setTimeout(function() {
+					$("#refresh").modal("show");
+					$rootScope.global.expires = (1000 * 60 * 30) / 2;
+					interval = setInterval(function() {
+						$rootScope.global.expires--;
+						$rootScope.$apply();
+					}, 1000);
+				}, (1000 * 60 * 30) / 2);
+			};
+		});
 		$rootScope.loadCharacters = function() {
 			$http.post("users/characters", {
 				accessToken : Cookies.getItem("accessToken")
@@ -94,8 +110,12 @@ var Cookies = {
 				this[i].active = this[i].title == title;
 			}
 		};
+		$rootScope.refresh = function() {			
+			$http.post("users/refresh", {accessToken:Cookies.getItem("accessToken")});			
+			$rootScope.global.setTimeout();
+		};
 		$rootScope.$on("$locationChangeStart", function (event) {
-			//TODO : REFRESH TOKEN
+			$rootScope.refresh();
 			$("#loader").show();
 		});
 		$rootScope.$on("$locationChangeSuccess", function (event) {
@@ -174,22 +194,32 @@ var Cookies = {
 	}]);
 	
 	wildstar.controller("account", ["$scope", "$http", function($scope, $http) {
+		$("[data-toggle='tooltip']").tooltip();
 		$scope.login = function() {
 			$http.post("users/login", {
 				username : $scope.username,
 				password : $scope.password
 			}).success(function(data) {		
-				console.log(data);		
-				//TODO : ADD TIMEOUTS
 				if(!data.errors) {
-					//TODO : CONFIRM
+					//TODO : CONFIRM ACCOUNT CREATION / LOG IN
+					$scope.global.setTimeout();
 					$scope.global.isLoggedIn = true;	
 					Cookies.setItem("accessToken", data.accessToken, (1000 * 60 * 30));
 					Cookies.setItem("permission", data.permission, (1000 * 60 * 30));				
 					$scope.loadCharacters();
 					$("#account").modal("hide");
-				} else {
-					//TODO : SHOW ERRORS
+				} else {				
+					$scope.errors = data.errors;
+					$("[ng-model='username']").tooltip("destroy").tooltip({
+						title : data.errors.username[0],
+						placement : "right",
+						viewport : "body"
+					});
+					$("[ng-model='password']").tooltip("destroy").tooltip({
+						title : data.errors.password[0],
+						placement : "right",
+						viewport : "body"
+					});
 				}
 			});
 		};
@@ -398,6 +428,7 @@ var Cookies = {
 				if(data.error) {
 					console.log(data.error);
 				} else {
+					$("#remove").modal("hide");
 					$scope.global.characters.splice($scope.global.characterindex, 1);
 					$scope.global.characterindex = -1;
 				}
@@ -405,8 +436,6 @@ var Cookies = {
 		};
 		
 		$scope.saveCharacter = function() {
-			//TODO : detect editing vs creating vs removing
-			console.log($scope);
 			var character = {
 				name : $scope.character.name,
 				index : $scope.global.characterindex,
