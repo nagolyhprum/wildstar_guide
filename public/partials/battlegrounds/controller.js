@@ -1,4 +1,4 @@
 wildstar.controller("battlegrounds", ["$scope", "$http", function($scope, $http) {
-	$scope.setTitle("Battlegrounds");
-	$scope.navbar.activate("Battlegrounds");
+	$scope.setTitle("Arenas & Battlegrounds");
+	$scope.navbar.activate("Arenas & Battlegrounds");
 }]);

@@ -2,10 +2,10 @@ module.exports = function(ws_collection) {
 	var routes = {};
 
 	routes.list = function(req, res) {	
-		ws_collection("dungeons", function(dungeons) {
-			dungeons.find().toArray(function(err, dungeons) {	
+		ws_collection("professions", function(professions) {
+			professions.find().toArray(function(err, professions) {	
 				if(err) throw err;
-				res.send(dungeons);
+				res.send(professions);
 			});
 		});
 	};

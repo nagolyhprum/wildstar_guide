@@ -1,0 +1,2 @@
+use wildstar
+db.dropDatabase()

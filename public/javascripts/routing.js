@@ -42,9 +42,6 @@ var wildstar = angular.module("wildstar", ["ngRoute"]).run(["$rootScope", "$http
 	$http.post("races/list").success(function(races) {
 		$rootScope.races = races;
 	});
-	$http.post("tradeskills/list").success(function(tradeskills) {
-		$rootScope.tradeskills = tradeskills;
-	});
 	$http.post("paths/list").success(function(paths) {
 		$rootScope.paths = paths;
 	});
@@ -52,6 +49,9 @@ var wildstar = angular.module("wildstar", ["ngRoute"]).run(["$rootScope", "$http
 		$rootScope.battlegrounds = battlegrounds;
 	});
 	$http.post("professions/list").success(function(professions) {
+		$http.post("tradeskills/list").success(function(tradeskills) {
+			$rootScope.tradeskills = tradeskills;
+		});
 		$rootScope.professions = professions;
 	});
 	
@@ -140,22 +140,22 @@ wildstar.config(["$routeProvider", function($routeProvider) {
 		templateUrl : "partials/battleground_details/view.html"
 	})
 	
-	.when("/classes", {
-		templateUrl : "partials/classes/view.html"
-	}).when("/classes/:class", {
-		templateUrl : "partials/class_details/view.html"
-	})
-	
 	.when("/raids",{
 		templateUrl : "partials/raids/view.html"
 	}).when("/raid/:raid",{
-		templateUrl : "partials/raids_details/view.html"
+		templateUrl : "partials/raid_details/view.html"
 	})
 	
 	.when("/dungeons",{
 		templateUrl : "partials/dungeons/view.html"
 	}).when("/dungeon/:dungeon",{
 		templateUrl : "partials/dungeon_details/view.html"
+	})
+	
+	.when("/classes", {
+		templateUrl : "partials/classes/view.html"
+	}).when("/classes/:class", {
+		templateUrl : "partials/class_details/view.html"
 	})
 	
 	.when("/home",{
