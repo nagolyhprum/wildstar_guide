@@ -1,14 +1,7 @@
-[
-    {
-        "name": "Genetic Archives",
-        "size": [
-            "20 man"
-        ]
-    },
-    {
-        "name": "Datascape",
-        "size": [
-			"40 man"
-        ]
-    }
-]
+[{
+	"name" : "Datascape",
+	"description" : "General Description"		
+}, {
+	"name" : "Genetic Archives",
+	"description" : "General Description"
+}]

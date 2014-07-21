@@ -1,20 +1,7 @@
-[
-    {
-        "name": "Walatiki Temple",
-        "brackets": [
-            "6-14",
-            "15-29",
-            "30-49",
-            "50"
-        ]
-    },
-    {
-        "name": "Halls of the Bloodsworn",
-        "brackets": [
-			"6-14",
-            "15-29",
-            "30-49",
-            "50"
-        ]
-    }
-]
+[{
+	"name" : "Walatiki Temple",
+	"description" : "General Description"
+}, {
+	"name" : "Bloodsword Halls",
+	"description" : "General Description"
+}]

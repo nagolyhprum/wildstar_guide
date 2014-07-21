@@ -1,36 +1,17 @@
-[
-    {
-        "name": "Crafting / Production",
-        "professions": [
-            "Weaponsmith",
-            "Armorer",
-            "Outfitter",
-            "Tailor",
-            "Technologist",
-            "Architect"
-        ]
-    },
-    {
-        "name": "Gathering",
-        "professions": [
-            "Mining",
-            "Survivalist",
-            "Relic Hunter"
-        ]
-    },
-    {
-        "name": "Hobbies",
-        "professions": [
-            "Cooking",
-            "Farming",
-            "Fishing"
-        ]
-    },
-    {
-        "name": "Other",
-        "professions": [
-            "Runecrafting",
-            "Salvaging"
-        ]
-    }
-]
+[{
+	"name": "Crafting / Production",
+	"description": "TODO : GABE",
+	"professions": ["Weaponsmith", "Armorer", "Outfitter", "Tailor", "Technologist", "Architect"]
+}, {
+	"name": "Gathering",
+	"description": "TODO : GABE",
+	"professions": ["Mining", "Survivalist", "Relic Hunter"]
+}, {
+	"name": "Hobbies",
+	"description": "TODO : GABE",
+	"professions": ["Cooking", "Farming", "Fishing"]
+}, {
+	"name": "Other",
+	"description": "TODO : GABE",
+	"professions": ["Runecrafting", "Salvaging"]
+}]
