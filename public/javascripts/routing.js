@@ -1,88 +1,102 @@
-var wildstar = angular.module("wildstar", ["ngRoute"]).run(["$rootScope", "$http", function($rootScope, $http) {		
-	$rootScope.encodeURI = function(uri) {
-		return encodeURIComponent(uri);
+var wildstar = angular.module("wildstar", ["ngRoute"]).run(["$rootScope", "$http", function($rootScope, $http) {	
+	$rootScope.title = "";
+	$rootScope.setTitle = function(title) {
+		$rootScope.title = title;
 	};
-	$rootScope.global = {
-		raids : raids,
-		factions : factions,		
-		classes : classes,		
-		races : races,
-		tradeskills : tradeskills,
-		paths : paths,
-		battlegrounds : battlegrounds,
-		professions : professions,
-		navbar : [{
-			title : "Tradeskills",
-			url : "tradeskills",
-			active : true,
-			visible : true
-		}, {
-			title : "Arenas & Battlegrounds",
-			url : "battlegrounds",
-			active : false,
-			visible : true
-		}, {
-			title : "Classes",
-			url : "classes",
-			active : false,
-			visible : true
-		}, {
-			title : "Raids",
-			url : "raids",
-			active : false,
-			visible : true
-		}, {
-			title : "Dungeons",				
-			url : "dungeons",
-			active : false,
-			visible : true
-		}]
+	$rootScope.characterindex = -1;
+	$rootScope.setCharacterIndex = function(characterindex) {
+		$rootScope.characterindex = characterindex;
 	};
-	$rootScope.global.characterindex = -1;
-	$rootScope.global.characters = [];		
-	$rootScope.global.expires = -1;
-	$rootScope.global.setTimeout = (function() {
-		var timeout, interval;
-		return function() {
-			clearTimeout(timeout);
-			clearInterval(interval);
-			timeout = setTimeout(function() {
-				$("#refresh").modal("show");
-				$rootScope.global.expires = (1000 * 60 * 30) / 2;
-				interval = setInterval(function() {
-					$rootScope.global.expires--;
-					$rootScope.$apply();
-				}, 1000);
-			}, (1000 * 60 * 30) / 2);
-		};
-	});
+	$rootScope.expires = -1;		
 	$rootScope.loadCharacters = function() {
 		$http.post("users/characters", {
 			accessToken : Cookies.getItem("accessToken")
 		}).success(function(characters) {
 			if(characters.error) {
-				$rootScope.global.isLoggedIn = false;
+				$rootScope.isLoggedIn = false;
 				console.log(characters.error);
 			} else {
-				$rootScope.global.characters = characters;
+				$rootScope.characters = characters;
 			}
 		});
 	};
-	if($rootScope.global.isLoggedIn = Cookies.hasItem("accessToken")) {
+	$rootScope.setLoggedIn = function(isLoggedIn) {
+		$rootScope.isLoggedIn = isLoggedIn;
+	};
+	if($rootScope.isLoggedIn = Cookies.hasItem("accessToken")) {
 		$rootScope.loadCharacters();
 	}
+	$rootScope.encodeURI = function(uri) {
+		return encodeURIComponent(uri);
+	};
+	$rootScope.dungeons = dungeons;
+	$rootScope.raids = raids;
+	$rootScope.factions = factions;
+	$rootScope.classes = classes;
+	$rootScope.races = races;
+	$rootScope.tradeskills = tradeskills;
+	$rootScope.paths = paths;
+	$rootScope.battlegrounds = battlegrounds;
+	$rootScope.professions = professions;
+	$rootScope.navbar = [{
+		title : "Tradeskills",
+		url : "tradeskills",
+		active : true,
+		visible : true
+	}, {
+		title : "Arenas & Battlegrounds",
+		url : "battlegrounds",
+		active : false,
+		visible : true
+	}, {
+		title : "Classes",
+		url : "classes",
+		active : false,
+		visible : true
+	}, {
+		title : "Raids",
+		url : "raids",
+		active : false,
+		visible : true
+	}, {
+		title : "Dungeons",				
+		url : "dungeons",
+		active : false,
+		visible : true
+	}];
+	$rootScope.characters = [];		
+	$rootScope.setTimeout = (function() {
+		var timeout, interval;
+		return function() {
+			$("#timeout").modal("hide");
+			clearTimeout(timeout);
+			clearInterval(interval);
+			timeout = setTimeout(function() {
+				$("#timeout").modal("show");
+				$rootScope.expires = (1000 * 60 * 30) / 2;
+				interval = setInterval(function() {
+					$rootScope.expires--;
+					if($rootScope.expires <= 0) {
+						$rootScope.isLoggedIn = false;
+						$("#timeout").modal("hide");
+					}
+					$rootScope.$apply();
+				}, 1000);
+			}, (1000 * 60 * 30) / 2);
+		};
+	});
 	$rootScope.logout = function() {
-		$rootScope.global.isLoggedIn = false;
+		$rootScope.isLoggedIn = false;
 		Cookies.removeItem("accessToken");
 	};
-	$rootScope.global.navbar.activate = function(title) {
+	$rootScope.navbar.activate = function(title) {
 		for(var i = 0; i < this.length; i++) {
 			this[i].active = this[i].title == title;
 		}
 	};
 	$rootScope.refresh = function() {			
 		$http.post("users/refresh", {accessToken:Cookies.getItem("accessToken")});			
-		$rootScope.global.setTimeout();
+		$rootScope.setTimeout();
 	};
 	$rootScope.$on("$locationChangeStart", function (event) {
 		$rootScope.refresh();
@@ -275,3 +289,23 @@ var raids = [{
 	name : "Genetic Archives",
 	description : "General Description"
 }];
+
+var dungeons = [{
+	name : "Dungeon 1",
+	description : "General description."
+}, {
+	name : "Dungeon 2",
+	description : "General description."
+}, {
+	name : "Dungeon 3",
+	description : "General description."
+}, {
+	name : "Dungeon 4",
+	description : "General description."
+}, {
+	name : "Dungeon 5",
+	description : "General description."
+}, {
+	name : "Dungeon 6",
+	description : "General description."
+}, ];

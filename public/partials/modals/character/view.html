@@ -16,13 +16,13 @@
 				<div class="modal-body">
 					<input class="form-control" type="text" ng-model="character.name" placeholder="Character Name"/>
 					<h3 class="text-center">Faction</h3>
-					<div class="text-center pull-left" style="width:50%;" ng-repeat="faction in global.factions">
+					<div class="text-center pull-left" style="width:50%;" ng-repeat="faction in factions">
 						<div class="selectable">
 							<image ng-class="$parent.character.faction == faction ? 'selected' : ''" ng-click="($parent.character.race = '') || ($parent.character.class = '') || (($parent.character.faction == faction) ? ($parent.character.faction = '') : ($parent.character.faction = faction))" title="{{faction.name}} - {{faction.description}}" ng-src="images/icons/factions/{{faction.name}}.png"/>									
 						</div>
 					</div>
 					<h3 class="text-center">Race</h3>
-					<div class="text-center pull-left" style="width:12.5%;" ng-repeat="race in global.races">
+					<div class="text-center pull-left" style="width:12.5%;" ng-repeat="race in races">
 						<div class="selectable">
 							<image ng-class="$parent.character.race == race ? 'selected' : ''" ng-click="($parent.character.class = '') || (($parent.character.race == race) ? ($parent.character.race = '') : ($parent.character.race = race))" title="{{race.name}} - {{race.description}}" ng-src="images/icons/races/{{race.name}}.png"/>
 							<div ng-if="$parent.character.faction.races.indexOf(race.name)==-1" class="disabled"></div>
@@ -31,21 +31,21 @@
 					<h3 class="text-center">Class</h3>
 					
 					
-					<div class="text-center pull-left" style="width:16.6%;" ng-repeat="class in global.classes">
+					<div class="text-center pull-left" style="width:16.6%;" ng-repeat="class in classes">
 							<div class="selectable">
 								<image ng-class="$parent.character.class == class ? 'selected' : ''" ng-click="(($parent.character.class == class) ? ($parent.character.class = '') : ($parent.character.class = class))" title="{{class.name}} - {{class.description}}" ng-src="images/icons/classes/{{class.name}}.png"/>
 								<div ng-if="!$parent.character.race || $parent.character.race.classes.indexOf(class.name)==-1" class="disabled"></div>
 							</div>
 					</div>
 					<h3 class="text-center">Path</h3>
-					<div class="text-center pull-left" style="width:25%;" ng-repeat="path in global.paths">
+					<div class="text-center pull-left" style="width:25%;" ng-repeat="path in paths">
 						<div class="selectable">
 							<image ng-class="$parent.character.path == path ? 'selected' : ''" ng-click="(($parent.character.path == path) ? ($parent.character.path = '') : ($parent.character.path = path))" title="{{path.name}} - {{path.description}}" ng-src="images/icons/paths/{{path.name}}.png"/>
 						</div>
 					</div>
 					<h3 class="text-center">Tradeskills</h3>
 					<div id="professions"> 
-						<div title="{{profession.description}}" class="text-left pull-left" style="width:20%;" ng-repeat="profession in global.professions">
+						<div title="{{profession.description}}" class="text-left pull-left" style="width:20%;" ng-repeat="profession in professions">
 							<input type="checkbox"  ng-model="profession.selected" ng-disabled="selectedProfessions().length >= 2 && !profession.selected"/>
 							{{profession.name}} 
 						</div>

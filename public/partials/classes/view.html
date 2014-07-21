@@ -4,7 +4,7 @@
 		<p>General Description of classes</p>
 		<p><a href="https://www.youtube.com/watch?v=hCaIxmffFWY&list=UUhg9HfiT-DbivZnnMtjPUGw" class="btn btn-primary btn-lg" role="button">Wildstar Flick &raquo;</a></p>
 	</div>
-	<div class="clearfix" ng-repeat-start="class in global.classes" ng-if="$index%3==0"></div>
+	<div class="clearfix" ng-repeat-start="class in classes" ng-if="$index%3==0"></div>
 	<div class="col-xs-4" ng-repeat-end>			
 		<h2>{{class.name}}</h2>
 		<p>{{class.description}}</p>

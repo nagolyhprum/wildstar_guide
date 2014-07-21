@@ -5,11 +5,11 @@
 			<p>General Description of Tradeskills</p>
 		</div>
 	</div>
-	<div ng-repeat="tradeskill in global.tradeskills" class="col-xs-3">
+	<div ng-repeat="tradeskill in tradeskills" class="col-xs-3">
 		<h3>{{tradeskill.name}}</h3>
 		<ul>
 			<li ng-repeat="profession in tradeskill.professions">
-				<span ng-init="profession = global.professions.findByName(profession)"></span>
+				<span ng-init="profession = professions.findByName(profession)"></span>
 				<a href="#/tradeskills/{{encodeURI(tradeskill.name)}}/{{profession.name}}" title="{{profession.description}}" ng-mouseover="hover($event)">{{profession.name}}</a>
 			</li>
 		</ul>

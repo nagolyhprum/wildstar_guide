@@ -22,17 +22,17 @@ var classes = require("./routes/classes.js")(ws_collection);
 var raids = require("./routes/raids.js")(ws_collection);
 var dungeons = require("./routes/dungeons.js")(ws_collection);
 var account = require("./routes/account.js")(ws_collection);
-var guidetemplate = require("./routes/guidetemplate.js")(ws_collection);
+var markdown = require("./routes/markdown.js")();
 
 app.post("/tradeskills/list", tradeskills.list);
 app.post("/battlegrounds/list", battlegrounds.list);
 app.post("/classes/list", classes.list);
 app.post("/raids/list", raids.list);
 app.post("/dungeons/list", dungeons.list);
-app.post("/guidetemplate/list", guidetemplate.list);
 app.post("/users/login", account.login);
 app.post("/users/characters", account.characters);
 app.post("/users/refresh", account.refresh);
+app.post("/markdown", markdown.markdown);
 
 app.listen(3000, function() {
 	console.log("Server listening on port 3000.");

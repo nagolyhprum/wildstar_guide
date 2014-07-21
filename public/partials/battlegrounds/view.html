@@ -6,7 +6,7 @@
 			<p><a href="https://www.youtube.com/watch?v=8IeXYzqP8iU&list=UUhg9HfiT-DbivZnnMtjPUGw" class="btn btn-primary btn-lg" role="button">Dev Speak Video &raquo;</a></p>
 		</div>
 	</div>
-	<div ng-repeat="battleground in global.battlegrounds" class="col-xs-6">
+	<div ng-repeat="battleground in battlegrounds" class="col-xs-6">
 		<h2>{{battleground.name}}</h2>
 		<p>{{battleground.description}}</p>
 		<p><a class="btn btn-default" href="#/battlegrounds/{{$index}}">View guide &raquo;</a></p>
