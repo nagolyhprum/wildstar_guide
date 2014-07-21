@@ -109,17 +109,39 @@ var wildstar = angular.module("wildstar", ["ngRoute"]).run(["$rootScope", "$http
 }]);
 
 wildstar.config(["$routeProvider", function($routeProvider) {
-	$routeProvider.when("/tradeskills", {
+	$routeProvider
+	
+	.when("/tradeskills", {
 		templateUrl : "partials/tradeskills/view.html"
-	}).when("/battlegrounds", {
+	}).when("/tradeskills/:tradeskill/:profession", {
+		templateUrl : "partials/tradeskill_details/view.html"
+	})
+	
+	.when("/battlegrounds", {
 		templateUrl : "partials/battlegrounds/view.html"
-	}).when("/classes", {
+	}).when("/battlegrounds/:battleground", {
+		templateUrl : "partials/battleground_details/view.html"
+	})
+	
+	.when("/classes", {
 		templateUrl : "partials/classes/view.html"
-	}).when("/raids",{
+	}).when("/classes/:class", {
+		templateUrl : "partials/class_details/view.html"
+	})
+	
+	.when("/raids",{
 		templateUrl : "partials/raids/view.html"
-	}).when("/dungeons",{
+	}).when("/raid/:raid",{
+		templateUrl : "partials/raids_details/view.html"
+	})
+	
+	.when("/dungeons",{
 		templateUrl : "partials/dungeons/view.html"
-	}).when("/home",{
+	}).when("/dungeon/:dungeon",{
+		templateUrl : "partials/dungeon_details/view.html"
+	})
+	
+	.when("/home",{
 		templateUrl : "partials/home/view.html"
 	}).otherwise({
 		redirectTo : "/home"

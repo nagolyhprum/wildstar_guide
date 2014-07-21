@@ -10,7 +10,7 @@
 		<ul>
 			<li ng-repeat="profession in tradeskill.professions">
 				<span ng-init="profession = professions.findByName(profession)"></span>
-				<a href="#/tradeskills/{{encodeURI(tradeskill.name)}}/{{profession.name}}" title="{{profession.description}}" ng-mouseover="hover($event)">{{profession.name}}</a>
+				<a href="#/tradeskills/{{$parent.$index}}/{{$index}}" title="{{profession.description}}" ng-mouseover="hover($event)">{{profession.name}}</a>
 			</li>
 		</ul>
 	</div>
