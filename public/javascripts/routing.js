@@ -1,7 +1,16 @@
-var wildstar = angular.module("wildstar", ["ngRoute"]).run(["$rootScope", "$http", function($rootScope, $http) {	
+var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize"]).run(["$rootScope", "$http", function($rootScope, $http) {		
 	$rootScope.set = function(attr, val) {
 		return $rootScope[attr] = val;
 	};	
+	$rootScope.md = function(obj) {
+		$http.get("md_to_html", {
+			params : {
+				md : obj.description
+			}
+		}).success(function(html) {
+			obj.html_description = html;
+		});
+	};
 	$rootScope.loader = {
 		show : function() {
 			this.waiting++;
@@ -35,6 +44,7 @@ var wildstar = angular.module("wildstar", ["ngRoute"]).run(["$rootScope", "$http
 		});
 	};
 	if($rootScope.isLoggedIn = Cookies.hasItem("accessToken")) {
+		$rootScope.permission = Cookies.getItem("permission")
 		$rootScope.loadCharacters();
 	}
 	$rootScope.navbar = [{

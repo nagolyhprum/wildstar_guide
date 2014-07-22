@@ -9,6 +9,7 @@ wildstar.controller("account", ["$scope", "$http", function($scope, $http) {
 				//TODO : CONFIRM ACCOUNT CREATION / LOG IN
 				$scope.setTimeout();
 				$scope.set("isLoggedIn", true);	
+				$scope.set("permission", data.permission);
 				Cookies.setItem("accessToken", data.accessToken, (1000 * 60 * 30));
 				Cookies.setItem("permission", data.permission, (1000 * 60 * 30));				
 				$scope.loadCharacters();

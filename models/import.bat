@@ -8,4 +8,5 @@ mongoimport --db wildstar --collection professions --file professions.json --jso
 mongoimport --db wildstar --collection races --file races.json --jsonArray
 mongoimport --db wildstar --collection raids --file raids.json --jsonArray
 mongoimport --db wildstar --collection tradeskills --file tradeskills.json --jsonArray
+mongoimport --db wildstar --collection users --file users.json --jsonArray
 pause
