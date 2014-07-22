@@ -14,6 +14,7 @@ app.use(bodyParser());
 
 app.use(express.static(__dirname + "/public"));
 
+var articles = require("./routes/articles.js")(ws_collection);
 var factions = require("./routes/tradeskills.js")(ws_collection);
 var tradeskills = require("./routes/tradeskills.js")(ws_collection);
 var battlegrounds = require("./routes/battlegrounds.js")(ws_collection);
@@ -37,6 +38,7 @@ app.post("/factions/list", factions.list);
 app.post("/races/list", races.list);
 app.post("/paths/list", paths.list);
 app.post("/professions/list", professions.list);
+app.post("/articles/list", articles.list);
 
 app.get("/md_to_html", markdown.toHTML);
 

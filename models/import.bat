@@ -1,4 +1,5 @@
 mongo < drop.js
+mongoimport --db wildstar --collection articles --file articles.json --jsonArray
 mongoimport --db wildstar --collection battlegrounds --file battlegrounds.json --jsonArray
 mongoimport --db wildstar --collection classes --file classes.json --jsonArray
 mongoimport --db wildstar --collection dungeons --file dungeons.json --jsonArray

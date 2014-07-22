@@ -121,27 +121,29 @@ wildstar.config(["$routeProvider", function($routeProvider) {
 	$routeProvider.when("/tradeskills", {
 		templateUrl : "partials/tradeskills/view.html"
 	}).when("/tradeskills/:tradeskill/:profession", {
-		templateUrl : "partials/tradeskill_details/view.html"
+		templateUrl : "partials/tradeskills/details/view.html"
 	}).when("/battlegrounds", {
 		templateUrl : "partials/battlegrounds/view.html"
 	}).when("/battlegrounds/:battleground", {
-		templateUrl : "partials/battleground_details/view.html"
+		templateUrl : "partials/battlegrounds/details/view.html"
 	}).when("/raids",{
 		templateUrl : "partials/raids/view.html"
 	}).when("/raid/:raid",{
-		templateUrl : "partials/raid_details/view.html"
+		templateUrl : "partials/raids/details/view.html"
 	}).when("/dungeons",{
 		templateUrl : "partials/dungeons/view.html"
 	}).when("/dungeon/:dungeon",{
-		templateUrl : "partials/dungeon_details/view.html"
+		templateUrl : "partials/dungeons/details/view.html"
 	}).when("/classes", {
 		templateUrl : "partials/classes/view.html"
 	}).when("/classes/:class", {
-		templateUrl : "partials/class_details/view.html"
-	}).when("/home",{
-		templateUrl : "partials/home/view.html"
+		templateUrl : "partials/classes/details/view.html"
+	}).when("/articles",{
+		templateUrl : "partials/articles/view.html"
+	}).when("/articles/:article",{
+		templateUrl : "partials/articles/details/view.html"
 	}).otherwise({
-		redirectTo : "/home"
+		redirectTo : "/articles"
 	});
 }]);	
 
