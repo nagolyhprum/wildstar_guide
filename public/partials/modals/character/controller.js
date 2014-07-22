@@ -1,5 +1,45 @@
 wildstar.controller("character", ["$scope", "$http", function ($scope, $http) {
 	$scope.character = {};
+	if(!$scope.factions) {
+		$scope.loader.show();
+		$http.post("factions/list").success(function(factions) {
+			$scope.set("factions", factions);
+			$scope.loader.hide();
+		});
+	}
+	if(!$scope.races) {
+		$scope.loader.show();
+		$http.post("races/list").success(function(races) {
+			$scope.set("races", races);
+			$scope.loader.hide();
+		});
+	}	
+	if(!$scope.paths) {
+		$scope.loader.show();
+		$http.post("paths/list").success(function(paths) {
+			$scope.set("paths", paths);
+			$scope.loader.hide();
+		});	
+	}
+	if(!$scope.classes) {
+		$scope.loader.show();
+		$http.post("classes/list").success(function(classes) {
+			$scope.set("classes", classes);
+			$scope.loader.hide();
+		});	
+	}
+	if(!$scope.professions) {
+		$scope.loader.show();
+		$http.post("professions/list").success(function(professions) {
+			$scope.loader.show();
+			$http.post("tradeskills/list").success(function(tradeskills) {
+				$scope.set("tradeskills", tradeskills);
+				$scope.loader.hide();
+			});
+			$scope.set("professions", professions);
+			$scope.loader.hide();
+		});
+	}
 	$('#character').on('show.bs.modal', function (e) {
 		$scope.character.name = "";
 		$scope.character.faction = "";
@@ -36,6 +76,7 @@ wildstar.controller("character", ["$scope", "$http", function ($scope, $http) {
 	};
 	
 	$scope.removeCharacter = function() {
+		$scope.loader.show();
 		$http.post("users/characters", {
 			character : {
 				index : $scope.characterindex,
@@ -50,6 +91,7 @@ wildstar.controller("character", ["$scope", "$http", function ($scope, $http) {
 				$scope.characters.splice($scope.characterindex, 1);
 				$scope.setCharacterIndex(-1);
 			}
+			$scope.loader.hide();
 		});
 	};
 	
@@ -63,7 +105,7 @@ wildstar.controller("character", ["$scope", "$http", function ($scope, $http) {
 			professions : $scope.selectedProfessions(),
 			path : $scope.character.path.name
 		};
-		//SHOW LOADING INDICATOR
+		$scope.loader.show();
 		$http.post("users/characters", {
 			character : character,
 			accessToken : Cookies.getItem("accessToken")
@@ -78,6 +120,7 @@ wildstar.controller("character", ["$scope", "$http", function ($scope, $http) {
 					$scope.characters[$scope.characterindex] = character;
 				}
 			}
+			$scope.loader.hide();
 		});
 	};
 }]);

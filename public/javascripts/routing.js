@@ -1,14 +1,27 @@
 var wildstar = angular.module("wildstar", ["ngRoute"]).run(["$rootScope", "$http", function($rootScope, $http) {	
+	$rootScope.set = function(attr, val) {
+		return $rootScope[attr] = val;
+	};	
+	$rootScope.loader = {
+		show : function() {
+			this.waiting++;
+			if(this.waiting > 0) {
+				$("#loader").show();
+			}
+		},
+		hide : function() {
+			this.waiting--;
+			if(this.waiting <= 0) {
+				$("#loader").hide();
+			}
+		},
+		waiting : 0
+	};
 	$rootScope.title = "";
-	$rootScope.setTitle = function(title) {
-		$rootScope.title = title;
-	};
 	$rootScope.characterindex = -1;
-	$rootScope.setCharacterIndex = function(characterindex) {
-		$rootScope.characterindex = characterindex;
-	};
 	$rootScope.expires = -1;		
 	$rootScope.loadCharacters = function() {
+		$rootScope.loader.show();
 		$http.post("users/characters", {
 			accessToken : Cookies.getItem("accessToken")
 		}).success(function(characters) {
@@ -18,47 +31,16 @@ var wildstar = angular.module("wildstar", ["ngRoute"]).run(["$rootScope", "$http
 			} else {
 				$rootScope.characters = characters;
 			}
+			$rootScope.loader.hide();
 		});
-	};
-	$rootScope.setLoggedIn = function(isLoggedIn) {
-		$rootScope.isLoggedIn = isLoggedIn;
 	};
 	if($rootScope.isLoggedIn = Cookies.hasItem("accessToken")) {
 		$rootScope.loadCharacters();
 	}
-
-	$http.post("dungeons/list").success(function(dungeons) {
-		$rootScope.dungeons = dungeons;
-	});
-	$http.post("raids/list").success(function(raids) {
-		$rootScope.raids = raids;
-	});	
-	$http.post("factions/list").success(function(factions) {
-		$rootScope.factions = factions;
-	});
-	$http.post("classes/list").success(function(classes) {
-		$rootScope.classes = classes;
-	});
-	$http.post("races/list").success(function(races) {
-		$rootScope.races = races;
-	});
-	$http.post("paths/list").success(function(paths) {
-		$rootScope.paths = paths;
-	});
-	$http.post("battlegrounds/list").success(function(battlegrounds) {
-		$rootScope.battlegrounds = battlegrounds;
-	});
-	$http.post("professions/list").success(function(professions) {
-		$http.post("tradeskills/list").success(function(tradeskills) {
-			$rootScope.tradeskills = tradeskills;
-		});
-		$rootScope.professions = professions;
-	});
-	
 	$rootScope.navbar = [{
 		title : "Tradeskills",
 		url : "tradeskills",
-		active : true,
+		active : false,
 		visible : true
 	}, {
 		title : "Arenas & Battlegrounds",
@@ -116,49 +98,37 @@ var wildstar = angular.module("wildstar", ["ngRoute"]).run(["$rootScope", "$http
 		$rootScope.setTimeout();
 	};
 	$rootScope.$on("$locationChangeStart", function (event) {
-		$rootScope.refresh();
-		$("#loader").show();
+		$rootScope.loader.show();
+		$rootScope.refresh();		
 	});
 	$rootScope.$on("$locationChangeSuccess", function (event) {
-		$("#loader").hide();
+		$rootScope.loader.hide();
 	});
 	//HIDE / SHOW NAVBAR ITEMS
 }]);
 
 wildstar.config(["$routeProvider", function($routeProvider) {
-	$routeProvider
-	
-	.when("/tradeskills", {
+	$routeProvider.when("/tradeskills", {
 		templateUrl : "partials/tradeskills/view.html"
 	}).when("/tradeskills/:tradeskill/:profession", {
 		templateUrl : "partials/tradeskill_details/view.html"
-	})
-	
-	.when("/battlegrounds", {
+	}).when("/battlegrounds", {
 		templateUrl : "partials/battlegrounds/view.html"
 	}).when("/battlegrounds/:battleground", {
 		templateUrl : "partials/battleground_details/view.html"
-	})
-	
-	.when("/raids",{
+	}).when("/raids",{
 		templateUrl : "partials/raids/view.html"
 	}).when("/raid/:raid",{
 		templateUrl : "partials/raid_details/view.html"
-	})
-	
-	.when("/dungeons",{
+	}).when("/dungeons",{
 		templateUrl : "partials/dungeons/view.html"
 	}).when("/dungeon/:dungeon",{
 		templateUrl : "partials/dungeon_details/view.html"
-	})
-	
-	.when("/classes", {
+	}).when("/classes", {
 		templateUrl : "partials/classes/view.html"
 	}).when("/classes/:class", {
 		templateUrl : "partials/class_details/view.html"
-	})
-	
-	.when("/home",{
+	}).when("/home",{
 		templateUrl : "partials/home/view.html"
 	}).otherwise({
 		redirectTo : "/home"
@@ -172,18 +142,3 @@ Array.prototype.findByName = function(name) {
 		}
 	}
 };
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-

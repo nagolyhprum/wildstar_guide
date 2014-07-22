@@ -96,6 +96,7 @@ module.exports = function(ws_collection) {
 				users.save(user, function(err) {
 					if(err) throw err;
 				});
+				res.send("Access token refreshed.");
 			} else {
 				res.send({error : err});
 			}

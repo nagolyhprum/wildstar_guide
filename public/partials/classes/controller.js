@@ -1,4 +1,10 @@
 wildstar.controller("classes", ["$scope", "$http", function($scope, $http) {
-	$scope.setTitle("Classes");		
-	$scope.navbar.activate("Classes");		
+	$scope.navbar.activate($scope.set("title", "Classes"));		
+	if(!$scope.classes) {
+		$scope.loader.show();
+		$http.post("classes/list").success(function(classes) {
+			$scope.set("classes", classes);
+			$scope.loader.hide();
+		});	
+	}
 }]);

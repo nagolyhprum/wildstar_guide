@@ -1,3 +1,6 @@
-<div ng-controller="dungeon_details">
-	{{dungeon}}
+<div ng-controller="dungeons">
+	<div ng-controller="dungeon_details">
+		<h2>{{dungeons[dungeon].name}}</h2>
+		<p>{{dungeons[dungeon].description}}</p>
+	</div>
 </div>

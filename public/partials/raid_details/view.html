@@ -1,3 +1,6 @@
-<div ng-controller="raid_details">
-	{{raid}}
+<div ng-controller="raids">
+	<div ng-controller="raid_details">
+		<h2>{{raids[raid].name}}</h2>
+		<p>{{raids[raid].description}}</p>
+	</div>
 </div>

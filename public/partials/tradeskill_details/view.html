@@ -1,3 +1,6 @@
-<div ng-controller="tradeskill_details">
-	{{tradeskill}}, {{profession}}
+<div ng-controller="tradeskills">
+	<div ng-controller="tradeskill_details">
+		<h2>{{tradeskills[tradeskill].name}}</h2>
+		<p>{{professions[profession].description}}</p>
+	</div>
 </div>

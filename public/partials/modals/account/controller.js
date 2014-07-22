@@ -1,5 +1,6 @@
 wildstar.controller("account", ["$scope", "$http", function($scope, $http) {
 	$scope.login = function() {
+		$scope.loader.show();
 		$http.post("users/login", {
 			username : $scope.username,
 			password : $scope.password
@@ -7,7 +8,7 @@ wildstar.controller("account", ["$scope", "$http", function($scope, $http) {
 			if(!data.errors) {
 				//TODO : CONFIRM ACCOUNT CREATION / LOG IN
 				$scope.setTimeout();
-				$scope.setLoggedIn(true);	
+				$scope.set("isLoggedIn", true);	
 				Cookies.setItem("accessToken", data.accessToken, (1000 * 60 * 30));
 				Cookies.setItem("permission", data.permission, (1000 * 60 * 30));				
 				$scope.loadCharacters();
@@ -25,6 +26,7 @@ wildstar.controller("account", ["$scope", "$http", function($scope, $http) {
 					viewport : "body"
 				});
 			}
+			$scope.loader.hide();
 		});
 	};
 }]);

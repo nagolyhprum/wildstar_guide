@@ -1,4 +1,3 @@
 wildstar.controller("home", ["$scope", "$http", function($scope, $http) {
-	$scope.setTitle("Home");
-	$scope.navbar.activate("Home");
+	$scope.navbar.activate($scope.set("title", "Home"));
 }]);	
