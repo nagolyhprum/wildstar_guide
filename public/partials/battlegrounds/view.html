@@ -10,5 +10,24 @@
 		<h2>{{battleground.name}}</h2>
 		<p>{{battleground.description}}</p>
 		<p><a class="btn btn-default" href="#/battlegrounds/{{$index}}">View guide &raquo;</a></p>
+	</div>	
+	<div ng-if="isLoggedIn && permission >= 10">
+		<hr/>
+		<h2>Add Battleground</h2>
+		<div class="form-group">
+			<label>Title</label>
+			<input class="form-control" ng-model="battleground.title"/>
+		</div>
+		<div class="form-group">
+			<label>Description</label>
+			<textarea md-editor class="form-control" ng-model="battleground.description"></textarea>
+		</div>
+		<div class="text-right">
+			<button class="btn btn-primary">Save</button>
+		</div>
+		<hr/>
+		<h2>Preview</h2>
+		<h2>{{battleground.title}}</h2>
+		<p ng-bind-html="battleground.html_description"></p>
 	</div>
 </div>
