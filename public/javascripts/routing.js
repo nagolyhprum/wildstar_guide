@@ -1,3 +1,5 @@
+var timeoutTime = 1000 * 60 * 0.5;
+
 var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize"]).run(["$rootScope", "$http", function($rootScope, $http) {		
 	$rootScope.set = function(attr, val) {
 		return $rootScope[attr] = val;
@@ -82,7 +84,7 @@ var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize"]).run(["$root
 			clearInterval(interval);
 			timeout = setTimeout(function() {
 				$("#timeout").modal("show");
-				$rootScope.expires = (1000 * 60 * 30) / 2;
+				$rootScope.expires = Math.floor(timeoutTime / 1000 / 2);
 				interval = setInterval(function() {
 					$rootScope.expires--;
 					if($rootScope.expires <= 0) {
@@ -91,9 +93,10 @@ var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize"]).run(["$root
 					}
 					$rootScope.$apply();
 				}, 1000);
-			}, (1000 * 60 * 30) / 2);
+				$rootScope.$apply();
+			}, timeoutTime / 2);
 		};
-	});
+	}());
 	$rootScope.logout = function() {
 		$rootScope.isLoggedIn = false;
 		Cookies.removeItem("accessToken");
