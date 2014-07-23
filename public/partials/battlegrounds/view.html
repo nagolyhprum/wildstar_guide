@@ -11,7 +11,7 @@
 		<p>{{battleground.description}}</p>
 		<p><a class="btn btn-default" href="#/battlegrounds/{{$index}}">View guide &raquo;</a></p>
 	</div>	
-	<div ng-if="isLoggedIn && permission >= 10">
+	<div class="clearfix" ng-if="isLoggedIn && permission >= 10">
 		<hr/>
 		<h2>Add Battleground</h2>
 		<div class="form-group">
@@ -20,7 +20,8 @@
 		</div>
 		<div class="form-group">
 			<label>Description</label>
-			<textarea md-editor class="form-control" ng-model="battleground.description"></textarea>
+			<div id="wmd-button-bar"></div>
+			<textarea wmd class="form-control" id="wmd-input" ng-model="battleground.description"></textarea>
 		</div>
 		<div class="text-right">
 			<button class="btn btn-primary">Save</button>
@@ -28,6 +29,6 @@
 		<hr/>
 		<h2>Preview</h2>
 		<h2>{{battleground.title}}</h2>
-		<p ng-bind-html="battleground.html_description"></p>
+		<p ng-bind-html="battleground.description.md2html()"></p>
 	</div>
 </div>

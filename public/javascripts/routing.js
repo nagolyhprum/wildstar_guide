@@ -147,15 +147,9 @@ wildstar.config(["$routeProvider", function($routeProvider) {
 	});
 }]);
 
-wildstar.directive("htmlValue", function() {
+wildstar.directive("wmd", function() {
 	return function($scope, $element, $attributes) {	
-		var converter = Markdown.getSanitizingConverter();                
-		var editor = new Markdown.Editor(converter);
-		editor.run();
-		$element.on("input", function() {			
-			var html = converter.makeHtml($element.val().replace(/'/g, "\\'"));
-			var element = $scope.$eval($attributes.htmlValue + "='" + html + "'");
-		});
+		new Markdown.Editor(Markdown.getSanitizingConverter()).run();
 	};
 });	
 
@@ -166,3 +160,10 @@ Array.prototype.findByName = function(name) {
 		}
 	}
 };
+
+String.prototype.md2html = (function() {
+	var converter = Markdown.getSanitizingConverter();  
+	return function() {
+		return converter.makeHtml(this);
+	};	              
+}());

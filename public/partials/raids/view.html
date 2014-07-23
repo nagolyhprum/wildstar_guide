@@ -13,7 +13,7 @@
 		<p><a class="btn btn-default" href="#raid/{{$index}}">View guide &raquo;</a></p>
 	</div>
 	
-	<div ng-if="isLoggedIn && permission >= 10">
+	<div class="clearfix" ng-if="isLoggedIn && permission >= 10">
 		<hr/>
 		<h2>Add Raid</h2>
 		<div class="form-group">
@@ -21,8 +21,9 @@
 			<input class="form-control" ng-model="raid.title"/>
 		</div>
 		<div class="form-group">
-			<label>Description</label>
-			<textarea md-editor class="form-control" ng-model="raid.description"></textarea>
+			<label>Description</label>			
+			<div id="wmd-button-bar"></div>
+			<textarea wmd class="form-control" id="wmd-input" ng-model="raid.description"></textarea>
 		</div>
 		<div class="text-right">
 			<button class="btn btn-primary">Save</button>
@@ -30,6 +31,6 @@
 		<hr/>
 		<h2>Preview</h2>
 		<h2>{{raid.title}}</h2>
-		<p ng-bind-html="raid.html_description"></p>
+		<p ng-bind-html="raid.description.md2html()"></p>
 	</div>
 </div>

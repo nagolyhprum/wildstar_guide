@@ -11,7 +11,7 @@
 		<p><a class="btn btn-default" href="#/dungeon/{{$index}}" role="button">View guide &raquo;</a></p>
 	</div>
 	
-	<div ng-if="isLoggedIn && permission >= 10">
+	<div class="clearfix" ng-if="isLoggedIn && permission >= 10">
 		<hr/>
 		<h2>Add Dungeon</h2>
 		<div class="form-group">
@@ -21,7 +21,7 @@
 		<div class="form-group">
 			<label>Description</label>			
 			<div id="wmd-button-bar"></div>
-			<textarea html-value="dungeon.html_description" class="form-control" id="wmd-input" ng-model="dungeon.description"></textarea>
+			<textarea wmd class="form-control" id="wmd-input" ng-model="dungeon.description"></textarea>
 		</div>
 		<div class="text-right">
 			<button class="btn btn-primary">Save</button>
@@ -29,6 +29,6 @@
 		<hr/>
 		<h2>Preview</h2>
 		<h2>{{dungeon.title}}</h2>
-		<p ng-bind-html="dungeon.html_description"></p>
+		<p ng-bind-html="dungeon.description.md2html()"></p>
 	</div>	
 </div>
