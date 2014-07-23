@@ -145,7 +145,19 @@ wildstar.config(["$routeProvider", function($routeProvider) {
 	}).otherwise({
 		redirectTo : "/articles"
 	});
-}]);	
+}]);
+
+wildstar.directive("htmlValue", function() {
+	return function($scope, $element, $attributes) {	
+		var converter = Markdown.getSanitizingConverter();                
+		var editor = new Markdown.Editor(converter);
+		editor.run();
+		$element.on("input", function() {			
+			var html = converter.makeHtml($element.val().replace(/'/g, "\\'"));
+			var element = $scope.$eval($attributes.htmlValue + "='" + html + "'");
+		});
+	};
+});	
 
 Array.prototype.findByName = function(name) {
 	for(var i = 0; i < this.length; i++) {

@@ -19,8 +19,9 @@
 			<input class="form-control" ng-model="dungeon.title"/>
 		</div>
 		<div class="form-group">
-			<label>Description</label>
-			<textarea md-editor class="form-control" ng-model="dungeon.description"></textarea>
+			<label>Description</label>			
+			<div id="wmd-button-bar"></div>
+			<textarea html-value="dungeon.html_description" class="form-control" id="wmd-input" ng-model="dungeon.description"></textarea>
 		</div>
 		<div class="text-right">
 			<button class="btn btn-primary">Save</button>
@@ -29,5 +30,5 @@
 		<h2>Preview</h2>
 		<h2>{{dungeon.title}}</h2>
 		<p ng-bind-html="dungeon.html_description"></p>
-	</div>
+	</div>	
 </div>

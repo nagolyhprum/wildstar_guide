@@ -27,7 +27,6 @@ var professions = require("./routes/professions.js")(ws_collection);
 var dungeons = require("./routes/dungeons.js")(ws_collection);
 
 var account = require("./routes/account.js")(ws_collection);
-var markdown = require("./routes/markdown.js")();
 
 app.post("/tradeskills/list", tradeskills.list);
 app.post("/battlegrounds/list", battlegrounds.list);
@@ -39,8 +38,6 @@ app.post("/races/list", races.list);
 app.post("/paths/list", paths.list);
 app.post("/professions/list", professions.list);
 app.post("/articles/list", articles.list);
-
-app.get("/md_to_html", markdown.toHTML);
 
 app.post("/users/login", account.login);
 app.post("/users/characters", account.characters);
