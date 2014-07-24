@@ -1,7 +1,7 @@
 <div ng-controller="raids">
 	<div ng-controller="raid_details">
 		<h2>{{raid.name}}</h2>
-		<p>{{raid.description}}</p>
+		<p ng-bind-html="raid.description.md2html()"></p>		
 		<div class="clearfix" ng-if="isLoggedIn && permission >= 10">
 			<hr/>
 			<h2>Edit Raid</h2>

@@ -1,19 +1,12 @@
 var express = require("express");
 var bodyParser = require('body-parser');
 var app = express();
-var MongoClient = require('mongodb').MongoClient;
-
-function ws_collection(name, callback) {	
-	MongoClient.connect("mongodb://127.0.0.1:27017/wildstar", function (err, db) {
-		if(err) throw err;
-		callback(db.collection(name));
-	});
-}
 
 app.use(bodyParser());
 
 app.use(express.static(__dirname + "/public"));
 
+var ws_collection = require("./routes/ws_collection.js")();
 var articles = require("./routes/articles.js")(ws_collection);
 var factions = require("./routes/tradeskills.js")(ws_collection);
 var tradeskills = require("./routes/tradeskills.js")(ws_collection);
@@ -38,6 +31,12 @@ app.post("/races/list", races.list);
 app.post("/paths/list", paths.list);
 app.post("/professions/list", professions.list);
 app.post("/articles/list", articles.list);
+
+//app.post("/battlegrounds/save", battlegrounds.save);
+app.post("/raids/save", raids.save);
+//app.post("/dungeons/save", dungeons.save);
+//app.post("/articles/save", articles.save);
+
 
 app.post("/users/login", account.login);
 app.post("/users/characters", account.characters);

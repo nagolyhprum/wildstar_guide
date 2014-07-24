@@ -10,7 +10,22 @@ module.exports = function(ws_collection) {
 		});
 	};
 	
-	
+	routes.save = function(req, res) {
+		var accessToken = req.body.accessToken, raid = req.body.raid || {};
+		ws_collection.saveDescribable({
+			collection : "raids",
+			data : {
+				description : raid.description,
+				name : raid.name,
+				_id : raid._id
+			},
+			accessToken : accessToken,
+			callback : function(err) {
+				if(err) throw err;
+				res.send("Raid saved.");
+			}
+		});
+	};
 
 	return routes;
 };

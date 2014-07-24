@@ -9,16 +9,16 @@
 	<div class="clearfix" ng-repeat-start="raid in raids" ng-if="$even"></div>
 	<div class="col-xs-6" ng-repeat-end>
 		<h2>{{raid.name}}</h2>
-		<p>{{raid.description}}</p>
+		<p ng-bind-html="raid.description.md2html()"></p>
 		<p><a class="btn btn-default" href="#raid/{{$index}}">View guide &raquo;</a></p>
 	</div>
-	
-	<div class="clearfix" ng-if="isLoggedIn && permission >= 10">
+	<div class="clearfix"></div>
+	<div ng-if="isLoggedIn && permission >= 10">
 		<hr/>
 		<h2>Add Raid</h2>
 		<div class="form-group">
-			<label>Title</label>
-			<input class="form-control" ng-model="raid.title"/>
+			<label>Name</label>
+			<input class="form-control" ng-model="raid.name"/>
 		</div>
 		<div class="form-group">
 			<label>Description</label>			
@@ -26,11 +26,11 @@
 			<textarea wmd class="form-control" id="wmd-input" ng-model="raid.description"></textarea>
 		</div>
 		<div class="text-right">
-			<button class="btn btn-primary">Save</button>
+			<button class="btn btn-primary" ng-click="save()">Save</button>
 		</div>
 		<hr/>
 		<h2>Preview</h2>
-		<h2>{{raid.title}}</h2>
+		<h2>{{raid.name}}</h2>
 		<p ng-bind-html="raid.description.md2html()"></p>
 	</div>
 </div>
