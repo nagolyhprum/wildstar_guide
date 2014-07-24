@@ -10,6 +10,24 @@ module.exports = function(ws_collection) {
 		});
 	};
 	
+	routes.save = function(req, res) {
+		var accessToken = req.body.accessToken, battleground = req.body.battleground || {};
+		console.log(battleground);
+		ws_collection.saveDescribable({
+			collection : "battlegrounds",
+			data : {
+				description : battleground.description,
+				name : battleground.name,
+				_id : battleground._id
+			},
+			accessToken : accessToken,
+			callback : function(err) {
+				if(err) throw err;
+				res.send("Battleground saved.");
+			}
+		});
+	};
+	
 	return routes;
 };
 
