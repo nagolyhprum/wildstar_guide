@@ -1,4 +1,4 @@
-var timeoutTime = 1000 * 60 * 0.5;
+var timeoutTime = 1000 * 60 * 30;
 
 var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize"]).run(["$rootScope", "$http", function($rootScope, $http) {		
 	$rootScope.set = function(attr, val) {

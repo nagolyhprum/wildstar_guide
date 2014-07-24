@@ -5,7 +5,7 @@
 			<p>Come learn how to not completely suck at this game with us.</p>
 		</div>
 		<div ng-repeat="article in articles">
-			<h2>{{article.title}}</h2>
+			<h2>{{article.name}}</h2>
 			<p>{{article.description}}</p>
 			<p><a class="btn btn-default" href="#/articles/{{$index}}">View details &raquo;</a></p>
 		</div>
@@ -13,8 +13,8 @@
 			<hr/>
 			<h2>Add Story</h2>
 			<div class="form-group">
-				<label>Title</label>
-				<input class="form-control" ng-model="article.title"/>
+				<label>Name</label>
+				<input class="form-control" ng-model="article.name"/>
 			</div>
 			<div class="form-group">
 				<label>Description</label>				
@@ -26,7 +26,7 @@
 			</div>
 			<hr/>
 			<h2>Preview</h2>
-			<h2>{{article.title}}</h2>
+			<h2>{{article.name}}</h2>
 			<p ng-bind-html="article.description.md2html()"></p>
 		</div>
 	</div>

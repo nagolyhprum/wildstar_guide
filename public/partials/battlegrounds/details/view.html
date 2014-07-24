@@ -1,6 +1,22 @@
 <div ng-controller="battlegrounds">
 	<div ng-controller="battleground_details">
-		<h2>{{battlegrounds[battleground].name}}</h2>
-		<p>{{battlegrounds[battleground].description}}</p>
+		<h2>{{battleground.name}}</h2>
+		<p>{{battleground.description}}</p>
+		<div class="clearfix" ng-if="isLoggedIn && permission >= 10">
+			<hr/>
+			<h2>Edit Battleground</h2>
+			<div class="form-group">
+				<label>Name</label>
+				<input class="form-control" ng-model="battleground.name"/>
+			</div>
+			<div class="form-group">
+				<label>Description</label>			
+				<div id="wmd-button-bar"></div>
+				<textarea wmd class="form-control" id="wmd-input" ng-model="battleground.description"></textarea>
+			</div>
+			<div class="text-right">
+				<button class="btn btn-primary" ng-click="save()">Save</button>
+			</div>
+		</div>
 	</div>
 </div>
