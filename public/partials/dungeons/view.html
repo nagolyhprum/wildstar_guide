@@ -3,20 +3,22 @@
 		<div class="container">
 			<h1>Dungeons</h1>
 			<p>General Description of Dungeons</p>
+			
 		</div>
 	</div>
-	<div class="col-md-4" ng-repeat="dungeon in dungeons">
+	<div class="clearfix" ng-repeat-start="dungeon in dungeons" ng-if="$even"></div> <!-- this is new !-->
+	<div class="col-xs-4" ng-repeat-end> <!-- this is new !-->
 		<h2>{{dungeon.name}}</h2>
-		<p>{{dungeon.description}}</p>
+		<p ng-bind-html="dungeon.description.md2html()"></p> <!-- this is new !-->
 		<p><a class="btn btn-default" href="#/dungeon/{{$index}}" role="button">View guide &raquo;</a></p>
 	</div>
-	
-	<div class="clearfix" ng-if="isLoggedIn && permission >= 10">
+	<div class="clearfix"></div>  <!-- this is new !-->
+	<div ng-if="isLoggedIn && permission >= 10">  <!-- this is new !-->
 		<hr/>
 		<h2>Add Dungeon</h2>
 		<div class="form-group">
-			<label>Title</label>
-			<input class="form-control" ng-model="dungeon.title"/>
+			<label>Name</label>
+			<input class="form-control" ng-model="dungeon.name"/>
 		</div>
 		<div class="form-group">
 			<label>Description</label>			
@@ -28,7 +30,7 @@
 		</div>
 		<hr/>
 		<h2>Preview</h2>
-		<h2>{{dungeon.title}}</h2>
+		<h2>{{dungeon.name}}</h2>
 		<p ng-bind-html="dungeon.description.md2html()"></p>
 	</div>	
 </div>

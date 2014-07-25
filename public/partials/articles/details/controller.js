@@ -4,11 +4,17 @@ wildstar.controller("article_details", ["$scope", "$routeParams", function($scop
 			$scope.article = {
 				name : $scope.articles[$routeParams.article].name,
 				description : $scope.articles[$routeParams.article].description
+				_id : $scope.articles[$routeParams.article]._id
 			};
 		}
 	});
 	$scope.save = function() {	
 		$scope.articles[$routeParams.article] = $scope.article;
-		//TODO SAVE
-	};		
+		$http.post("articles/save", {
+			article : $scope.article,
+			accessToken : Cookies.getItem("accessToken")
+		}).success(function(data) {
+			
+		});
+	};	
 }]);

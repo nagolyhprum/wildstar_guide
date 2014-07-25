@@ -7,4 +7,13 @@ wildstar.controller("dungeons", ["$scope", "$http", function($scope, $http) {
 			$scope.loader.hide();
 		});
 	}
+	$scope.save = function() {	
+		$scope.dungeons.push($scope.dungeon);
+		$http.post("dungeons/save", {
+			dungeon : $scope.dungeon,
+			accessToken : Cookies.getItem("accessToken")
+		}).success(function(data) {
+			
+		});
+	};
 }]);

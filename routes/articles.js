@@ -9,6 +9,23 @@ module.exports = function(ws_collection) {
 			});
 		});
 	};
+
+	routes.save = function(req, res) {
+		var accessToken = req.body.accessToken, article = req.body.article || {};
+		ws_collection.saveDescribable({
+			collection : "articles",
+			data : {
+				description : article.description,
+				name : article.name,
+				_id : article._id
+			},
+			accessToken : accessToken,
+			callback : function(err) {
+				if(err) throw err;
+				res.send("article saved.");
+			}
+		});
+	};
 	
 	return routes;
 };

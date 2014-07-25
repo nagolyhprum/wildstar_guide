@@ -1,5 +1,6 @@
 wildstar.controller("articles", ["$scope", "$http", function($scope, $http) {
 	$scope.navbar.activate($scope.set("title", "News"));
+	$scope.article = {};
 	if(!$scope.articles) {
 		$scope.loader.show();
 		$http.post("articles/list").success(function(articles) {
@@ -7,4 +8,13 @@ wildstar.controller("articles", ["$scope", "$http", function($scope, $http) {
 			$scope.loader.hide();
 		});
 	}
+	$scope.save = function() {	
+		$scope.articles.push($scope.article);
+		$http.post("articles/save", {
+			article : $scope.article,
+			accessToken : Cookies.getItem("accessToken")
+		}).success(function(data) {
+			
+		});
+	};	
 }]);	
