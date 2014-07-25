@@ -7,7 +7,27 @@
 	<div class="clearfix" ng-repeat-start="class in classes" ng-if="$index%3==0"></div>
 	<div class="col-xs-4" ng-repeat-end>			
 		<h2>{{class.name}}</h2>
-		<p>{{class.description}}</p>
+		<p ng-bind-html="class.description.md2html()"></p>
 		<p><a class="btn btn-default" href="#/classes/{{$index}}" role="button">View guide &raquo;</a></p>		
+	</div>
+	<div ng-if="isLoggedIn && permission >= 10">  <!-- this is new !-->
+		<hr/>
+		<h2>Add Class</h2>
+		<div class="form-group">
+			<label>Name</label>
+			<input class="form-control" ng-model="class.name"/>
+		</div>
+		<div class="form-group">
+			<label>Description</label>			
+			<div id="wmd-button-bar"></div>
+			<textarea wmd class="form-control" id="wmd-input" ng-model="class.description"></textarea>
+		</div>
+		<div class="text-right">
+			<button class="btn btn-primary" ng-click="save()">Save</button>
+		</div>
+		<hr/>
+		<h2>Preview</h2>
+		<h2>{{class.name}}</h2>
+		<p ng-bind-html="class.description.md2html()"></p>
 	</div>	
 </div>

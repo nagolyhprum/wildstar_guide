@@ -6,17 +6,19 @@
 			<p><a href="https://www.youtube.com/watch?v=8IeXYzqP8iU&list=UUhg9HfiT-DbivZnnMtjPUGw" class="btn btn-primary btn-lg" role="button">Dev Speak Video &raquo;</a></p>
 		</div>
 	</div>
-	<div ng-repeat="battleground in battlegrounds" class="col-xs-6">
+	<div class="clearfix" ng-repeat-start="battleground in battlegrounds" ng-if="$even"></div>
+	<div class="col-xs-6" ng-repeat-end>
 		<h2>{{battleground.name}}</h2>
-		<p>{{battleground.description}}</p>
+		<p ng-bind-html="battleground.description.md2html()"></p>
 		<p><a class="btn btn-default" href="#/battlegrounds/{{$index}}">View guide &raquo;</a></p>
 	</div>	
-	<div class="clearfix" ng-if="isLoggedIn && permission >= 10">
+	<div class="clearfix"></div> 
+	<div ng-if="isLoggedIn && permission >= 10">
 		<hr/>
 		<h2>Add Battleground</h2>
 		<div class="form-group">
-			<label>Title</label>
-			<input class="form-control" ng-model="battleground.title"/>
+			<label>Name</label>
+			<input class="form-control" ng-model="battleground.name"/>
 		</div>
 		<div class="form-group">
 			<label>Description</label>
@@ -24,11 +26,11 @@
 			<textarea wmd class="form-control" id="wmd-input" ng-model="battleground.description"></textarea>
 		</div>
 		<div class="text-right">
-			<button class="btn btn-primary">Save</button>
+			<button class="btn btn-primary" ng-click="save()">Save</button>
 		</div>
 		<hr/>
 		<h2>Preview</h2>
-		<h2>{{battleground.title}}</h2>
+		<h2>{{battleground.name}}</h2>
 		<p ng-bind-html="battleground.description.md2html()"></p>
 	</div>
 </div>
