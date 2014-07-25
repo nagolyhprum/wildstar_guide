@@ -1,7 +1,7 @@
 module.exports = function() {
 	var MongoClient = require('mongodb').MongoClient;
 	
-	var ObjectID = MongoClient.ObjectID;
+	var ObjectID = require('mongodb').ObjectID;
 	
 	function ws_collection(name, callback) {	
 		MongoClient.connect("mongodb://127.0.0.1:27017/wildstar", function (err, db) {
@@ -81,10 +81,11 @@ module.exports = function() {
 			ws_collection.authorizedUser(obj.accessToken, function(err, user, users) {
 				if(err) throw err;				
 				if(user.permission >= ws_collection.permissions.admin) {
-					if(obj._id) {
-						obj.data._id = new ObjectID(obj._id);
+					if(obj.data._id) {
+						obj.data._id = new ObjectID(obj.data._id);
 					}
 					ws_collection(obj.collection, function(collection) {
+						obj.data.comments = [];
 						collection.save(obj.data, function(err) {
 							if(err) throw err;
 							obj.callback(err);

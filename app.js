@@ -34,7 +34,6 @@ app.post("/articles/list", articles.list);
 
 app.post("/battlegrounds/save", battlegrounds.save);
 app.post("/raids/save", raids.save);
-app.post("/classes/save", classes.save);
 //app.post("/dungeons/save", dungeons.save);
 //app.post("/articles/save", articles.save);
 

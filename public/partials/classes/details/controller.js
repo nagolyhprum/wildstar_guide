@@ -7,14 +7,5 @@ wildstar.controller("class_details", ["$scope", "$routeParams", "$http", functio
 				_id : $scope.classes[$routeParams.class]._id
 			};
 		}
-	});
-	$scope.save = function() {	
-		$scope.classes[$routeParams.class] = $scope.class;
-		$http.post("classes/save", {
-			class : $scope.class,
-			accessToken : Cookies.getItem("accessToken")
-		}).success(function(data) {
-			
-		});
-	};		
+	});	
 }]);
