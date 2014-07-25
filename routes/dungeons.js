@@ -20,9 +20,9 @@ module.exports = function(ws_collection) {
 				_id : dungeon._id
 			},
 			accessToken : accessToken,
-			callback : function(err) {
+			callback : function(err, _id) {
 				if(err) throw err;
-				res.send("dungeon saved.");
+				res.send(_id);
 			}
 		});
 	};

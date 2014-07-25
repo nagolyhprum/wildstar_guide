@@ -1,7 +1,8 @@
 <div ng-controller="articles">
 	<div ng-controller="article_details">
 		<h2>{{article.name}}</h2>
-		<p ng-bind-html="article.description.md2html()"></p>
+		<p ng-bind-html="article.description.md2html()"></p>		
+		<div ng-include="'templates/comment.html'"></div>
 		<div class="clearfix" ng-if="isLoggedIn && permission >= 10">
 			<hr/>
 			<h2>Edit Article</h2>

@@ -20,9 +20,9 @@ module.exports = function(ws_collection) {
 				_id : article._id
 			},
 			accessToken : accessToken,
-			callback : function(err) {
+			callback : function(err, _id) {
 				if(err) throw err;
-				res.send("article saved.");
+				res.send(_id);
 			}
 		});
 	};

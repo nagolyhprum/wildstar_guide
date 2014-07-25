@@ -23,7 +23,9 @@ var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize"]).run(["$root
 		hide : function() {
 			this.waiting--;
 			if(this.waiting <= 0) {
-				$("#loader").hide();
+				setTimeout(function() {
+					$("#loader").hide();
+				}, 100);
 			}
 		},
 		waiting : 0
@@ -113,6 +115,7 @@ var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize"]).run(["$root
 	$rootScope.$on("$locationChangeStart", function (event) {
 		$rootScope.loader.show();
 		$rootScope.refresh();		
+		window.scrollTo(0, 0);
 	});
 	$rootScope.$on("$locationChangeSuccess", function (event) {
 		$rootScope.loader.hide();

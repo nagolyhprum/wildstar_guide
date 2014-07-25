@@ -3,12 +3,13 @@
 		"username" : "loganmurphy",
 		"password" : "39f48fdb481a1525a50e7c2080605ffe0f332543db0868d0c25ceb545472038d",
 		"permission" : 10,
-		"sha256" : "http://www.xorbin.com/tools/sha256-hash-calculator"
+		"characters" : []
 	},
 	{
 		"username" : "gabelorenz",
 		"password" : "153e318b03f4b517f8e8270f86f8d007aa57c246cec826dab8dd48328a2c582e",
 		"permission" : 10,
+		"characters" : [],
 		"sha256" : "http://www.xorbin.com/tools/sha256-hash-calculator"
 	}
 ]

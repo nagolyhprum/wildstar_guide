@@ -12,7 +12,6 @@ module.exports = function(ws_collection) {
 	
 	routes.save = function(req, res) {
 		var accessToken = req.body.accessToken, battleground = req.body.battleground || {};
-		console.log(battleground);
 		ws_collection.saveDescribable({
 			collection : "battlegrounds",
 			data : {
@@ -21,9 +20,9 @@ module.exports = function(ws_collection) {
 				_id : battleground._id
 			},
 			accessToken : accessToken,
-			callback : function(err) {
+			callback : function(err, _id) {
 				if(err) throw err;
-				res.send("Battleground saved.");
+				res.send(_id);
 			}
 		});
 	};

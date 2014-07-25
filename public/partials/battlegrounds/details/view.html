@@ -1,7 +1,8 @@
 <div ng-controller="battlegrounds">
 	<div ng-controller="battleground_details">
 		<h2>{{battleground.name}}</h2>
-		<p ng-bind-html="battleground.description.md2html()"></p>
+		<p ng-bind-html="battleground.description.md2html()"></p>		
+		<div ng-include="'templates/comment.html'"></div>
 		<div class="clearfix" ng-if="isLoggedIn && permission >= 10">
 			<hr/>
 			<h2>Edit Battleground</h2>

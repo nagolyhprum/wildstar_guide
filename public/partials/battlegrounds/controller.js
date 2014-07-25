@@ -9,12 +9,14 @@ wildstar.controller("battlegrounds", ["$scope", "$http", function($scope, $http)
 		});
 	}
 	$scope.save = function() {	
+		$scope.loader.show();
 		$scope.battlegrounds.push($scope.battleground);
 		$http.post("battlegrounds/save", {
 			battleground : $scope.battleground,
 			accessToken : Cookies.getItem("accessToken")
 		}).success(function(data) {
-			
+			$scope.battleground = data;
+			$scope.loader.hide();
 		});
 	};
 }]);

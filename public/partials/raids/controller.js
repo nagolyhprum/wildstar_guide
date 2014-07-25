@@ -9,12 +9,14 @@ wildstar.controller("raids", ["$scope", "$http", function($scope, $http) {
 		});	
 	}
 	$scope.save = function() {	
+		$scope.loader.show();
 		$scope.raids.push($scope.raid);
 		$http.post("raids/save", {
 			raid : $scope.raid,
 			accessToken : Cookies.getItem("accessToken")
 		}).success(function(data) {
-			
+			$scope.raid = data;
+			$scope.loader.hide();
 		});
 	};
 }]);

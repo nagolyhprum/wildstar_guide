@@ -3,16 +3,15 @@
 		<div class="jumbotron">
 			<h1>Guides Wildstar</h1>
 			<p>Come learn how to not completely suck at this game with us.</p>
-		</div>
-		<!-- <div ng-repeat="article in articles">  idk if we need this or not-->
-	<div class="clearfix" ng-repeat-start="article in articles" ng-if="$even"></div> <!-- this is new !-->
-	<div class="col-xs-6" ng-repeat-end> <!-- this is new !-->
+		</div>		
+		<div ng-repeat-start="article in articles" ng-if="$even"></div> <!-- this is new !-->
+		<div class="col-xs-6" ng-repeat-end> <!-- this is new !-->
 			<h2>{{article.name}}</h2>
-		    <p ng-bind-html="article.description.md2html()"></p> <!-- this is new !-->
+			<p ng-bind-html="article.description.md2html()"></p> <!-- this is new !-->
 			<p><a class="btn btn-default" href="#/articles/{{$index}}">View details &raquo;</a></p>
-		</div>
+		</div>	
 		<div class="clearfix"></div>  <!-- this is new !-->
-		<div class="clearfix" ng-if="isLoggedIn && permission >= 10">
+		<div ng-if="isLoggedIn && permission >= 10">
 			<hr/>
 			<h2>Add Story</h2>
 			<div class="form-group">

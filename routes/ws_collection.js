@@ -86,9 +86,9 @@ module.exports = function() {
 					}
 					ws_collection(obj.collection, function(collection) {
 						obj.data.comments = [];
-						collection.save(obj.data, function(err) {
+						collection.save(obj.data, function(err, document) {
 							if(err) throw err;
-							obj.callback(err);
+							obj.callback(err, document._id);
 						});
 					});
 				} else {
