@@ -1,7 +1,7 @@
 <div ng-controller="dungeons">
 	<div ng-controller="dungeon_details">
 		<h2>{{dungeon.name}}</h2>
-		<p>{{dungeon.description}}</p>
+		<p ng-bind-html="dungeon.description.md2html()"></p>
 		<div class="clearfix" ng-if="isLoggedIn && permission >= 10">
 			<hr/>
 			<h2>Edit Dungeon</h2>

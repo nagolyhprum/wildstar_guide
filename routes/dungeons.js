@@ -10,6 +10,23 @@ module.exports = function(ws_collection) {
 		});
 	};
 	
+	routes.save = function(req, res) {
+		var accessToken = req.body.accessToken, dungeon = req.body.dungeon || {};
+		ws_collection.saveDescribable({
+			collection : "dungeons",
+			data : {
+				description : dungeon.description,
+				name : dungeon.name,
+				_id : dungeon._id
+			},
+			accessToken : accessToken,
+			callback : function(err) {
+				if(err) throw err;
+				res.send("dungeon saved.");
+			}
+		});
+	};
+	
 	return routes;
 };
 
