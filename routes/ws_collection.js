@@ -1,13 +1,16 @@
 module.exports = function() {
 	var MongoClient = require('mongodb').MongoClient;
 	
+	var ObjectID = MongoClient.ObjectID;
+	
 	function ws_collection(name, callback) {	
 		MongoClient.connect("mongodb://127.0.0.1:27017/wildstar", function (err, db) {
 			if(err) throw err;
 			callback(db.collection(name));
 		});
 	}
-
+	
+	var guidChecker = /^[a-f0-9]{24}$/
 	var accessTokenChecker = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 
 	ws_collection.authorizedUser = function(accessToken, callback) {
@@ -29,7 +32,7 @@ module.exports = function() {
 		} else {
 			callback("Access token format error '" + accessToken + "'.");
 		}
-	}
+	};
 
 	ws_collection.permissions = {
 		user : 5,
@@ -52,7 +55,16 @@ module.exports = function() {
 			}
 		}
 		return true;
-	}
+	};
+		
+	ws_collection.isNumber = function(r) {
+		for(var i = 0; i < r.length; i++) {
+			if(typeof r[i] != "number") {
+				return false;
+			}
+		}
+		return true;
+	};
 		
 	ws_collection.isArray = function(r) {
 		for(var i = 0; i < r.length; i++) {
@@ -61,14 +73,17 @@ module.exports = function() {
 			}
 		}
 		return true;
-	}
+	};
 
 	//obj = {data(filtered), collection, callback, accessToken}
 	ws_collection.saveDescribable = function(obj) {
 		if(ws_collection.isString([obj.data.name, obj.data.description])) {			
 			ws_collection.authorizedUser(obj.accessToken, function(err, user, users) {
-				if(err) throw err;
+				if(err) throw err;				
 				if(user.permission >= ws_collection.permissions.admin) {
+					if(obj._id) {
+						obj.data._id = new ObjectID(obj._id);
+					}
 					ws_collection(obj.collection, function(collection) {
 						collection.save(obj.data, function(err) {
 							if(err) throw err;
@@ -81,6 +96,39 @@ module.exports = function() {
 			});
 		} else {
 			obj.callback("Name and description are required.");
+		}
+	};
+	
+	ws_collection.saveComment = function(obj) {
+		if(guidChecker.test(obj._id)) {
+			ws_collection.authorizedUser(obj.accessToken, function(err, user, users) {
+				if(err) throw err;
+				if(user.permission >= ws_collections.permission.user) {
+					ws_collection(obj.collection, function(collection) {
+						collection.find({
+							_id : new ObjectID(obj._id)
+						}).toArray(function(err, comment) {							
+							if(obj.indices) {
+								var ref = comment;
+								for(var i = 0; i < ref && obj.indices.length; i++) {
+									ref = ref.comments[obj.indices[i]];
+								}
+								if(ref) {
+									ref.comments.push({
+										comment : obj.comment,
+										user : user._id,
+										time : new Date().getTime(),
+										comments : []
+									});
+									collection.save(ref, function(err) {
+										if(err) throw err;
+									});
+								}
+							}
+						});
+					});
+				}
+			});
 		}
 	};
 	
