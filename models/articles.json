@@ -1,17 +1,17 @@
 [{
 	"name" : "Story 1",
 	"description" : "Some bs about a recent patch",
-	"comments : []
+	"comments" : []
 },{
 	"name" : "Story 2",
 	"description" : "Maybe some news on top guilds raid progression",
-	"comments : []
+	"comments" : []
 },{
 	"name" : "Story 3",
 	"description" : "References to our top guides and updates to them",
-	"comments : []
+	"comments" : []
 },{
 	"name" : "Story 4",
 	"description" : "Twitch and Reddit links and information",
-	"comments : []
+	"comments" : []
 }]

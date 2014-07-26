@@ -1,8 +1,8 @@
 <!doctype html>
 <html ng-app="wildstar">
 	<head>
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+		<link rel="stylesheet" href="stylesheets/bootstrap.css"/>
+		<link rel="stylesheet" href="stylesheets/bootstrap-theme.css"/>
 		<link rel="stylesheet" href="stylesheets/style.css"/>
 		<link rel="stylesheet" href="stylesheets/markdown.css"/>
 		<title>Wild Star - {{title}}</title>
@@ -56,11 +56,11 @@
 			</footer>
 		</div>
 		
-		<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-sanitize.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-route.min.js"></script>
+		<script src="javascripts/jquery.js"></script>
+		<script src="javascripts/bootstrap.js"></script>
+		<script src="javascripts/angular.js"></script>
+		<script src="javascripts/angular-sanitize.js"></script>
+		<script src="javascripts/angular-route.js"></script>
 		
 		<script type="text/javascript" src="javascripts/markdown.converter.js"></script>
         <script type="text/javascript" src="javascripts/markdown.sanitizer.js"></script>
@@ -70,18 +70,15 @@
 		<script src="javascripts/routing.js"></script>		
 		
 		<script src="partials/articles/controller.js"></script>		
-		<script src="partials/articles/details/controller.js"></script>		
 		<script src="partials/battlegrounds/controller.js"></script>		
-		<script src="partials/battlegrounds/details/controller.js"></script>		
 		<script src="partials/classes/controller.js"></script>		
-		<script src="partials/classes/details/controller.js"></script>		
 		<script src="partials/dungeons/controller.js"></script>		
-		<script src="partials/dungeons/details/controller.js"></script>		
 		<script src="partials/modals/account/controller.js"></script>		
 		<script src="partials/modals/character/controller.js"></script>		
-		<script src="partials/raids/controller.js"></script>		
-		<script src="partials/raids/details/controller.js"></script>		
+		<script src="partials/raids/controller.js"></script>			
 		<script src="partials/tradeskills/controller.js"></script>		
 		<script src="partials/tradeskills/details/controller.js"></script>		
+		<script src="directives/list/controller.js"></script>		
+		<script src="directives/edit/controller.js"></script>		
 	</body>
 </html>

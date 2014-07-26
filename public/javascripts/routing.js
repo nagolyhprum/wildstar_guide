@@ -134,11 +134,11 @@ wildstar.config(["$routeProvider", function($routeProvider) {
 		templateUrl : "partials/battlegrounds/details/view.html"
 	}).when("/raids",{
 		templateUrl : "partials/raids/view.html"
-	}).when("/raid/:raid",{
+	}).when("/raids/:raid",{
 		templateUrl : "partials/raids/details/view.html"
 	}).when("/dungeons",{
 		templateUrl : "partials/dungeons/view.html"
-	}).when("/dungeon/:dungeon",{
+	}).when("/dungeons/:dungeon",{
 		templateUrl : "partials/dungeons/details/view.html"
 	}).when("/classes", {
 		templateUrl : "partials/classes/view.html"
@@ -173,3 +173,17 @@ String.prototype.md2html = (function() {
 		return converter.makeHtml(this);
 	};	              
 }());
+
+wildstar.directive("list", function() {
+	return {
+		templateUrl : "directives/list/view.html",
+		restrict : "E"
+	};
+});
+
+wildstar.directive("edit", function() {
+	return {
+		templateUrl : "directives/edit/view.html",
+		restrict : "E"
+	};
+});

@@ -1,9 +1,9 @@
 [{
 	"name" : "Datascape",
 	"description" : "General Description",
-	"comments : []	
+	"comments" : []	
 }, {
 	"name" : "Genetic Archives",
 	"description" : "General Description",
-	"comments : []
+	"comments" : []
 }]

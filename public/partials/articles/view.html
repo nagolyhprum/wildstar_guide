@@ -1,49 +1,9 @@
 <div ng-controller="articles">
-	<div class="col-xs-9">
+	<div class="col-xs-12">
 		<div class="jumbotron">
 			<h1>Guides Wildstar</h1>
 			<p>Come learn how to not completely suck at this game with us.</p>
 		</div>		
-		<div ng-repeat-start="article in articles" ng-if="$even"></div> <!-- this is new !-->
-		<div class="col-xs-6" ng-repeat-end> <!-- this is new !-->
-			<h2>{{article.name}}</h2>
-			<p ng-bind-html="article.description.md2html()"></p> <!-- this is new !-->
-			<p><a class="btn btn-default" href="#/articles/{{$index}}">View details &raquo;</a></p>
-		</div>	
-		<div class="clearfix"></div>  <!-- this is new !-->
-		<div ng-if="isLoggedIn && permission >= 10">
-			<hr/>
-			<h2>Add Story</h2>
-			<div class="form-group">
-				<label>Name</label>
-				<input class="form-control" ng-model="article.name"/>
-			</div>
-			<div class="form-group">
-				<label>Description</label>				
-				<div id="wmd-button-bar"></div>
-				<textarea wmd class="form-control" id="wmd-input" ng-model="article.description"></textarea>
-			</div>
-			<div class="text-right">
-				<button class="btn btn-primary">Save</button>
-			</div>
-			<hr/>
-			<h2>Preview</h2>
-			<h2>{{article.name}}</h2>
-			<p ng-bind-html="article.description.md2html()"></p>
-		</div>
 	</div>
-	<div class="col-xs-3 sidebar-offcanvas">
-		<div class="list-group">
-			<a href="#" class="list-group-item active">Placeholder for a feature that will display our teamspeak server and who is on etc</a>
-			<a href="#" class="list-group-item">Link</a>
-			<a href="#" class="list-group-item">Link</a>
-			<a href="#" class="list-group-item">Link</a>
-			<a href="#" class="list-group-item">Link</a>
-			<a href="#" class="list-group-item">Link</a>
-			<a href="#" class="list-group-item">Link</a>
-			<a href="#" class="list-group-item">Link</a>
-			<a href="#" class="list-group-item">Link</a>
-			<a href="#" class="list-group-item">Link</a>
-		</div>
-	</div>
+	<list/>
 </div>

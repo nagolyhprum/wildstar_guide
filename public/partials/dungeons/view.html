@@ -2,35 +2,8 @@
 	<div class="jumbotron">
 		<div class="container">
 			<h1>Dungeons</h1>
-			<p>General Description of Dungeons</p>
-			
+			<p>General Description of Dungeons</p>			
 		</div>
 	</div>
-	<div class="clearfix" ng-repeat-start="dungeon in dungeons" ng-if="$even"></div> <!-- this is new !-->
-	<div class="col-xs-4" ng-repeat-end> <!-- this is new !-->
-		<h2>{{dungeon.name}}</h2>
-		<p ng-bind-html="dungeon.description.md2html()"></p> <!-- this is new !-->
-		<p><a class="btn btn-default" href="#/dungeon/{{$index}}" role="button">View guide &raquo;</a></p>
-	</div>
-	<div class="clearfix"></div>  <!-- this is new !-->
-	<div ng-if="isLoggedIn && permission >= 10">  <!-- this is new !-->
-		<hr/>
-		<h2>Add Dungeon</h2>
-		<div class="form-group">
-			<label>Name</label>
-			<input class="form-control" ng-model="dungeon.name"/>
-		</div>
-		<div class="form-group">
-			<label>Description</label>			
-			<div id="wmd-button-bar"></div>
-			<textarea wmd class="form-control" id="wmd-input" ng-model="dungeon.description"></textarea>
-		</div>
-		<div class="text-right">
-			<button class="btn btn-primary">Save</button>
-		</div>
-		<hr/>
-		<h2>Preview</h2>
-		<h2>{{dungeon.name}}</h2>
-		<p ng-bind-html="dungeon.description.md2html()"></p>
-	</div>	
+	<list/>
 </div>

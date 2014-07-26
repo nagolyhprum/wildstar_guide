@@ -1,0 +1,31 @@
+<div ng-controller="list">
+	<div class="col-xs-12">
+		<div class="clearfix" ng-repeat-start="object in objects" ng-if="$even"></div> <!-- this is new !-->
+		<div class="col-xs-6" ng-repeat-end> <!-- this is new !-->
+			<h2>{{object.name}}</h2>
+			<p ng-bind-html="object.description.md2html()"></p> <!-- this is new !-->
+			<p><a class="btn btn-default" href="#/{{plural}}/{{$index}}">View details &raquo;</a></p>
+		</div>	
+		<div class="clearfix"></div>  <!-- this is new !-->
+		<div ng-if="isLoggedIn && permission >= 10">
+			<hr/>
+			<h2>Add {{singular}}</h2>
+			<div class="form-group">
+				<label>Name</label>
+				<input class="form-control" ng-model="object.name"/>
+			</div>
+			<div class="form-group">
+				<label>Description</label>				
+				<div id="wmd-button-bar"></div>
+				<textarea wmd class="form-control" id="wmd-input" ng-model="object.description"></textarea>
+			</div>
+			<div class="text-right">
+				<button class="btn btn-primary" ng-click="save()">Save</button>
+			</div>
+			<hr/>
+			<h2>Preview</h2>
+			<h2>{{object.name}}</h2>
+			<p ng-bind-html="object.description.md2html()"></p>
+		</div>
+	</div>
+</div>
