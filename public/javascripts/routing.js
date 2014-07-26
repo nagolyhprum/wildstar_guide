@@ -1,6 +1,6 @@
 var timeoutTime = 1000 * 60 * 30;
 
-var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize"]).run(["$rootScope", "$http", function($rootScope, $http) {		
+var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize", "ngAnimate"]).run(["$rootScope", "$http", function($rootScope, $http) {		
 	$rootScope.set = function(attr, val) {
 		return $rootScope[attr] = val;
 	};	
@@ -191,6 +191,13 @@ wildstar.directive("edit", function() {
 wildstar.directive("comments", function() {
 	return {
 		templateUrl : "directives/comments/view.html",
+		restrict : "E"
+	};
+});
+
+wildstar.directive("teamspeak", function() {
+	return {
+		templateUrl : "directives/teamspeak/view.html",
 		restrict : "E"
 	};
 });
