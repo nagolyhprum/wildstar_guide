@@ -1,10 +1,11 @@
 wildstar.controller("edit", ["$scope", "$routeParams", "$http", function($scope, $routeParams, $http) {
-	$scope.$watch($scope.plural, function() {
-		if($scope[$scope.plural]) {
+	$scope.$watch($scope.plural, function(value) {
+		if(value) {
+			var object = value[$routeParams[$scope.singular]];
 			$scope.object = {
-				name : $scope[$scope.plural][$routeParams[$scope.singular]].name,
-				description : $scope[$scope.plural][$routeParams[$scope.singular]].description,
-				_id : $scope[$scope.plural][$routeParams[$scope.singular]]._id
+				name : object.name,
+				description : object.description,
+				_id : object._id
 			};
 		}
 	});
@@ -14,7 +15,8 @@ wildstar.controller("edit", ["$scope", "$routeParams", "$http", function($scope,
 		var request = {};
 		request.accessToken = Cookies.getItem("accessToken");
 		request[$scope.singular] = $scope.object;
-		$http.post($scope.plural + "/save", request).success(function() {
+		request.collection = $scope.plural;
+		$http.post("/save", request).success(function() {
 			$scope.loader.hide();			
 		});
 	};	

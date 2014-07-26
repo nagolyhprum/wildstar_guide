@@ -1,0 +1,12 @@
+<div ng-controller="comments">
+	<div ng-init="indices=[]"></div>
+	<blockquote ng-repeat="comment in comments" ng-include="'directives/comments/subview.html'"></blockquote>
+	<div>
+		<button ng-if="isLoggedIn && permission >= 5 && indices != my.indices" ng-click="add(indices)" class="btn btn-default">Add Comment</button>
+		<div class="form-group">
+			<input ng-if="indices == my.indices" ng-model="my.comment" class="form-control"/>
+		</div>
+		<button ng-if="indices == my.indices" ng-click="save(comments)" class="btn btn-primary">Save</button>
+		<button ng-if="indices == my.indices" ng-click="cancel()" class="btn btn-default">Cancel</button>
+	</div>
+</div>

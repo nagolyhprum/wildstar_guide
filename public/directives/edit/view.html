@@ -1,7 +1,6 @@
 <div ng-controller="edit">
 	<h2>{{object.name}}</h2>
 	<p ng-bind-html="object.description.md2html()"></p>		
-	<div ng-include="'templates/comment.html'"></div>
 	<div class="clearfix" ng-if="isLoggedIn && permission >= 10">
 		<hr/>
 		<h2>Edit</h2>

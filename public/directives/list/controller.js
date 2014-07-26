@@ -2,7 +2,10 @@ wildstar.controller("list", ["$scope", "$http", function($scope, $http) {
 	$scope.object = {};
 	if(!$scope[$scope.plural]) {
 		$scope.loader.show();
-		$http.post($scope.plural + "/list").success(function(objects) {
+		$http.post("/list", {
+			collection : $scope.plural,
+			accessToken : Cookies.getItem("accessToken")
+		}).success(function(objects) {
 			$scope.set($scope.plural, objects);
 			$scope.objects = objects;
 			$scope.loader.hide();
@@ -13,11 +16,13 @@ wildstar.controller("list", ["$scope", "$http", function($scope, $http) {
 	$scope.save = function() {	
 		$scope.loader.show();
 		$scope[$scope.plural].push($scope.object);
-		var request = {};
-		request[$scope.singular] = $scope.object;
-		request.accessToken = Cookies.getItem("accessToken");
-		$http.post($scope.plural + "/save", request).success(function(data) {
+		$http.post("/save", {
+			object : $scope.object,
+			accessToken : Cookies.getItem("accessToken"),
+			collection : $scope.plural
+		}).success(function(data) {
 			$scope.object._id = data;
+			$scope.object.comments = [];
 			$scope.loader.hide();
 			$scope.object = {};
 		});

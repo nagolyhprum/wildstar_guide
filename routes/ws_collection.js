@@ -74,9 +74,38 @@ module.exports = function() {
 		}
 		return true;
 	};
+	
+	var saveCollections = {
+		articles : "article",
+		dungeons : "dungeon",
+		battlegrounds : "battleground",
+		raids : "raid"
+	};
+	
+	ws_collection.handleSave = function(req, res) {	
+		var accessToken = req.body.accessToken, 
+			collection = req.body.collection,
+			object = req.body.object || {};
+		if(saveCollections[collection]) {			
+			ws_collection.save({
+				collection : collection,
+				data : {
+					description : object.description,
+					name : object.name,
+					_id : object._id
+				},
+				accessToken : accessToken,
+				callback : function(err, _id) {
+					if(err) throw err;
+					res.send(_id);
+				}
+			});
+		} else {
+			res.send("Invalid collection.");
+		}
+	};
 
-	//obj = {data(filtered), collection, callback, accessToken}
-	ws_collection.saveDescribable = function(obj) {
+	ws_collection.save = function(obj) {
 		if(ws_collection.isString([obj.data.name, obj.data.description])) {			
 			ws_collection.authorizedUser(obj.accessToken, function(err, user, users) {
 				if(err) throw err;				
@@ -87,7 +116,6 @@ module.exports = function() {
 					ws_collection(obj.collection, function(collection) {
 						obj.data.comments = [];
 						collection.save(obj.data, function(err, document) {
-							if(err) throw err;
 							obj.callback(err, document._id);
 						});
 					});
@@ -100,36 +128,125 @@ module.exports = function() {
 		}
 	};
 	
-	ws_collection.saveComment = function(obj) {
+	var commentCollections = {
+		articles : 1,
+		dungeons : 1,
+		battlegrounds : 1,
+		raids : 1
+	};
+	
+	ws_collection.handleComment = function(req, res) {
+		var _id = req.body._id,
+			accessToken = req.body.accessToken,
+			collection = req.body.collection,
+			indices = req.body.indices,
+			comment = req.body.comment,
+			comments = req.body.comments;
+		if(commentCollections[collection]) {
+			ws_collection.comment({
+				_id : _id,
+				accessToken : accessToken,
+				collection : collection,
+				indices : indices,
+				comment : comment,
+				comments : comments,
+				callback : function(err) {
+					res.send(err);
+				}
+			});
+		} else {
+			res.send("Invalid collection.");
+		}
+	};
+	
+	ws_collection.comment = function(obj) {
 		if(guidChecker.test(obj._id)) {
 			ws_collection.authorizedUser(obj.accessToken, function(err, user, users) {
 				if(err) throw err;
-				if(user.permission >= ws_collections.permission.user) {
+				if(user.permission >= ws_collection.permissions.user) {
 					ws_collection(obj.collection, function(collection) {
 						collection.find({
 							_id : new ObjectID(obj._id)
-						}).toArray(function(err, comment) {							
-							if(obj.indices) {
-								var ref = comment;
-								for(var i = 0; i < ref && obj.indices.length; i++) {
+						}).toArray(function(err, commentable) {							
+							if(err) throw err;
+							if(obj.indices && (commentable = commentable[0])) {
+								var ref = commentable;
+								for(var i = 0; i < obj.indices.length && ref; i++) { //limit nesting
 									ref = ref.comments[obj.indices[i]];
 								}
 								if(ref) {
-									ref.comments.push({
-										comment : obj.comment,
-										user : user._id,
-										time : new Date().getTime(),
-										comments : []
-									});
-									collection.save(ref, function(err) {
+									if(obj.comments) {
+										ref.comments.push({
+											comment : obj.comments,
+											user : user._id,
+											time : new Date().getTime(),
+											comments : []
+										});
+									} else if(obj.comment && ref.user.equals(user._id)) {
+										ref.comment = obj.comment;
+									} else {
+										obj.callback("Comment or comments required.");
+										return;
+									}
+									collection.save(commentable, function(err) {
 										if(err) throw err;
+										obj.callback("All good.");
 									});
+								} else {
+									obj.callback("Bad indexing.");
 								}
+							} else {
+								obj.callback("Indices are required.");
 							}
 						});
 					});
+				} else {
+					obj.callback("Invalid permissions.");
 				}
 			});
+		} else {
+			obj.callback("Bad guid '" + obj.guid + "'.");
+		}
+	};
+	
+	var listCollections = {
+		articles : 1,
+		dungeons : 1,
+		battlegrounds : 1,
+		raids : 1
+	};
+	
+	ws_collection.list = function(req, res) {	
+		var collection = req.body.collection,
+			accessToken = req.body.accessToken;
+		if(listCollections[collection]) {
+			ws_collection(collection, function(objects) {
+				objects.find({}).toArray(function(err, objects) {	
+					if(err) throw err;
+					if(accessToken && commentCollections[collection]) {
+						ws_collection.authorizedUser(accessToken, function(err, user, users) {
+							if(user) {
+								for(var i = 0; i < objects.length; i++) {
+									ws_collection.mark(objects[i].comments, user._id);
+								}
+							}
+							res.send(objects);
+						});
+					} else {
+						res.send(objects);
+					}
+				});
+			});
+		}
+	};
+	
+	ws_collection.mark = function(comments, user) {
+		if(comments) {
+			for(var i = 0; i < comments.length; i++) {
+				var comment = comments[i];
+				comment.editable = user.equals(comment.user);
+				ws_collection.mark(comment.comments, user);
+			}
 		}
 	};
 	

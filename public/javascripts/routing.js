@@ -153,12 +153,6 @@ wildstar.config(["$routeProvider", function($routeProvider) {
 	});
 }]);
 
-wildstar.directive("wmd", function() {
-	return function($scope, $element, $attributes) {	
-		new Markdown.Editor(Markdown.getSanitizingConverter()).run();
-	};
-});	
-
 Array.prototype.findByName = function(name) {
 	for(var i = 0; i < this.length; i++) {
 		if(this[i].name == name) {
@@ -174,6 +168,12 @@ String.prototype.md2html = (function() {
 	};	              
 }());
 
+wildstar.directive("wmd", function() {
+	return function($scope, $element, $attributes) {	
+		new Markdown.Editor(Markdown.getSanitizingConverter()).run();
+	};
+});	
+
 wildstar.directive("list", function() {
 	return {
 		templateUrl : "directives/list/view.html",
@@ -184,6 +184,13 @@ wildstar.directive("list", function() {
 wildstar.directive("edit", function() {
 	return {
 		templateUrl : "directives/edit/view.html",
+		restrict : "E"
+	};
+});
+
+wildstar.directive("comments", function() {
+	return {
+		templateUrl : "directives/comments/view.html",
 		restrict : "E"
 	};
 });
