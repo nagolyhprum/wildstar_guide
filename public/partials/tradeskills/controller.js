@@ -7,9 +7,13 @@ wildstar.controller("tradeskills", ["$scope", "$http", function($scope, $http) {
 	};
 	if(!$scope.professions) {
 		$scope.loader.show();
-		$http.post("professions/list").success(function(professions) {
+		$http.post("list", {
+			collection : "professions"
+		}).success(function(professions) {
 			$scope.loader.show();
-			$http.post("tradeskills/list").success(function(tradeskills) {
+			$http.post("list", {
+				collection : "tradeskills"
+			}).success(function(tradeskills) {
 				$scope.set("tradeskills", tradeskills);
 				$scope.loader.hide();
 			});

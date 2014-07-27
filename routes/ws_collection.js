@@ -213,7 +213,13 @@ module.exports = function() {
 		articles : 1,
 		dungeons : 1,
 		battlegrounds : 1,
-		raids : 1
+		raids : 1,
+		tradeskills : 1,
+		classes : 1,
+		factions : 1,
+		races : 1,
+		paths : 1,
+		professions : 1
 	};
 	
 	ws_collection.list = function(req, res) {	
@@ -237,6 +243,8 @@ module.exports = function() {
 					}
 				});
 			});
+		} else {
+			res.send("Invalid collection.");
 		}
 	};
 	

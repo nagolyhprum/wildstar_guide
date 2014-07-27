@@ -2,37 +2,49 @@ wildstar.controller("character", ["$scope", "$http", function ($scope, $http) {
 	$scope.character = {};
 	if(!$scope.factions) {
 		$scope.loader.show();
-		$http.post("factions/list").success(function(factions) {
+		$http.post("list", {
+			collection : "factions"
+		}).success(function(factions) {
 			$scope.set("factions", factions);
 			$scope.loader.hide();
 		});
 	}
 	if(!$scope.races) {
 		$scope.loader.show();
-		$http.post("races/list").success(function(races) {
+		$http.post("list", {
+			collection : "races"
+		}).success(function(races) {
 			$scope.set("races", races);
 			$scope.loader.hide();
 		});
 	}	
 	if(!$scope.paths) {
 		$scope.loader.show();
-		$http.post("paths/list").success(function(paths) {
+		$http.post("list", {
+			collection : "paths"
+		}).success(function(paths) {
 			$scope.set("paths", paths);
 			$scope.loader.hide();
 		});	
 	}
 	if(!$scope.classes) {
 		$scope.loader.show();
-		$http.post("classes/list").success(function(classes) {
+		$http.post("list", {
+			collection : "classes"
+		}).success(function(classes) {
 			$scope.set("classes", classes);
 			$scope.loader.hide();
 		});	
 	}
 	if(!$scope.professions) {
 		$scope.loader.show();
-		$http.post("professions/list").success(function(professions) {
+		$http.post("list", {
+			collection : "professions"
+		}).success(function(professions) {
 			$scope.loader.show();
-			$http.post("tradeskills/list").success(function(tradeskills) {
+			$http.post("list", {
+				collection : "tradeskills"
+			}).success(function(tradeskills) {
 				$scope.set("tradeskills", tradeskills);
 				$scope.loader.hide();
 			});
