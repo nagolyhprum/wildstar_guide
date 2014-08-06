@@ -10,7 +10,7 @@
 	<button ng-if="my.editing == comment" ng-click="save()" class="btn btn-primary">Save</button>
 	<button ng-if="my.editing == comment" ng-click="cancel()" class="btn btn-default">Cancel</button>
 </p>
-<p>{{comment.time}}</p>
+<p>{{comment.time | date}}</p>
 <blockquote ng-repeat="comment in comment.comments" ng-include="'directives/comments/subview.html'"></blockquote>
 <div>
 	<button ng-if="isLoggedIn && permission >= 5 && indices != my.indices" ng-click="add(indices)" class="btn btn-default">Add Comment</button>

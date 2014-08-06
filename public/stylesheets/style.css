@@ -117,3 +117,7 @@ a {
 .css-class-remove.css-class-remove-active {
 	right : -202px;
 }
+
+.margin {
+	margin : 20px;
+}

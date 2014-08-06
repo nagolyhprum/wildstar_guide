@@ -4,6 +4,7 @@ var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize", "ngAnimate"]
 	$rootScope.set = function(attr, val) {
 		return $rootScope[attr] = val;
 	};	
+	$rootScope.minPermissions = 10;
 	$rootScope.md = function(obj) {
 		$http.get("md_to_html", {
 			params : {
@@ -57,13 +58,13 @@ var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize", "ngAnimate"]
 		active : false,
 		visible : true
 	}, {
-		title : "Arenas & Battlegrounds",
-		url : "battlegrounds",
+		title : "Classes",
+		url : "classes",
 		active : false,
 		visible : true
 	}, {
-		title : "Classes",
-		url : "classes",
+		title : "Arenas",
+		url : "arenas",
 		active : false,
 		visible : true
 	}, {
@@ -74,6 +75,11 @@ var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize", "ngAnimate"]
 	}, {
 		title : "Dungeons",				
 		url : "dungeons",
+		active : false,
+		visible : true
+	}, {
+		title : "Forums",
+		url : "forums",
 		active : false,
 		visible : true
 	}];
@@ -128,10 +134,10 @@ wildstar.config(["$routeProvider", function($routeProvider) {
 		templateUrl : "partials/tradeskills/view.html"
 	}).when("/tradeskills/:tradeskill/:profession", {
 		templateUrl : "partials/tradeskills/details/view.html"
-	}).when("/battlegrounds", {
-		templateUrl : "partials/battlegrounds/view.html"
-	}).when("/battlegrounds/:battleground", {
-		templateUrl : "partials/battlegrounds/details/view.html"
+	}).when("/arenas", {
+		templateUrl : "partials/arenas/view.html"
+	}).when("/arenas/:battleground", {
+		templateUrl : "partials/arenas/details/view.html"
 	}).when("/raids",{
 		templateUrl : "partials/raids/view.html"
 	}).when("/raids/:raid",{
@@ -148,6 +154,10 @@ wildstar.config(["$routeProvider", function($routeProvider) {
 		templateUrl : "partials/articles/view.html"
 	}).when("/articles/:article",{
 		templateUrl : "partials/articles/details/view.html"
+	}).when("/forums",{
+		templateUrl : "partials/forums/view.html"
+	}).when("/forums/:forum",{
+		templateUrl : "partials/forums/details/view.html"
 	}).otherwise({
 		redirectTo : "/articles"
 	});
@@ -195,9 +205,12 @@ wildstar.directive("comments", function() {
 	};
 });
 
-wildstar.directive("teamspeak", function() {
-	return {
-		templateUrl : "directives/teamspeak/view.html",
-		restrict : "E"
+wildstar.controller("teamspeak", ["$scope", function($scope) {
+	$scope.toggle = function() {
+		if($scope.state) {
+			$scope.state = "";
+		} else {
+			$scope.state = "css-class";
+		}
 	};
-});
+}]);

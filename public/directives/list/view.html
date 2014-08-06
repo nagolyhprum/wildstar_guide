@@ -7,7 +7,7 @@
 			<p><a class="btn btn-default" href="#/{{plural}}/{{$index}}">View details &raquo;</a></p>
 		</div>	
 		<div class="clearfix"></div>  <!-- this is new !-->
-		<div ng-if="isLoggedIn && permission >= 10">
+		<div ng-if="permission >= minPermissions">
 			<hr/>
 			<h2>Add {{singular}}</h2>
 			<div class="form-group">

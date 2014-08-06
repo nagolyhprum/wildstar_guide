@@ -5,8 +5,10 @@ wildstar.controller("edit", ["$scope", "$routeParams", "$http", function($scope,
 			$scope.object = {
 				name : object.name,
 				description : object.description,
-				_id : object._id
+				_id : object._id,
+				comments : object.comments
 			};
+			$scope.editable = object.editable;
 		}
 	});
 	$scope.save = function() {	
@@ -14,7 +16,7 @@ wildstar.controller("edit", ["$scope", "$routeParams", "$http", function($scope,
 		$scope[$scope.plural][$routeParams[$scope.singular]] = $scope.object;
 		var request = {};
 		request.accessToken = Cookies.getItem("accessToken");
-		request[$scope.singular] = $scope.object;
+		request.object = $scope.object;
 		request.collection = $scope.plural;
 		$http.post("/save", request).success(function() {
 			$scope.loader.hide();			

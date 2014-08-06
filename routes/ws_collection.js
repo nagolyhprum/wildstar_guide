@@ -79,7 +79,8 @@ module.exports = function() {
 		articles : "article",
 		dungeons : "dungeon",
 		battlegrounds : "battleground",
-		raids : "raid"
+		raids : "raid",
+		forums : "forum"
 	};
 	
 	ws_collection.handleSave = function(req, res) {	
@@ -92,7 +93,8 @@ module.exports = function() {
 				data : {
 					description : object.description,
 					name : object.name,
-					_id : object._id
+					_id : object._id,
+					comments : object.comments			
 				},
 				accessToken : accessToken,
 				callback : function(err, _id) {
@@ -109,14 +111,32 @@ module.exports = function() {
 		if(ws_collection.isString([obj.data.name, obj.data.description])) {			
 			ws_collection.authorizedUser(obj.accessToken, function(err, user, users) {
 				if(err) throw err;				
+				if(obj.data._id) {
+					obj.data._id = new ObjectID(obj.data._id);
+				}
+				obj.data.time = new Date();
 				if(user.permission >= ws_collection.permissions.admin) {
-					if(obj.data._id) {
-						obj.data._id = new ObjectID(obj.data._id);
-					}
 					ws_collection(obj.collection, function(collection) {
-						obj.data.comments = [];
+						obj.data.comments = obj.data.comments || [];
 						collection.save(obj.data, function(err, document) {
 							obj.callback(err, document._id);
+						});
+					});
+				} else if(user.permission >= ws_collection.permissions.user && obj.collection == "forums") {					
+					ws_collection(obj.collection, function(collection) {
+						obj.data.comments = obj.data.comments || [];
+						collection.findAndModify({
+							_id : obj.data._id,
+							user : user._id
+						}, [], obj.data, {}, function(err, object) {
+							if(err) throw err;
+							if(!object) {
+								delete obj.data._id;
+								collection.insert(obj.data, {}, function(err, document) {
+									throw new err;
+									obj.callback(err, document._id);
+								});
+							}
 						});
 					});
 				} else {
@@ -179,7 +199,7 @@ module.exports = function() {
 										ref.comments.push({
 											comment : obj.comments,
 											user : user._id,
-											time : new Date().getTime(),
+											time : new Date(),
 											comments : []
 										});
 									} else if(obj.comment && ref.user.equals(user._id)) {
@@ -210,9 +230,10 @@ module.exports = function() {
 	};
 	
 	var listCollections = {
+		arenas : 1,
 		articles : 1,
 		dungeons : 1,
-		battlegrounds : 1,
+		forums : 1,
 		raids : 1,
 		tradeskills : 1,
 		classes : 1,
@@ -233,6 +254,9 @@ module.exports = function() {
 						ws_collection.authorizedUser(accessToken, function(err, user, users) {
 							if(user) {
 								for(var i = 0; i < objects.length; i++) {
+									if(user.permission >= ws_collection.permissions.user || user._id.equals(objects[i])) {
+										objects[i].editable = true;
+									}
 									ws_collection.mark(objects[i].comments, user._id);
 								}
 							}

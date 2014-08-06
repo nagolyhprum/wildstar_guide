@@ -1,7 +1,7 @@
 <div ng-controller="edit">
 	<h2>{{object.name}}</h2>
 	<p ng-bind-html="object.description.md2html()"></p>		
-	<div class="clearfix" ng-if="isLoggedIn && permission >= 10">
+	<div class="clearfix" ng-if="editable">
 		<hr/>
 		<h2>Edit</h2>
 		<div class="form-group">

@@ -35,7 +35,7 @@ wildstar.controller("comments", ["$scope", "$routeParams", "$http", function($sc
 			} else {
 				comments.push({
 					comment : $scope.my.comment,
-					time : 0,
+					time : new Date(),
 					comments : [],
 					editable : true
 				});
