@@ -1,9 +1,10 @@
 wildstar.controller("account", ["$scope", "$http", function($scope, $http) {
-	$scope.login = function() {
+	$scope.login = function(isSignup) {
 		$scope.loader.show();
 		$http.post("users/login", {
 			username : $scope.username,
-			password : $scope.password
+			password : $scope.password,
+			isSignup : isSignup
 		}).success(function(data) {		
 			if(!data.errors) {
 				//TODO : CONFIRM ACCOUNT CREATION / LOG IN
@@ -14,6 +15,8 @@ wildstar.controller("account", ["$scope", "$http", function($scope, $http) {
 				Cookies.setItem("permission", data.permission, (1000 * 60 * 30));				
 				$scope.loadCharacters();
 				$("#account").modal("hide");
+				$scope.username = "";
+				$scope.password = "";
 			} else {				
 				$scope.errors = data.errors;
 				$("[ng-model='username']").tooltip("destroy").tooltip({

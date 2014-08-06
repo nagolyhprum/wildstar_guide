@@ -110,7 +110,7 @@ module.exports = function(ws_collection) {
 			errors = {
 			username:[],
 			password:[]			
-		}, error, hasError = false;
+		}, error, hasError = false, isSignup = req.body.isSignup;
 		if(!username) {
 			errors.username.push("Username is required.");
 			hasError = true;
@@ -156,7 +156,7 @@ module.exports = function(ws_collection) {
 							errors.password.push("Wrong password.");
 							res.send({errors:errors});												
 						}
-					} else { 
+					} else if(isSignup) {
 						var guid = GUID.create().value;
 						users.save({
 							username : username,
@@ -169,7 +169,9 @@ module.exports = function(ws_collection) {
 							if(err) throw err;
 							res.send({permission:ws_collection.permissions.user,accessToken:guid});	
 						});
-					}
+					} else {
+						res.send({errors:{username:["Invalid Username or Password."],password:["Invalid Username or Password."]}});
+					}				
 				});
 			});
 		} else {

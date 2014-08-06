@@ -41,7 +41,6 @@ var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize", "ngAnimate"]
 		}).success(function(characters) {
 			if(characters.error) {
 				$rootScope.isLoggedIn = false;
-				console.log(characters.error);
 			} else {
 				$rootScope.characters = characters;
 			}
