@@ -1,4 +1,4 @@
-wildstar.controller("comments", ["$scope", "$routeParams", "$http", function($scope, $routeParams, $http) {	
+wildstar.controller("comments", ["$scope", "$routeParams", "$http", "$cookies", function($scope, $routeParams, $http, $cookies) {	
 	$scope.$watch($scope.plural, function(value) {
 		if(value) {
 			$scope.comments = value[$routeParams[$scope.singular]].comments;
@@ -22,7 +22,7 @@ wildstar.controller("comments", ["$scope", "$routeParams", "$http", function($sc
 			indices : $scope.my.indices,
 			collection : $scope.plural,
 			_id : $scope[$scope.plural][$routeParams[$scope.singular]]._id,
-			accessToken : Cookies.getItem("accessToken")
+			accessToken : $cookies.accessToken
 		};
 		if($scope.my.editing) {
 			request.comment = $scope.my.comment;

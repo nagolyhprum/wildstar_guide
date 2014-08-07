@@ -121,3 +121,18 @@ a {
 .margin {
 	margin : 20px;
 }
+
+#alerts {
+	border : 1px solid black;
+	overflow : hidden;
+	position : fixed;
+	left : 20px;
+	bottom : 20px;
+	width : 200px;
+	height : 174px;
+	opacity : 0.4;
+}
+
+#alerts:hover {
+	opacity : 1;
+}

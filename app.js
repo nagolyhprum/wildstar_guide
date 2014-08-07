@@ -12,6 +12,8 @@ var account = require("./routes/account.js")(ws_collection);
 app.post("/save", ws_collection.handleSave);
 app.post("/comment", ws_collection.handleComment);
 app.post("/list", ws_collection.list);
+app.post("/delete", ws_collection.handleDelete);
+app.post("/alerts", ws_collection.alerts);
 
 app.post("/users/login", account.login);
 app.post("/users/characters", account.characters);

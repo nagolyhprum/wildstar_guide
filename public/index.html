@@ -37,24 +37,13 @@
 								<li ng-if="isLoggedIn"><a data-toggle="modal" data-target="#character">{{characterindex != -1 ? "Edit" : "Create"}} Character</a></li>				
 								<li ng-if="isLoggedIn && characterindex != -1"><a data-toggle="modal" data-target="#remove">Remove Character</a></li>				
 								-->
-								<li ng-if="isLoggedIn"><a ng-click="logout()">Log out</a></li>
+								<li ng-if="permission"><a ng-click="logout()">Log out</a></li>
 								
-								<li ng-if="!isLoggedIn"><a data-toggle="modal" data-target="#account">Log In / Sign Up</a></li>
+								<li ng-if="!permission"><a data-toggle="modal" data-target="#account">Log In / Sign Up</a></li>
 							</ul>
 						</li>
 					</ul>		
 				</div>		
-			</div>
-		</div>
-		<div ng-include="'partials/modals/character/view.html'"></div>
-		<div ng-include="'partials/modals/account/view.html'"></div>
-				
-		<div ng-class="state" ng-controller="teamspeak">
-			<div class="icon" ng-click="toggle()">
-				<img src="images/icons/teamspeak.png"/>
-			</div>
-			<div class="margin">	
-				<script type="text/javascript" src="https://view.light-speed.com/teamspeak3.php?IP=yara.teamspeak3.com&PORT=6522&QUERY=10016&UID=9250&display=block&font=11px&background=transparent&server_info_background=transparent&server_info_text=%23000000&server_name_background=transparent&server_name_text=%23000000&info_background=transparent&channel_background=transparent&channel_text=%23000000&username_background=transparent&username_text=%23000000"></script>
 			</div>
 		</div>
 
@@ -67,18 +56,35 @@
 			</footer>
 		</div>
 		
+		<div ng-include="'partials/modals/character/view.html'"></div>
+		<div ng-include="'partials/modals/account/view.html'"></div>
+		<div class="list-group" id="alerts" ng-if="alerts.length">
+			<a href="{{alert.link}}" class="list-group-item" ng-repeat="alert in alerts">
+				<p class="list-group-item-text">{{alert.message}}</p>
+			</a>
+		</div>
+				
+		<div ng-class="state" ng-controller="teamspeak">
+			<div class="icon" ng-click="toggle()">
+				<img src="images/icons/teamspeak.png"/>
+			</div>
+			<div class="margin">	
+				<script type="text/javascript" src="https://view.light-speed.com/teamspeak3.php?IP=yara.teamspeak3.com&PORT=6522&QUERY=10016&UID=9250&display=block&font=11px&background=transparent&server_info_background=transparent&server_info_text=%23000000&server_name_background=transparent&server_name_text=%23000000&info_background=transparent&channel_background=transparent&channel_text=%23000000&username_background=transparent&username_text=%23000000"></script>
+			</div>
+		</div>
+		
 		<script src="javascripts/jquery.js"></script>
 		<script src="javascripts/bootstrap.js"></script>
 		<script src="javascripts/angular.js"></script>
 		<script src="javascripts/angular-sanitize.js"></script>
 		<script src="javascripts/angular-route.js"></script>
 		<script src="javascripts/angular-animate.js"></script>
+		<script src="javascripts/angular-cookies.js"></script>
 		
 		<script type="text/javascript" src="javascripts/markdown.converter.js"></script>
         <script type="text/javascript" src="javascripts/markdown.sanitizer.js"></script>
         <script type="text/javascript" src="javascripts/markdown.editor.js"></script>
 		
-		<script src="javascripts/cookies.js"></script>		
 		<script src="javascripts/routing.js"></script>		
 		
 		<script src="partials/articles/controller.js"></script>		

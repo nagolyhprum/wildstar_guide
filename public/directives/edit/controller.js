@@ -1,4 +1,4 @@
-wildstar.controller("edit", ["$scope", "$routeParams", "$http", function($scope, $routeParams, $http) {
+wildstar.controller("edit", ["$scope", "$routeParams", "$http", "$location", "$cookies", function($scope, $routeParams, $http, $location, $cookies) {
 	$scope.$watch($scope.plural, function(value) {
 		if(value) {
 			var object = value[$routeParams[$scope.singular]];
@@ -9,17 +9,32 @@ wildstar.controller("edit", ["$scope", "$routeParams", "$http", function($scope,
 				comments : object.comments
 			};
 			$scope.editable = object.editable;
+			$scope.valid = true;
 		}
 	});
 	$scope.save = function() {	
 		$scope.loader.show();
 		$scope[$scope.plural][$routeParams[$scope.singular]] = $scope.object;
 		var request = {};
-		request.accessToken = Cookies.getItem("accessToken");
+		request.accessToken = $cookies.accessToken;
 		request.object = $scope.object;
 		request.collection = $scope.plural;
 		$http.post("/save", request).success(function() {
 			$scope.loader.hide();			
+		}).error(function() {
+			$scope.loader.hide();			
 		});
+	};	
+	$scope.delete = function() {
+		$scope.loader.show();					
+		$scope[$scope.plural].splice($routeParams[$scope.singular], 1);
+		var request = {};
+		request.accessToken = $cookies.accessToken;
+		request._id = $scope.object._id;
+		request.collection = $scope.plural;		
+		$http.post("/delete", request).success(function() {			
+			$scope.loader.hide();	
+		});		
+		$scope.valid = false;
 	};	
 }]);

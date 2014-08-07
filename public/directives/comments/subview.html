@@ -13,7 +13,7 @@
 <p>{{comment.time | date}}</p>
 <blockquote ng-repeat="comment in comment.comments" ng-include="'directives/comments/subview.html'"></blockquote>
 <div>
-	<button ng-if="isLoggedIn && permission >= 5 && indices != my.indices" ng-click="add(indices)" class="btn btn-default">Add Comment</button>
+	<button ng-if="permission >= 5 && indices != my.indices" ng-click="add(indices)" class="btn btn-default">Add Comment</button>
 	<div ng-if="!my.editing && indices == my.indices" class="form-group">
 		<input ng-model="my.comment" class="form-control"/>
 	</div>

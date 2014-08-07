@@ -1,6 +1,9 @@
 <div ng-controller="list">
+	<div class="col-xs-4 col-xs-offset-8">
+		<input class="form-control" placeholder="Search..." ng-model="query"/>
+	</div>
 	<div class="col-xs-12">
-		<div class="clearfix" ng-repeat-start="object in objects" ng-if="$even"></div> <!-- this is new !-->
+		<div class="clearfix" ng-repeat-start="object in objects | filter : query" ng-if="$even"></div> <!-- this is new !-->
 		<div class="col-xs-6" ng-repeat-end> <!-- this is new !-->
 			<h2>{{object.name}}</h2>
 			<p ng-bind-html="object.description.md2html()"></p> <!-- this is new !-->

@@ -114,12 +114,12 @@ module.exports = function() {
 				if(obj.data._id) {
 					obj.data._id = new ObjectID(obj.data._id);
 				}
-				obj.data.time = new Date();
+				obj.data.time = obj.data.time || new Date();
 				if(user.permission >= ws_collection.permissions.admin) {
 					ws_collection(obj.collection, function(collection) {
 						obj.data.comments = obj.data.comments || [];
 						collection.save(obj.data, function(err, document) {
-							obj.callback(err, document._id);
+							obj.callback(err, document._id.toString());
 						});
 					});
 				} else if(user.permission >= ws_collection.permissions.user && obj.collection == "forums") {					
@@ -132,9 +132,10 @@ module.exports = function() {
 							if(err) throw err;
 							if(!object) {
 								delete obj.data._id;
+								obj.data.user = user._id;
 								collection.insert(obj.data, {}, function(err, document) {
 									throw new err;
-									obj.callback(err, document._id);
+									obj.callback(err, document._id.toString());
 								});
 							}
 						});
@@ -151,6 +152,7 @@ module.exports = function() {
 	var commentCollections = {
 		articles : 1,
 		dungeons : 1,
+		forums : 1,
 		battlegrounds : 1,
 		raids : 1
 	};
@@ -202,6 +204,13 @@ module.exports = function() {
 											time : new Date(),
 											comments : []
 										});
+										if(ref.user) {
+											ws_collection.alert({
+												user : ref.user, 
+												message : "A user has commented on your " + (ref == commentable ? "forum" : "comment") + ".",
+												link : "#/" + obj.collection + "/" + commentable._id
+											});
+										}
 									} else if(obj.comment && ref.user.equals(user._id)) {
 										ref.comment = obj.comment;
 									} else {
@@ -276,10 +285,79 @@ module.exports = function() {
 		if(comments) {
 			for(var i = 0; i < comments.length; i++) {
 				var comment = comments[i];
-				comment.editable = user.equals(comment.user);
+				comment.editable = user.equals(comment.user) || (user.permission >= ws_collection.permissions.admin);
 				ws_collection.mark(comment.comments, user);
 			}
 		}
+	};
+	
+	
+	var deleteCollections = {
+		articles : "article",
+		dungeons : "dungeon",
+		battlegrounds : "battleground",
+		raids : "raid",
+		forums : "forum"
+	};
+	
+	ws_collection.handleDelete = function(req, res) {	
+		var accessToken = req.body.accessToken, 
+			collection = req.body.collection,
+			_id = req.body._id;
+		if(deleteCollections[collection]) {			
+			ws_collection.delete({
+				collection : collection,
+				_id : _id,
+				accessToken : accessToken,
+				callback : function(err, _id) {
+					if(err) throw err;
+					res.send("");
+				}
+			});
+		} else {
+			res.send("Invalid collection.");
+		}
+	};
+	
+	ws_collection.delete = function(args) {		
+		ws_collection.authorizedUser(args.accessToken, function(err, user, users) {
+			var query = {
+				_id : new ObjectID(args._id)
+			};
+			if(user.permission < ws_collection.permissions.admin) {
+				query.user = user._id;
+			}
+			ws_collection(args.collection, function(collection) {
+				collection.findAndModify(query, [], {},{remove:true}, function(err) {
+					if(err) throw new err;
+					args.callback("");
+				});
+			});
+		});
+	};
+	
+	ws_collection.alert = function(args) {
+		ws_collection("alerts", function(collection) {
+			collection.save(args, function(err) {
+				if(err) throw err;
+			});
+		});
+	};
+	
+	ws_collection.alerts = function(req, res) {
+		var accessToken = req.body.accessToken;
+		ws_collection.authorizedUser(accessToken, function(err, user, users) {
+			if(user) {
+				ws_collection("alerts", function(collection) {
+					collection.find({user : user._id}).toArray(function(err, alerts) {
+						if(err) throw err;
+						res.send(alerts);
+					});
+				});				
+			} else {
+				throw "Invalid permission.";
+			}
+		});
 	};
 	
 	return ws_collection;

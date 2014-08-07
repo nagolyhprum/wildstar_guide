@@ -1,4 +1,4 @@
-wildstar.controller("account", ["$scope", "$http", function($scope, $http) {
+wildstar.controller("account", ["$scope", "$http", "$cookies", function($scope, $http, $cookies) {
 	$scope.login = function(isSignup) {
 		$scope.loader.show();
 		$http.post("users/login", {
@@ -9,11 +9,11 @@ wildstar.controller("account", ["$scope", "$http", function($scope, $http) {
 			if(!data.errors) {
 				//TODO : CONFIRM ACCOUNT CREATION / LOG IN
 				$scope.setTimeout();
-				$scope.set("isLoggedIn", true);	
 				$scope.set("permission", data.permission);
-				Cookies.setItem("accessToken", data.accessToken, (1000 * 60 * 30));
-				Cookies.setItem("permission", data.permission, (1000 * 60 * 30));				
+				$cookies.accessToken = data.accessToken;
+				$cookies.permission = data.permission;				
 				$scope.loadCharacters();
+				$scope.getAlerts();
 				$("#account").modal("hide");
 				$scope.username = "";
 				$scope.password = "";

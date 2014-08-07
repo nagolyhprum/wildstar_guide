@@ -1,19 +1,19 @@
 var timeoutTime = 1000 * 60 * 30;
 
-var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize", "ngAnimate"]).run(["$rootScope", "$http", function($rootScope, $http) {		
+var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize", "ngAnimate", "ngCookies"]).run(["$rootScope", "$http", "$cookies", "$timeout", function($rootScope, $http, $cookies, $timeout) {		
+	$rootScope.getAlerts = function() {
+		$http.post("/alerts", {
+			accessToken : $cookies.accessToken
+		}).success(function(alerts) {
+			$rootScope.alerts = alerts;
+			$timeout($rootScope.getAlerts, 1000 * 60);
+		});
+	};
+		
 	$rootScope.set = function(attr, val) {
 		return $rootScope[attr] = val;
 	};	
 	$rootScope.minPermissions = 10;
-	$rootScope.md = function(obj) {
-		$http.get("md_to_html", {
-			params : {
-				md : obj.description
-			}
-		}).success(function(html) {
-			obj.html_description = html;
-		});
-	};
 	$rootScope.loader = {
 		show : function() {
 			this.waiting++;
@@ -24,9 +24,8 @@ var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize", "ngAnimate"]
 		hide : function() {
 			this.waiting--;
 			if(this.waiting <= 0) {
-				setTimeout(function() {
-					$("#loader").hide();
-				}, 100);
+				$("#loader").hide();		
+				window.scrollTo(0, 0);
 			}
 		},
 		waiting : 0
@@ -37,20 +36,16 @@ var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize", "ngAnimate"]
 	$rootScope.loadCharacters = function() {
 		$rootScope.loader.show();
 		$http.post("users/characters", {
-			accessToken : Cookies.getItem("accessToken")
+			accessToken : $cookies.accessToken
 		}).success(function(characters) {
-			if(characters.error) {
-				$rootScope.isLoggedIn = false;
-			} else {
+			if(!characters.error) {
 				$rootScope.characters = characters;
+			} else {
+				$rootScope.logout();
 			}
 			$rootScope.loader.hide();
 		});
 	};
-	if($rootScope.isLoggedIn = Cookies.hasItem("accessToken")) {
-		$rootScope.permission = Cookies.getItem("permission")
-		$rootScope.loadCharacters();
-	}
 	$rootScope.navbar = [{
 		title : "Tradeskills",
 		url : "tradeskills",
@@ -95,7 +90,7 @@ var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize", "ngAnimate"]
 				interval = setInterval(function() {
 					$rootScope.expires--;
 					if($rootScope.expires <= 0) {
-						$rootScope.isLoggedIn = false;
+						$rootScope.logout();
 						$("#timeout").modal("hide");
 					}
 					$rootScope.$apply();
@@ -105,26 +100,34 @@ var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize", "ngAnimate"]
 		};
 	}());
 	$rootScope.logout = function() {
-		$rootScope.isLoggedIn = false;
-		Cookies.removeItem("accessToken");
+		$rootScope.permission = $cookies.accessToken = $cookies.permission = "";
 	};
 	$rootScope.navbar.activate = function(title) {
 		for(var i = 0; i < this.length; i++) {
 			this[i].active = this[i].title == title;
 		}
 	};
-	$rootScope.refresh = function() {			
-		$http.post("users/refresh", {accessToken:Cookies.getItem("accessToken")});			
-		$rootScope.setTimeout();
+	$rootScope.refresh = function(callback) {			
+		$http.post("users/refresh", {accessToken:$cookies.accessToken}).success(function(response) {
+			if(!response.error) {
+				callback && callback();
+				$rootScope.setTimeout();
+			}
+		});			
 	};
 	$rootScope.$on("$locationChangeStart", function (event) {
 		$rootScope.loader.show();
-		$rootScope.refresh();		
-		window.scrollTo(0, 0);
+		$rootScope.refresh();
 	});
 	$rootScope.$on("$locationChangeSuccess", function (event) {
 		$rootScope.loader.hide();
 	});
+	if($rootScope.permission = $cookies.permission) {
+		$rootScope.refresh(function() {
+			$rootScope.loadCharacters();
+			$rootScope.getAlerts();
+		});
+	}
 	//HIDE / SHOW NAVBAR ITEMS
 }]);
 
