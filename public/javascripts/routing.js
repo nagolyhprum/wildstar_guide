@@ -107,11 +107,13 @@ var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize", "ngAnimate",
 			this[i].active = this[i].title == title;
 		}
 	};
-	$rootScope.refresh = function(callback) {			
+	$rootScope.refresh = function(success, error) {			
 		$http.post("users/refresh", {accessToken:$cookies.accessToken}).success(function(response) {
 			if(!response.error) {
-				callback && callback();
+				success && success();
 				$rootScope.setTimeout();
+			} else {
+				error && error(response.error);
 			}
 		});			
 	};
@@ -126,6 +128,8 @@ var wildstar = angular.module("wildstar", ["ngRoute", "ngSanitize", "ngAnimate",
 		$rootScope.refresh(function() {
 			$rootScope.loadCharacters();
 			$rootScope.getAlerts();
+		}, function() {
+			$rootScope.permission = 0;
 		});
 	}
 	//HIDE / SHOW NAVBAR ITEMS

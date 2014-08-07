@@ -93,8 +93,7 @@ module.exports = function() {
 				data : {
 					description : object.description,
 					name : object.name,
-					_id : object._id,
-					comments : object.comments			
+					_id : object._id		
 				},
 				accessToken : accessToken,
 				callback : function(err, _id) {
@@ -114,29 +113,42 @@ module.exports = function() {
 				if(obj.data._id) {
 					obj.data._id = new ObjectID(obj.data._id);
 				}
-				obj.data.time = obj.data.time || new Date();
 				if(user.permission >= ws_collection.permissions.admin) {
-					ws_collection(obj.collection, function(collection) {
-						obj.data.comments = obj.data.comments || [];
-						collection.save(obj.data, function(err, document) {
-							obj.callback(err, document._id.toString());
+					ws_collection(obj.collection, function(collection) {						
+						collection.update({_id:obj.data._id}, {$set:obj.data}, {}, function(err, document) {
+							if(err) throw err;
+							if(!document) {
+								obj.data.time = new Date();
+								obj.data.comments = [];
+								if(obj.collection == "forums") {
+									obj.data.user = user._id;
+								}
+								collection.insert(obj.data, {}, function(err, document) {
+									if(err) throw err;
+									obj.callback(err, document[0]._id.toString());
+								});
+							} else {
+								obj.callback(err, obj.data._id);
+							}
 						});
 					});
 				} else if(user.permission >= ws_collection.permissions.user && obj.collection == "forums") {					
 					ws_collection(obj.collection, function(collection) {
-						obj.data.comments = obj.data.comments || [];
-						collection.findAndModify({
+						collection.update({
 							_id : obj.data._id,
 							user : user._id
-						}, [], obj.data, {}, function(err, object) {
+						}, {$set:obj.data}, {}, function(err, document) {
 							if(err) throw err;
-							if(!object) {
-								delete obj.data._id;
+							if(!document) {
 								obj.data.user = user._id;
+								obj.data.time = new Date();
+								obj.data.comments = [];
 								collection.insert(obj.data, {}, function(err, document) {
-									throw new err;
-									obj.callback(err, document._id.toString());
+									if(err) throw err;
+									obj.callback(err, document[0]._id.toString());
 								});
+							} else {
+								obj.callback(err, obj.data._id);
 							}
 						});
 					});
@@ -207,7 +219,7 @@ module.exports = function() {
 										if(ref.user) {
 											ws_collection.alert({
 												user : ref.user, 
-												message : "A user has commented on your " + (ref == commentable ? "forum" : "comment") + ".",
+												message : "A user has commented on your " + (ref == commentable ? obj.collection : "comment") + ".",
 												link : "#/" + obj.collection + "/" + commentable._id
 											});
 										}
@@ -263,10 +275,8 @@ module.exports = function() {
 						ws_collection.authorizedUser(accessToken, function(err, user, users) {
 							if(user) {
 								for(var i = 0; i < objects.length; i++) {
-									if(user.permission >= ws_collection.permissions.user || user._id.equals(objects[i])) {
-										objects[i].editable = true;
-									}
-									ws_collection.mark(objects[i].comments, user._id);
+									objects[i].editable = user.permission >= ws_collection.permissions.admin || user._id.equals(objects[i]);
+									ws_collection.mark(objects[i].comments, user);
 								}
 							}
 							res.send(objects);
@@ -285,7 +295,7 @@ module.exports = function() {
 		if(comments) {
 			for(var i = 0; i < comments.length; i++) {
 				var comment = comments[i];
-				comment.editable = user.equals(comment.user) || (user.permission >= ws_collection.permissions.admin);
+				comment.editable = user._id.equals(comment.user) || (user.permission >= ws_collection.permissions.admin);
 				ws_collection.mark(comment.comments, user);
 			}
 		}

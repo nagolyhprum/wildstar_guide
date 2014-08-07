@@ -1,7 +1,13 @@
 wildstar.controller("edit", ["$scope", "$routeParams", "$http", "$location", "$cookies", function($scope, $routeParams, $http, $location, $cookies) {
 	$scope.$watch($scope.plural, function(value) {
 		if(value) {
-			var object = value[$routeParams[$scope.singular]];
+			var object;
+			for(var i = 0; i < value.length; i++) {
+				if(value[i]._id == $routeParams[$scope.singular]) {
+					object = value[i];
+					break;
+				}
+			}
 			$scope.object = {
 				name : object.name,
 				description : object.description,

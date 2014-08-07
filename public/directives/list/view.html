@@ -7,7 +7,7 @@
 		<div class="col-xs-6" ng-repeat-end> <!-- this is new !-->
 			<h2>{{object.name}}</h2>
 			<p ng-bind-html="object.description.md2html()"></p> <!-- this is new !-->
-			<p><a class="btn btn-default" href="#/{{plural}}/{{$index}}">View details &raquo;</a></p>
+			<p><a class="btn btn-default" href="#/{{plural}}/{{object._id}}">View details &raquo;</a></p>
 		</div>	
 		<div class="clearfix"></div>  <!-- this is new !-->
 		<div ng-if="permission >= minPermissions">
