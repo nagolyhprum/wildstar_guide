@@ -220,3 +220,15 @@ wildstar.controller("teamspeak", ["$scope", function($scope) {
 		}
 	};
 }]);
+
+wildstar.controller("alerts", ["$scope", "$interval", function($scope, $interval) {
+	var interval;
+	$scope.move = function($event) {
+		$interval.cancel(interval);
+		interval = $interval(function() {
+		}, 100);
+	};
+	$scope.stop = function($event) {
+		$interval.cancel(interval);
+	};
+}]);

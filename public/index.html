@@ -58,7 +58,7 @@
 		
 		<div ng-include="'partials/modals/character/view.html'"></div>
 		<div ng-include="'partials/modals/account/view.html'"></div>
-		<div class="list-group" id="alerts" ng-if="alerts.length">
+		<div ng-controller="alerts" ng-mousemove="move($event)" ng-mouseout="stop($event)" class="list-group" id="alerts" ng-if="alerts.length">
 			<a href="{{alert.link}}" class="list-group-item" ng-repeat="alert in alerts">
 				<p class="list-group-item-text">{{alert.message}}</p>
 			</a>

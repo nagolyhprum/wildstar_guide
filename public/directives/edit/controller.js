@@ -1,8 +1,9 @@
 wildstar.controller("edit", ["$scope", "$routeParams", "$http", "$location", "$cookies", function($scope, $routeParams, $http, $location, $cookies) {
+	var i;
 	$scope.$watch($scope.plural, function(value) {
 		if(value) {
 			var object;
-			for(var i = 0; i < value.length; i++) {
+			for(i = 0; i < value.length; i++) {
 				if(value[i]._id == $routeParams[$scope.singular]) {
 					object = value[i];
 					break;
@@ -20,7 +21,7 @@ wildstar.controller("edit", ["$scope", "$routeParams", "$http", "$location", "$c
 	});
 	$scope.save = function() {	
 		$scope.loader.show();
-		$scope[$scope.plural][$routeParams[$scope.singular]] = $scope.object;
+		$scope[$scope.plural][i] = $scope.object;
 		var request = {};
 		request.accessToken = $cookies.accessToken;
 		request.object = $scope.object;
@@ -33,7 +34,7 @@ wildstar.controller("edit", ["$scope", "$routeParams", "$http", "$location", "$c
 	};	
 	$scope.delete = function() {
 		$scope.loader.show();					
-		$scope[$scope.plural].splice($routeParams[$scope.singular], 1);
+		$scope[$scope.plural].splice(i, 1);
 		var request = {};
 		request.accessToken = $cookies.accessToken;
 		request._id = $scope.object._id;
